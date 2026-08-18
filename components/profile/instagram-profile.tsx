@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Bookmark, Grid3x3, History, Sparkles, ThumbsDown } from "lucide-react";
@@ -9,6 +8,7 @@ import { MOTIVATIONS, TOPIC_BY_ID } from "@/data/ontology";
 import { ONBOARDING_CLUSTERS } from "@/lib/onboarding/catalog-options";
 import { dislikeReasonLabel } from "@/lib/social/dislike-reasons";
 import type { OnboardingPreferences, SocialState } from "@/lib/store/types";
+import { useSignOut } from "@/components/auth/use-sign-out";
 import { TasteDashboard } from "@/components/profile/taste-dashboard";
 import { reelThumbnailSrc, ReelThumbnail } from "@/components/catalog/reel-thumbnail";
 import { Avatar } from "@/components/ui/primitives";
@@ -36,9 +36,8 @@ export function InstagramProfile({
   social: SocialState;
   stats: ProfileStats;
 }) {
-  const router = useRouter();
   const [tab, setTab] = useState<Tab>("posts");
-  const [loggingOut, setLoggingOut] = useState(false);
+  const { signOut, signingOut } = useSignOut();
   const [social, setSocial] = useState(initialSocial);
   const [watchedIds, setWatchedIds] = useState<string[]>([]);
 
@@ -74,12 +73,7 @@ export function InstagramProfile({
     return () => window.removeEventListener("focus", onFocus);
   }, [refreshSocial]);
 
-  const logout = async () => {
-    setLoggingOut(true);
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/login");
-    router.refresh();
-  };
+  const logout = () => void signOut();
 
   const handle = account.name.replace(/\s+/g, "").toLowerCase();
   const likedReels = resolveReelsMedia(
@@ -110,11 +104,11 @@ export function InstagramProfile({
             </Link>
             <button
               type="button"
-              onClick={() => void logout()}
-              disabled={loggingOut}
+              onClick={logout}
+              disabled={signingOut}
               className="rounded-lg bg-white/10 px-4 py-1.5 text-[14px] font-semibold"
             >
-              {loggingOut ? "Logging out…" : "Log out"}
+              {signingOut ? "Signing out…" : "Sign out"}
             </button>
           </div>
 

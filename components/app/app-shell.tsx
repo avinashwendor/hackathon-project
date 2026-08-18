@@ -8,12 +8,14 @@ import {
   Code2,
   Compass,
   Home,
+  LogOut,
   PlusSquare,
   Search,
   Sparkles,
   User,
 } from "lucide-react";
 import { Wordmark } from "@/components/brand/wordmark";
+import { useSignOut } from "@/components/auth/use-sign-out";
 import { useViewer } from "@/components/auth/use-viewer";
 import { Avatar } from "@/components/ui/primitives";
 import { cn } from "@/lib/utils";
@@ -53,6 +55,7 @@ export function AppShell({
 }) {
   const pathname = usePathname();
   const { viewer } = useViewer();
+  const { signOut, signingOut } = useSignOut();
   const isReels = variant === "reels";
 
   return (
@@ -91,13 +94,36 @@ export function AppShell({
         </nav>
 
         {viewer.account && (
-          <Link
-            href="/profile"
-            className="focus-ring mt-auto hidden items-center gap-3 rounded-lg px-3 py-2 hover:bg-white/8 xl:flex"
+          <div className="mt-auto hidden flex-col gap-1 xl:flex">
+            <Link
+              href="/profile"
+              className="focus-ring flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-white/8"
+            >
+              <Avatar name={viewer.account.name} hue={24} size={28} />
+              <span className="truncate text-[14px] font-medium">{viewer.account.name}</span>
+            </Link>
+            <button
+              type="button"
+              onClick={() => void signOut()}
+              disabled={signingOut}
+              className="focus-ring flex items-center gap-4 rounded-lg px-3 py-2 text-[14px] font-medium text-fg-muted transition-colors hover:bg-white/8 hover:text-fg disabled:opacity-60"
+            >
+              <LogOut className="size-5 shrink-0" strokeWidth={1.8} aria-hidden />
+              {signingOut ? "Signing out…" : "Sign out"}
+            </button>
+          </div>
+        )}
+
+        {viewer.account && (
+          <button
+            type="button"
+            onClick={() => void signOut()}
+            disabled={signingOut}
+            aria-label={signingOut ? "Signing out" : "Sign out"}
+            className="focus-ring mt-auto flex items-center justify-center rounded-lg p-3 hover:bg-white/8 lg:flex xl:hidden"
           >
-            <Avatar name={viewer.account.name} hue={24} size={28} />
-            <span className="truncate text-[14px] font-medium">{viewer.account.name}</span>
-          </Link>
+            <LogOut className="size-6 shrink-0 text-fg-muted" strokeWidth={1.8} />
+          </button>
         )}
       </aside>
 

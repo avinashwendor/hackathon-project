@@ -182,9 +182,10 @@ export function FeedExperience({
     };
   }, [initialReels?.length, loadNext]);
 
+  // Prefetch when one reel from the end so the user never snaps onto a false "caught up" slide.
   useEffect(() => {
-    if (loading || loadingMore || !hasMore) return;
-    if (activeIndex < reels.length - 1) return;
+    if (loading || loadingMore || !hasMore || reels.length === 0) return;
+    if (activeIndex < reels.length - 2) return;
     setLoadingMore(true);
     void loadNext(1).finally(() => setLoadingMore(false));
   }, [activeIndex, hasMore, loadNext, loading, loadingMore, reels.length]);
@@ -591,22 +592,27 @@ export function FeedExperience({
           );
         })}
 
-        <div className="flex h-full snap-start flex-col items-center justify-center gap-5 p-8 text-center">
-          {loadingMore ? (
-            <Loader2 className="size-8 animate-spin text-white/70" />
-          ) : (
-            <>
-              <Compass className="size-9 text-white/70" strokeWidth={1.6} aria-hidden />
-              <p className="max-w-[24ch] text-[22px] font-semibold text-white">You&apos;re all caught up</p>
-              <p className="max-w-[32ch] text-[14px] text-white/60">
-                Like or pass on reels — fresh picks load one at a time based on your taste.
-              </p>
-              <Button onClick={askAgent} size="lg">
-                Where should I go next?
-              </Button>
-            </>
-          )}
-        </div>
+        {!hasMore && (
+          <div className="flex h-full snap-start flex-col items-center justify-center gap-5 p-8 text-center">
+            <Compass className="size-9 text-white/70" strokeWidth={1.6} aria-hidden />
+            <p className="max-w-[24ch] text-[22px] font-semibold text-white">You&apos;re all caught up</p>
+            <p className="max-w-[32ch] text-[14px] text-white/60">
+              Like or pass on reels — fresh picks load one at a time based on your taste.
+            </p>
+            <Button onClick={askAgent} size="lg">
+              Where should I go next?
+            </Button>
+          </div>
+        )}
+
+        {hasMore && loadingMore && (
+          <div
+            className="flex h-24 snap-start items-center justify-center"
+            aria-hidden
+          >
+            <Loader2 className="size-7 animate-spin text-white/60" />
+          </div>
+        )}
       </div>
       )}
 

@@ -243,17 +243,29 @@ async function buildRankedIds(
   return { ids, source, queries: textQueries };
 }
 
+function unseenPlayableIds(
+  rankIds: string[],
+  softExclude: Set<string>,
+  hardExclude: Set<string>,
+): string[] {
+  const fromRank = rankIds.filter((id) => !softExclude.has(id) && !hardExclude.has(id));
+  if (fromRank.length) return fromRank;
+
+  return playableRankedIds(hardExclude).filter((id) => !softExclude.has(id));
+}
+
 function sliceFromRank(
   rankIds: string[],
   softExclude: Set<string>,
+  hardExclude: Set<string>,
   limit: number,
 ): { reels: Reel[]; hasMore: boolean } {
-  const available = rankIds.filter((id) => !softExclude.has(id));
+  const available = unseenPlayableIds(rankIds, softExclude, hardExclude);
   const picked = available.slice(0, limit);
   const reels = resolveReelsMedia(
     picked.map((id) => getReel(id)).filter((r): r is Reel => Boolean(r)),
   );
-  return { reels, hasMore: available.length > limit };
+  return { reels, hasMore: available.length > picked.length };
 }
 
 /** Personalized feed — cached rank for speed; taste refresh after likes. */
@@ -287,7 +299,7 @@ export async function buildPersonalizedFeed(
     await updateSocial(sessionId, (current) => ({ ...current, feedRank: cache }));
   }
 
-  let { reels, hasMore } = sliceFromRank(rankIds, softExclude, limit);
+  let { reels, hasMore } = sliceFromRank(rankIds, softExclude, hardExclude, limit);
 
   if (!reels.length && !needsRebuild) {
     const built = await buildRankedIds(sessionId, social, events, hardExclude);
@@ -303,7 +315,7 @@ export async function buildPersonalizedFeed(
         likeCount,
       },
     }));
-    ({ reels, hasMore } = sliceFromRank(rankIds, softExclude, limit));
+    ({ reels, hasMore } = sliceFromRank(rankIds, softExclude, hardExclude, limit));
   }
 
   return { reels, source, queries, hasMore };

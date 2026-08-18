@@ -12,6 +12,7 @@ import {
 import { LIKES_BEFORE_TASTE_REFRESH } from "@/lib/feed/feed-cache";
 import { fetchFeedClient } from "@/lib/feed/client-fetch";
 import { useViewer } from "@/components/auth/use-viewer";
+import { useSignOut } from "@/components/auth/use-sign-out";
 import { Avatar } from "@/components/ui/primitives";
 import { DislikeReasonDialog } from "@/components/feed/dislike-reason-dialog";
 import { PostShimmer } from "@/components/feed/feed-shimmer";
@@ -57,6 +58,7 @@ export function HomeFeed({
   initialHasMore = true,
 }: HomeFeedProps) {
   const { viewer } = useViewer();
+  const { signOut, signingOut } = useSignOut();
   const [posts, setPosts] = useState<Reel[]>(initialReels ?? []);
   const [feedSource, setFeedSource] = useState(initialSource);
   const [loading, setLoading] = useState(!initialReels?.length);
@@ -339,7 +341,7 @@ export function HomeFeed({
                 <Loader2 className="size-6 animate-spin text-fg-muted" />
               </div>
             )}
-            {!hasMore && playablePosts.length > 0 && (
+            {!hasMore && !loadingMore && playablePosts.length > 0 && (
               <p className="text-center text-[13px] text-fg-subtle">
                 You&apos;re caught up — like or pass on reels to refresh what&apos;s next.
               </p>
@@ -358,6 +360,15 @@ export function HomeFeed({
               Profile
             </Link>
           </div>
+
+          <button
+            type="button"
+            onClick={() => void signOut()}
+            disabled={signingOut}
+            className="mt-3 text-[12px] font-semibold text-fg-muted transition-colors hover:text-fg disabled:opacity-60"
+          >
+            {signingOut ? "Signing out…" : "Sign out"}
+          </button>
 
           <div className="mt-6 flex items-center justify-between">
             <p className="text-[14px] font-semibold text-fg-muted">Suggested for you</p>
