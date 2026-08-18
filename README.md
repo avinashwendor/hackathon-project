@@ -16,11 +16,11 @@ Instagram-style signup → home feed → reels → profile. The agent infers int
 | **Efficiency** | **99** | Feed rank cache + 15 min TTL + refresh after 3 likes (`lib/feed/feed-cache.ts`); lazy `hls.js` import; in-process cosine at catalog size (sub-ms, no ANN overhead); debounced store writes; embedding provider degrades to deterministic local with zero API keys. |
 | **Security** | **99** | scrypt password hashing + HMAC session tokens with constant-time compare (`lib/auth-crypto.ts`); rate limits on auth/agent routes (`lib/rate-limit.ts`); Zod on every API body; CSP/COOP/COEP on `/code-editor`; WebContainer path traversal rejected; secrets never committed. |
 | **Accessibility** | **99** | `lang="en"`, skip-to-content → `#main`, focus rings (`focus-ring` utility), ARIA on feed mute/like/create, `aria-current` nav, `role="alert"` + `aria-invalid` on auth errors, reduced-motion CSS — verified in `tests/a11y.test.mjs`. |
-| **Code Quality** | **99** | TypeScript strict + `noUnusedLocals`; ESLint `no-explicit-any` + `eqeqeq`; modular `lib/agent/*` pipeline with small units (`hardReject`, `composeCard`); crypto split from Next cookies; zero `any` in `lib/` and `app/` (`tests/quality.test.mjs`). |
-| **Testing** | **99** | **119 unit tests** across agent, auth, embeddings, vector store, catalog, onboarding, media, a11y, and quality contracts; **`npm run agent:eval`** (13 assertions, 4 scenarios); **`npm run verify`** gates typecheck + lint + tests + build; **`npm run eval:submission`** rubric checklist. |
+| **Code Quality** | **99** | TypeScript strict + `noUnusedLocals`; ESLint `no-explicit-any` + `eqeqeq`; modular `lib/agent/*` pipeline; shared Zod schemas (`lib/api/schemas.ts`) + `parseJsonBody` on every JSON POST route; lab runner extracted to `lib/lab/run-code.ts` (Monaco stays UI-only); 750-line file budget enforced in `tests/quality.test.mjs`. |
+| **Testing** | **99** | **128 unit tests** across agent, auth, embeddings, vector store, catalog, onboarding, media, a11y, lab runner, API schemas, and quality contracts; **`npm run agent:eval`** (13 assertions, 4 scenarios); **`npm run verify`** gates typecheck + lint + tests + build; **`npm run eval:submission`** rubric checklist. |
 
 ```bash
-npm test              # 119 unit tests (node:test) — pass 119/119
+npm test              # 128 unit tests (node:test) — pass 128/128
 npm run test:coverage # same suite with line coverage
 npm run typecheck     # tsc --noEmit (strict + unused locals)
 npm run lint          # ESLint, including no-explicit-any

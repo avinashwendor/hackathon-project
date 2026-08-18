@@ -3,7 +3,10 @@ import { SCENARIO_BY_ID, scenarioToEvents } from "@/data/scenarios";
 import { getReel } from "@/data/reels";
 import { recommendShallow } from "@/lib/agent/baseline";
 import { recommend } from "@/lib/agent/pipeline";
+import { compareRequestSchema } from "@/lib/api/schemas";
+import { parseJsonBody } from "@/lib/api/parse-body";
 import { getViewer } from "@/lib/auth";
+import { errorMessage } from "@/lib/errors";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -13,8 +16,11 @@ export const dynamic = "force-dynamic";
  * rather than asserted. This is the page the brief's built-in trap is about.
  */
 export async function POST(request: Request) {
+  const parsed = await parseJsonBody(request, compareRequestSchema);
+  if (!parsed.ok) return parsed.response;
+
   const { sessionId } = await getViewer();
-  const { scenarioId } = (await request.json().catch(() => ({}))) as { scenarioId?: string };
+  const { scenarioId } = parsed.data;
 
   const scenario = SCENARIO_BY_ID.get(scenarioId ?? "the-trap");
   if (!scenario) {
@@ -48,6 +54,6 @@ export async function POST(request: Request) {
     });
   } catch (err) {
     console.error("[agent] compare failed:", err);
-    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+    return NextResponse.json({ error: errorMessage(err) }, { status: 500 });
   }
 }

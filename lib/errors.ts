@@ -4,6 +4,11 @@ export function errorMessage(error: unknown): string {
   return String(error);
 }
 
+/** True when a fetch was cancelled via AbortController. */
+export function isAbortError(error: unknown): boolean {
+  return error instanceof Error && error.name === "AbortError";
+}
+
 /** Console-style formatting for lab output — never throws on cyclic values. */
 export function formatUnknown(value: unknown): string {
   if (typeof value === "string") return value;

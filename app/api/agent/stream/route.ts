@@ -1,7 +1,10 @@
 import { SCENARIO_BY_ID, scenarioToEvents } from "@/data/scenarios";
 import { getReel } from "@/data/reels";
 import { recommend } from "@/lib/agent/pipeline";
+import { agentRequestSchema } from "@/lib/api/schemas";
+import { parseJsonBody } from "@/lib/api/parse-body";
 import { getViewer } from "@/lib/auth";
+import { errorMessage } from "@/lib/errors";
 import { markRecommended, readEvents, readRecommended, readSocial } from "@/lib/store";
 import type { AgentStage, InteractionEvent } from "@/lib/types";
 
@@ -14,24 +17,24 @@ export const dynamic = "force-dynamic";
  * nothing, and the trace is the most interesting part of the product.
  */
 export async function POST(request: Request) {
-  const { sessionId } = await getViewer();
-  const body = (await request.json().catch(() => ({}))) as {
-    scenarioId?: string;
-    currentReelId?: string;
-    events?: InteractionEvent[];
-    allowRepeat?: boolean;
-  };
+  const parsed = await parseJsonBody(request, agentRequestSchema);
+  if (!parsed.ok) {
+    return new Response("Invalid request body", { status: 400 });
+  }
 
-  let currentReelId = body.currentReelId;
+  const { sessionId } = await getViewer();
+  const { scenarioId, allowRepeat } = parsed.data;
+
+  let currentReelId = parsed.data.currentReelId;
   let events: InteractionEvent[];
 
-  if (body.scenarioId) {
-    const scenario = SCENARIO_BY_ID.get(body.scenarioId);
+  if (scenarioId) {
+    const scenario = SCENARIO_BY_ID.get(scenarioId);
     if (!scenario) return new Response("Unknown scenario", { status: 404 });
     currentReelId = currentReelId ?? scenario.currentReelId;
     events = scenarioToEvents(scenario, sessionId, (id) => getReel(id)?.durationSec ?? 30);
   } else {
-    events = body.events ?? (await readEvents(sessionId));
+    events = (parsed.data.events as InteractionEvent[] | undefined) ?? (await readEvents(sessionId));
     currentReelId = currentReelId ?? events[events.length - 1]?.reelId;
   }
 
@@ -50,7 +53,7 @@ export async function POST(request: Request) {
 
       try {
         const [exclude, social] = await Promise.all([
-          body.allowRepeat ? Promise.resolve([] as string[]) : readRecommended(sessionId),
+          allowRepeat ? Promise.resolve([] as string[]) : readRecommended(sessionId),
           readSocial(sessionId),
         ]);
         const result = await recommend({
@@ -61,10 +64,10 @@ export async function POST(request: Request) {
           social,
           onStage: (stage: AgentStage) => send("stage", stage),
         });
-        if (!body.scenarioId) await markRecommended(sessionId, result.recommendation.id);
+        if (!scenarioId) await markRecommended(sessionId, result.recommendation.id);
         send("result", result);
       } catch (err) {
-        send("error", { message: (err as Error).message });
+        send("error", { message: errorMessage(err) });
       } finally {
         controller.enqueue(encoder.encode("data: [DONE]\n\n"));
         controller.close();

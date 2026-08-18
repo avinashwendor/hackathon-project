@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AlertTriangle, Check, Film, Loader2, Upload } from "lucide-react";
 import { CATEGORIES, DIFFICULTIES, type Category, type Difficulty, type Reel } from "@/lib/types";
+import { errorMessage } from "@/lib/errors";
 import { Button } from "@/components/ui/button";
 import { Badge, Card, Chip, Meter } from "@/components/ui/primitives";
 import { cn } from "@/lib/utils";
@@ -124,7 +125,7 @@ export function StudioForm() {
       if (!res.ok) throw new Error(json.error ?? "Ingest failed");
       setResult(json);
     } catch (err) {
-      setError((err as Error).message);
+      setError(errorMessage(err));
     } finally {
       setBusy(false);
       setUploadPct(null);

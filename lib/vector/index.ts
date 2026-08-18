@@ -1,6 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { config } from "@/lib/config";
+import { errorMessage } from "@/lib/errors";
 import { embedReels, getProvider, reelDocument } from "@/lib/embeddings";
 import type { Reel } from "@/lib/types";
 import { ALL_REELS, registerRuntimeReel } from "@/data/reels";
@@ -75,7 +76,7 @@ async function writeCache(file: CacheFile): Promise<void> {
     await fs.writeFile(cachePath(file.provider), JSON.stringify(file), "utf8");
   } catch (err) {
     // A read-only filesystem is fine — it only costs us the warm start.
-    console.warn("[vector] could not persist embedding cache:", (err as Error).message);
+    console.warn("[vector] could not persist embedding cache:", errorMessage(err));
   }
 }
 
@@ -162,7 +163,7 @@ async function build(): Promise<{ store: VectorStore; info: IndexInfo }> {
       await qdrant.upsert(records);
       store = qdrant;
     } catch (err) {
-      fallbackReason = `Qdrant unavailable (${(err as Error).message.slice(0, 120)}) — served from memory`;
+      fallbackReason = `Qdrant unavailable (${errorMessage(err).slice(0, 120)}) — served from memory`;
       console.warn("[vector]", fallbackReason);
     }
   }

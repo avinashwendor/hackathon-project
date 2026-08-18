@@ -7,7 +7,7 @@ import { Play, RotateCcw, CheckCircle2, Terminal, Eye, Code2,
   FileCode, Folder, Plus, Trash2, Maximize2, Minimize2, 
   Copy, Check, Sparkles, CheckCircle, XCircle, ChevronDown, RefreshCw
 } from 'lucide-react';
-import { errorMessage, formatUnknown } from '@/lib/errors';
+import { runCodeFile, runTestCases } from '@/lib/lab/run-code';
 
 export interface CodeFile {
   name: string;
@@ -188,70 +188,12 @@ export default function MonacoCodeEditor({
     setIsExecuting(true);
     setOutput([]);
     setActiveRightTab('console');
-    const logs: string[] = [];
     const mainFile = files.find(f => f.name.endsWith('.js') || f.name.endsWith('.ts') || f.name === activeFileName) || activeFile;
 
     setTimeout(() => {
-      if (mainFile.language === 'javascript' || mainFile.language === 'typescript') {
-        const customConsole = {
-          log: (...args: unknown[]) => {
-            logs.push(args.map((arg) => formatUnknown(arg)).join(' '));
-          },
-          error: (...args: unknown[]) => {
-            logs.push(`[ERROR]: ${args.map((arg) => formatUnknown(arg)).join(' ')}`);
-          },
-          warn: (...args: unknown[]) => {
-            logs.push(`[WARN]: ${args.map((arg) => formatUnknown(arg)).join(' ')}`);
-          },
-          info: (...args: unknown[]) => {
-            logs.push(`[INFO]: ${args.map((arg) => formatUnknown(arg)).join(' ')}`);
-          },
-          table: (data: unknown) => {
-            logs.push(`[TABLE]: ${formatUnknown(data)}`);
-          }
-        };
-
-        try {
-          const runFn = new Function('console', mainFile.content);
-          const startTime = performance.now();
-          runFn(customConsole);
-          const endTime = performance.now();
-          logs.push(`\n⚡ Executed in ${(endTime - startTime).toFixed(2)}ms with Exit Code 0`);
-        } catch (err: unknown) {
-          logs.push(`[Runtime Exception]: ${errorMessage(err)}`);
-        }
-      } else if (mainFile.language === 'python') {
-        logs.push(`[Upstream Python 3.11 WASM Engine] Executing ${mainFile.name}...`);
-        logs.push(`----------------------------------------`);
-        try {
-          const printMatches = mainFile.content.match(/print\((.*?)\)/g);
-          if (printMatches) {
-            printMatches.forEach(pm => {
-              const inner = pm.replace(/^print\(/, '').replace(/\)$/, '');
-              logs.push(inner.replace(/["']/g, ''));
-            });
-          } else {
-            logs.push("Program executed successfully. Output captured.");
-          }
-          logs.push(`----------------------------------------`);
-          logs.push(`⚡ Executed in 14.2ms | Memory: 4.2 MB | Exit Code: 0`);
-        } catch (err: unknown) {
-          logs.push(`[SyntaxError]: ${errorMessage(err)}`);
-        }
-      } else if (mainFile.language === 'html' || mainFile.language === 'css') {
-        setActiveRightTab('preview');
-        logs.push("HTML/CSS Live Document rendered into iframe preview pane.");
-      } else {
-        logs.push(`[Upstream Compiler Hub] Compiling ${mainFile.name} (${mainFile.language.toUpperCase()})...`);
-        logs.push(`✔ Build Successful! Linking binaries...`);
-        logs.push(`----------------------------------------`);
-        logs.push(`Program output from ${mainFile.name}:`);
-        logs.push(`Operation completed successfully.`);
-        logs.push(`----------------------------------------`);
-        logs.push(`⚡ Execution Time: 28.6ms | Exit Code: 0`);
-      }
-
-      setOutput(logs);
+      const result = runCodeFile(mainFile);
+      if (result.openPreview) setActiveRightTab('preview');
+      setOutput(result.logs);
       setIsExecuting(false);
     }, 300);
   };
@@ -261,36 +203,10 @@ export default function MonacoCodeEditor({
     setActiveRightTab('testcases');
     setIsExecuting(true);
     const mainFile = files.find(f => f.name === activeFileName) || activeFile;
-    const results: { passed: boolean; input: string; expected: string; actual: string; desc: string }[] = [];
-    let passedCount = 0;
 
     setTimeout(() => {
-      testCases.forEach((tc, idx) => {
-        let actual = '';
-        let passed = false;
-        try {
-          if (mainFile.language === 'javascript' || mainFile.language === 'typescript') {
-            const runner = new Function(mainFile.content + `;\n return ${tc.input};`);
-            const res = runner();
-            actual = typeof res === 'object' ? JSON.stringify(res) : String(res);
-          } else {
-            actual = tc.expectedOutput;
-          }
-          passed = actual.trim() === tc.expectedOutput.trim();
-        } catch (err: unknown) {
-          actual = `Error: ${errorMessage(err)}`;
-          passed = false;
-        }
-
-        if (passed) passedCount++;
-        results.push({
-          passed,
-          input: tc.input,
-          expected: tc.expectedOutput,
-          actual,
-          desc: tc.description || `Test Case #${idx + 1}`
-        });
-      });
+      const results = runTestCases(mainFile, testCases);
+      const passedCount = results.filter((r) => r.passed).length;
 
       setTestResults(results);
       setTestSummary({ passed: passedCount, total: testCases.length });

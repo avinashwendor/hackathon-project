@@ -1,4 +1,5 @@
 import { config } from "@/lib/config";
+import { errorMessage } from "@/lib/errors";
 
 /* ---------------------------------------------------------------------------
    Omega C client (OpenAI-compatible chat completions).
@@ -121,7 +122,7 @@ export async function chat(messages: ChatMessage[], options: ChatOptions = {}): 
       return await once(messages, options);
     } catch (err) {
       lastError = err;
-      const message = (err as Error).message ?? "";
+      const message = errorMessage(err);
       // A bad request will fail identically on retry; only back off on transport
       // and capacity errors.
       const retriable = /429|5\d\d|timeout|abort|fetch failed|ECONN|network/i.test(message);
@@ -129,7 +130,7 @@ export async function chat(messages: ChatMessage[], options: ChatOptions = {}): 
       await new Promise((r) => setTimeout(r, 400 * 2 ** attempt + Math.random() * 250));
     }
   }
-  throw new LLMUnavailableError(`Omega C call failed: ${(lastError as Error)?.message ?? "unknown"}`);
+  throw new LLMUnavailableError(`Omega C call failed: ${errorMessage(lastError)}`);
 }
 
 /* --- JSON --------------------------------------------------------------- */
@@ -201,7 +202,7 @@ export async function chatJson<T>(
       ms: result.ms,
     };
   } catch (err) {
-    console.warn("[llm]", (err as Error).message);
+    console.warn("[llm]", errorMessage(err));
     return null;
   }
 }

@@ -9,6 +9,7 @@ import { useViewer } from "@/components/auth/use-viewer";
 import { reelThumbnailSrc, ReelThumbnail } from "@/components/catalog/reel-thumbnail";
 import { FeedShimmer } from "@/components/feed/feed-shimmer";
 import { CATEGORIES, DIFFICULTIES, type Category, type Difficulty, type Reel } from "@/lib/types";
+import { errorMessage } from "@/lib/errors";
 import { cn } from "@/lib/utils";
 
 interface QualityResponse {
@@ -174,7 +175,7 @@ export function CreateExperience() {
       if (!res.ok) throw new Error(json.error ?? "Could not publish reel");
       setResult({ ...json, reel: resolveReelsMedia([json.reel])[0] ?? json.reel });
     } catch (err) {
-      setError((err as Error).message);
+      setError(errorMessage(err));
     } finally {
       setBusy(false);
       setUploadPct(null);

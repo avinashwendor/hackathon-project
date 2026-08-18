@@ -1,5 +1,6 @@
 import { HeadObjectCommand, ListObjectsV2Command, S3Client } from "@aws-sdk/client-s3";
 import { config } from "@/lib/config";
+import { errorMessage } from "@/lib/errors";
 import { storageDriver } from "@/lib/storage";
 
 export interface StorageHealth {
@@ -64,7 +65,7 @@ export async function storageHealth(sampleKey?: string): Promise<StorageHealth> 
       ...base,
       ok: false,
       sampleKey,
-      error: (err as Error).message.slice(0, 200),
+      error: errorMessage(err).slice(0, 200),
     };
   }
 }

@@ -8,6 +8,7 @@ import { ReelTile } from "@/components/catalog/reel-tile";
 import { Button } from "@/components/ui/button";
 import { Badge, Card } from "@/components/ui/primitives";
 import { cn } from "@/lib/utils";
+import { errorMessage } from "@/lib/errors";
 import { AgentCard } from "./agent-card";
 
 interface CompareResponse {
@@ -31,7 +32,7 @@ async function fetchComparison(scenarioId: string): Promise<Outcome> {
     if (!res.ok) return { ok: false, error: `Comparison failed (${res.status})` };
     return { ok: true, data: (await res.json()) as CompareResponse };
   } catch (err) {
-    return { ok: false, error: (err as Error).message };
+    return { ok: false, error: errorMessage(err) };
   }
 }
 

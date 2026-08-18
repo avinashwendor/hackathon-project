@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import type { AgentResult, AgentStage, InteractionEvent } from "@/lib/types";
+import { errorMessage, isAbortError } from "@/lib/errors";
 
 export interface RunRequest {
   scenarioId?: string;
@@ -85,8 +86,8 @@ export function useAgentRun() {
 
       setStatus((s) => (s === "running" ? "done" : s));
     } catch (err) {
-      if ((err as Error).name === "AbortError") return;
-      setError((err as Error).message);
+      if (isAbortError(err)) return;
+      setError(errorMessage(err));
       setStatus("error");
     }
   }, []);
