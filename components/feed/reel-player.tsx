@@ -1,22 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { Reel } from "@/lib/types";
-import { ReelCanvas } from "./reel-canvas";
+import { FeedShimmer } from "./feed-shimmer";
 import { cn } from "@/lib/utils";
-
-/* ---------------------------------------------------------------------------
-   Adaptive playback.
-
-   HLS is the delivery format: the transcoder writes a four-rung ladder
-   (1080/720/480/360) and a master playlist, and the player picks a rung from
-   measured bandwidth and buffer health.
-
-   Safari plays HLS natively, so hls.js is loaded only where MSE is required —
-   and it is a dynamic import, so a feed with no real media never downloads it.
-   Reels without media fall through to the generated canvas, which is what
-   makes the demo work with an empty bucket.
---------------------------------------------------------------------------- */
 
 export interface PlaybackStats {
   level: number;
@@ -34,6 +21,7 @@ export function ReelPlayer({
   paused = false,
   onStats,
   onProgress,
+  onReady,
   className,
 }: {
   reel: Reel;
@@ -42,13 +30,30 @@ export function ReelPlayer({
   paused?: boolean;
   onStats?: (stats: PlaybackStats) => void;
   onProgress?: (completion: number) => void;
+  /** Fires once the video frame is visible (playing when active, first frame when idle). */
+  onReady?: () => void;
   className?: string;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const readyRef = useRef(false);
   const [failed, setFailed] = useState(false);
+  const [ready, setReady] = useState(false);
+  const expectsVideo = Boolean(reel.media.storageKey || reel.media.hlsUrl || reel.media.mp4Url);
   const hasMedia = Boolean(reel.media.hlsUrl || reel.media.mp4Url) && !failed;
 
-  // --- Source attach -----------------------------------------------------
+  const markReady = useCallback(() => {
+    if (readyRef.current) return;
+    readyRef.current = true;
+    setReady(true);
+    onReady?.();
+  }, [onReady]);
+
+  useEffect(() => {
+    readyRef.current = false;
+    setReady(false);
+    setFailed(false);
+  }, [reel.id]);
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !hasMedia) return;
@@ -57,7 +62,6 @@ export function ReelPlayer({
     let destroy: (() => void) | undefined;
 
     if (hlsUrl && video.canPlayType("application/vnd.apple.mpegurl")) {
-      // Native HLS (Safari, iOS): the platform's own ABR is better than ours.
       video.src = hlsUrl;
     } else if (hlsUrl) {
       let cancelled = false;
@@ -68,8 +72,6 @@ export function ReelPlayer({
           return;
         }
         const hls = new Hls({
-          // Short segments and a small forward buffer: in a vertical feed the
-          // user may swipe away at any moment, so buffering far ahead is waste.
           maxBufferLength: 12,
           maxMaxBufferLength: 24,
           startLevel: -1,
@@ -118,21 +120,17 @@ export function ReelPlayer({
     return () => destroy?.();
   }, [reel.media.hlsUrl, reel.media.mp4Url, hasMedia, onStats]);
 
-  // --- Play / pause with the active slide --------------------------------
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !hasMedia) return;
     if (active && !paused) {
-      video.play().catch(() => {
-        // Autoplay refused without a gesture; the poster stays up, which is fine.
-      });
+      void video.play().catch(() => {});
     } else {
       video.pause();
       if (!active) video.currentTime = 0;
     }
   }, [active, hasMedia, paused]);
 
-  // --- Completion reporting ----------------------------------------------
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !hasMedia || !onProgress) return;
@@ -143,17 +141,55 @@ export function ReelPlayer({
     return () => video.removeEventListener("timeupdate", onTime);
   }, [hasMedia, onProgress]);
 
+  const handleCanPlay = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (active && !paused) {
+      void video.play().catch(() => {});
+      return;
+    }
+    if (!active && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+      markReady();
+    }
+  }, [active, markReady, paused]);
+
+  const handlePlaying = useCallback(() => {
+    markReady();
+  }, [markReady]);
+
+  const handleLoadedData = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (!active) markReady();
+    else if (!paused) void video.play().catch(() => {});
+  }, [active, markReady, paused]);
+
+  if (!expectsVideo || failed) {
+    return (
+      <div className={cn("relative h-full w-full overflow-hidden bg-ink-950", className)}>
+        <FeedShimmer className="absolute inset-0" />
+      </div>
+    );
+  }
+
   return (
     <div className={cn("relative h-full w-full overflow-hidden bg-ink-950", className)}>
-      <ReelCanvas reel={reel} active={active} className={hasMedia ? "absolute inset-0" : ""} />
+      {!ready && <FeedShimmer className="absolute inset-0 z-10" />}
       {hasMedia && (
         <video
           ref={videoRef}
-          className="absolute inset-0 h-full w-full object-cover"
+          className={cn(
+            "absolute inset-0 h-full w-full object-cover transition-opacity duration-300",
+            ready ? "opacity-100" : "opacity-0",
+          )}
           playsInline
           muted={muted}
           loop
-          preload={active ? "auto" : "metadata"}
+          preload={active ? "auto" : "auto"}
+          onLoadedData={handleLoadedData}
+          onCanPlay={handleCanPlay}
+          onPlaying={handlePlaying}
+          onError={() => setFailed(true)}
         />
       )}
     </div>

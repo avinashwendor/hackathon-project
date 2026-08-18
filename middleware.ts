@@ -12,6 +12,7 @@ const PROTECTED_PREFIXES = [
   "/library",
   "/studio",
   "/agent",
+  "/onboarding",
 ];
 
 function isProtected(pathname: string): boolean {

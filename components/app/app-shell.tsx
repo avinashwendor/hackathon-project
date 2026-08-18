@@ -28,17 +28,18 @@ const NAV: NavItem[] = [
   { href: "/feed", label: "Home", icon: Home, match: (p) => p === "/feed" },
   { href: "/explore", label: "Explore", icon: Search },
   { href: "/reels", label: "Reels", icon: Clapperboard },
-  { href: "/agent", label: "For you", icon: Sparkles },
+  { href: "/agent", label: "For you", icon: Sparkles, match: (p) => p === "/agent" || p.startsWith("/agent/") },
   { href: "/studio", label: "Create", icon: PlusSquare },
-  { href: "/profile", label: "Profile", icon: User },
+  { href: "/profile", label: "Profile", icon: User, match: (p) => p === "/profile" || p.startsWith("/profile/") },
 ];
 
 const MOBILE_NAV: NavItem[] = [
   { href: "/feed", label: "Home", icon: Home, match: (p) => p === "/feed" },
   { href: "/explore", label: "Explore", icon: Compass },
+  { href: "/studio", label: "Create", icon: PlusSquare, match: (p) => p === "/studio" },
   { href: "/reels", label: "Reels", icon: Clapperboard },
-  { href: "/agent", label: "For you", icon: Sparkles },
-  { href: "/profile", label: "Profile", icon: User },
+  { href: "/agent", label: "For you", icon: Sparkles, match: (p) => p === "/agent" || p.startsWith("/agent/") },
+  { href: "/profile", label: "Profile", icon: User, match: (p) => p === "/profile" || p.startsWith("/profile/") },
 ];
 
 export function AppShell({

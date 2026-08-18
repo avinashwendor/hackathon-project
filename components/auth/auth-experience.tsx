@@ -5,8 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Loader2, Lock } from "lucide-react";
 import { FEED_REELS } from "@/data/reels";
-import { Wordmark } from "@/components/brand/wordmark";
-import { ReelCanvas } from "@/components/feed/reel-canvas";
+import { Logo } from "@/components/brand/logo";
 import { Avatar } from "@/components/ui/primitives";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +19,7 @@ interface Issue {
 export function AuthExperience({ mode: initialMode }: { mode: AuthMode }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") || "/feed";
+  const next = searchParams.get("next") || (initialMode === "signup" ? "/onboarding" : "/feed");
 
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [email, setEmail] = useState("");
@@ -88,7 +87,7 @@ export function AuthExperience({ mode: initialMode }: { mode: AuthMode }) {
           <div className="w-full max-w-[350px] shrink-0">
             <div className="rounded-sm border border-[#dbdbdb] bg-white px-10 pt-12 pb-8">
               <div className="flex justify-center">
-                <Wordmark size={48} className="text-[#262626]" />
+                <Logo size={36} className="text-[#262626]" />
               </div>
 
               {mode === "signup" && (
@@ -261,6 +260,11 @@ function Field({
   );
 }
 
+const AUTH_FEED_PREVIEW = {
+  video: "/auth/feed-preview.webm",
+  poster: "/auth/feed-preview-poster.webp",
+};
+
 function PhonePreview({ phones }: { phones: typeof FEED_REELS }) {
   const front = phones[0];
   const back = phones[1];
@@ -270,7 +274,8 @@ function PhonePreview({ phones }: { phones: typeof FEED_REELS }) {
     <div className="relative hidden h-[580px] w-[380px] shrink-0 lg:block" aria-hidden>
       {back && (
         <div className="absolute top-8 left-0 h-[520px] w-[250px] -rotate-6 overflow-hidden rounded-[40px] border-[8px] border-[#1a1a1a] bg-black shadow-2xl">
-          <ReelCanvas reel={back} className="h-full" />
+          <FeedPreviewMedia className="scale-110 object-[center_35%]" />
+          <div className="absolute inset-0 bg-black/25" />
           <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 to-transparent p-4">
             <div className="flex items-center gap-2">
               <Avatar name={back.creator.name} hue={back.creator.hue} size={28} />
@@ -281,7 +286,7 @@ function PhonePreview({ phones }: { phones: typeof FEED_REELS }) {
       )}
       <div className="absolute top-0 right-0 h-[560px] w-[270px] overflow-hidden rounded-[42px] border-[8px] border-[#1a1a1a] bg-black shadow-2xl">
         <div className="absolute top-3 left-1/2 z-10 h-5 w-24 -translate-x-1/2 rounded-full bg-black" />
-        <ReelCanvas reel={front} active className="h-full" />
+        <FeedPreviewMedia className="h-full w-full object-cover" />
         <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/85 via-black/30 to-transparent p-4 pb-6">
           <div className="flex items-center gap-2">
             <Avatar name={front.creator.name} hue={front.creator.hue} size={32} />
@@ -294,5 +299,20 @@ function PhonePreview({ phones }: { phones: typeof FEED_REELS }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function FeedPreviewMedia({ className }: { className?: string }) {
+  return (
+    <video
+      src={AUTH_FEED_PREVIEW.video}
+      poster={AUTH_FEED_PREVIEW.poster}
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      className={cn("absolute inset-0 h-full w-full object-cover", className)}
+    />
   );
 }

@@ -1680,6 +1680,33 @@ export const ALL_REELS: Reel[] = [...FEED_REELS, ...CATALOG_REELS, ...IMPORTED_F
 
 export const REEL_BY_ID = new Map(ALL_REELS.map((r) => [r.id, r]));
 
+/** Resolve S3/local playback URLs at request time (env must be loaded on the server). */
+export function resolveReelsMedia(reels: Reel[]): Reel[] {
+  return reels.map(withResolvedMedia);
+}
+
+/** Instagram home feed — mostly real uploaded reels, a few seed posts for context. */
+export function homeFeedPosts(): Reel[] {
+  const uploaded = IMPORTED_REELS.filter((r) => r.media.storageKey);
+  return resolveReelsMedia([
+    ...FEED_REELS.slice(0, 2),
+    ...uploaded.slice(0, 18),
+    ...SEED_CATALOG_REELS.slice(0, 4),
+  ]);
+}
+
+/** Full-screen reels player queue. */
+export function reelsQueue(): Reel[] {
+  const uploaded = IMPORTED_REELS.filter((r) => r.media.storageKey);
+  return resolveReelsMedia([...uploaded.slice(0, 50), ...FEED_REELS.slice(0, 3)]);
+}
+
+/** Explore grid — prioritize reels with real video. */
+export function exploreReels(limit = 36): Reel[] {
+  const uploaded = IMPORTED_REELS.filter((r) => r.media.storageKey);
+  return resolveReelsMedia([...uploaded.slice(0, limit)]);
+}
+
 export function getReel(id: string): Reel | undefined {
   return REEL_BY_ID.get(id);
 }

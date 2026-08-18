@@ -1,6 +1,8 @@
 # Deployment
 
-PromptWars **Top 10** requires a **working Cloud Run** deploy. Railway is also supported for demos.
+PromptWars **Top 10** requires a **working deployed link**. See [SUBMISSION.md](./SUBMISSION.md) for **public repo, single branch, < 10 MB**, and **2-attempt** rules before you deploy.
+
+**Cloud Run** is recommended for PromptWars scoring; **Railway** is supported for hackathon demos ([RAILWAY.md](./RAILWAY.md)).
 
 ---
 

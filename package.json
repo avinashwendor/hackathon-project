@@ -10,6 +10,8 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "embed": "node scripts/build-embeddings.mjs",
+    "sync:s3": "node scripts/sync-catalog-s3.mjs",
+    "verify:media": "node scripts/verify-media.mjs",
     "transcode": "node scripts/transcode.mjs",
     "agent:eval": "node scripts/eval-agent.mjs",
     "test": "node --import ./tests/register.mjs --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/*.test.mjs",

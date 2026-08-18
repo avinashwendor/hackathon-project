@@ -8,18 +8,17 @@ Instagram-style signup → home feed → reels → profile. The agent infers int
 
 ## PromptWars submission
 
+**Read first:** **[docs/SUBMISSION.md](./docs/SUBMISSION.md)** — prerequisites, **2-attempt / 10 MB / public / single-branch** rules, challenge expectations, and step-by-step submit guide.
+
 | Field | Value |
 | --- | --- |
-| **GitHub (public)** | Set after push — see [docs/SUBMISSION.md](./docs/SUBMISSION.md) |
-| **Deployed (Cloud Run)** | Deploy with [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) |
-| **Description** | Instagram-style learning feed with AI that reads *why* you watched, not keywords. Sign up → scroll reels → get redirected to teachable technical content. Uses Google `text-embedding-004`, hype guardrails, and a full agent trace. |
-
-Full checklist: **[docs/SUBMISSION.md](./docs/SUBMISSION.md)**  
-Railway (Postgres + Qdrant): **[docs/RAILWAY.md](./docs/RAILWAY.md)**
+| **GitHub (public, single branch, < 10 MB)** | Push from `upstream/` only — see [docs/SUBMISSION.md](./docs/SUBMISSION.md) §4 |
+| **Deployed** | Cloud Run ([DEPLOYMENT.md](./docs/DEPLOYMENT.md)) or Railway ([RAILWAY.md](./docs/RAILWAY.md)) |
+| **Description** | Instagram-style learning feed with AI that reads *why* you watched. Sign up → scroll reels → taste-based For you + hype guardrails. Google `text-embedding-004`. |
 
 ```bash
 npm run verify          # typecheck + lint + tests + build
-npm run agent:eval      # 13 agent assertions (server running)
+npm run agent:eval      # agent integration checks (server running)
 ```
 
 ---

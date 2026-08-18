@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getReel } from "@/data/reels";
+import { getReel, resolveReelsMedia } from "@/data/reels";
 import { judgeReel } from "@/lib/agent/hype";
 import { config } from "@/lib/config";
 import { embedQuery } from "@/lib/embeddings";
@@ -36,28 +36,34 @@ export async function GET(request: Request) {
 
   const info = await indexInfo();
 
+  const mapped = hits
+    .map((hit) => {
+      const reel = getReel(hit.id);
+      if (!reel) return null;
+      const hype = judgeReel(reel);
+      return {
+        reel,
+        score: Number(hit.score.toFixed(4)),
+        blocked: hype.blocked || reel.substance < config.agent.substanceFloor,
+        blockReason: hype.blocked
+          ? `Hype — “${hype.matched[0] ?? hype.kinds[0]}”`
+          : reel.substance < config.agent.substanceFloor
+            ? `Below the substance floor (${reel.substance.toFixed(2)})`
+            : null,
+      };
+    })
+    .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
+
+  const resolvedById = new Map(
+    resolveReelsMedia(mapped.map((entry) => entry.reel)).map((reel) => [reel.id, reel]),
+  );
+
   return NextResponse.json({
     query,
-    // The library shows the raw index, so each hit carries the verdict the agent
-    // would reach. A reel the guardrail refuses must not look recommendable
-    // just because it ranks well.
-    results: hits
-      .map((hit) => {
-        const reel = getReel(hit.id);
-        if (!reel) return null;
-        const hype = judgeReel(reel);
-        return {
-          reel,
-          score: Number(hit.score.toFixed(4)),
-          blocked: hype.blocked || reel.substance < config.agent.substanceFloor,
-          blockReason: hype.blocked
-            ? `Hype — “${hype.matched[0] ?? hype.kinds[0]}”`
-            : reel.substance < config.agent.substanceFloor
-              ? `Below the substance floor (${reel.substance.toFixed(2)})`
-              : null,
-        };
-      })
-      .filter(Boolean),
+    results: mapped.map((entry) => ({
+      ...entry,
+      reel: resolvedById.get(entry.reel.id) ?? entry.reel,
+    })),
     diagnostics: {
       provider,
       dims,

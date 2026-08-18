@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Bookmark, Heart, MessageCircle, MoreHorizontal, Send } from "lucide-react";
+import { Bookmark, Heart, MessageCircle, MoreHorizontal, Send, ThumbsDown } from "lucide-react";
 import type { EventType, Reel } from "@/lib/types";
 import { ReelPlayer } from "./reel-player";
 import { Avatar } from "@/components/ui/primitives";
@@ -11,6 +11,7 @@ import { cn, formatCount, formatFeedTime } from "@/lib/utils";
 export interface PostState {
   liked: boolean;
   saved: boolean;
+  disliked: boolean;
 }
 
 export function PostCard({
@@ -28,7 +29,20 @@ export function PostCard({
 }) {
   const [burst, setBurst] = useState(false);
   const [captionOpen, setCaptionOpen] = useState(false);
+  const [inView, setInView] = useState(false);
   const tapRef = useRef<number | null>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const node = mediaRef.current;
+    if (!node) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(Boolean(entry?.isIntersecting)),
+      { threshold: 0.55 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   const like = () => {
     if (!state.liked) {
@@ -91,10 +105,11 @@ export function PostCard({
       </header>
 
       <div
+        ref={mediaRef}
         className="relative aspect-[4/5] cursor-pointer overflow-hidden bg-surface-2 sm:rounded-sm"
         onClick={onMediaClick}
       >
-        <ReelPlayer reel={reel} active={false} muted className="absolute inset-0" />
+        <ReelPlayer reel={reel} active={inView} muted className="absolute inset-0" />
         {burst && (
           <Heart
             className="animate-ig-heart pointer-events-none absolute top-1/2 left-1/2 size-24 -translate-x-1/2 -translate-y-1/2 text-white"
@@ -123,6 +138,19 @@ export function PostCard({
         </Link>
         <button type="button" onClick={() => onAction("share")} className="p-2" aria-label="Share">
           <Send className="size-6" strokeWidth={1.8} />
+        </button>
+        <button
+          type="button"
+          onClick={() => onAction("not_interested")}
+          aria-label="Not interested"
+          aria-pressed={state.disliked}
+          className="p-2"
+        >
+          <ThumbsDown
+            className={cn("size-6", state.disliked ? "text-fg-muted" : "text-fg")}
+            fill={state.disliked ? "currentColor" : "none"}
+            strokeWidth={1.8}
+          />
         </button>
         <button
           type="button"

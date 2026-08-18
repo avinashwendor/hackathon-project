@@ -141,6 +141,9 @@ export interface InteractionEvent {
   /** watchedMs / durationMs, uncapped so re-watches can exceed 1. */
   completion?: number;
   replays?: number;
+  /** Dislike feedback reason id from onboarding dialog. */
+  reason?: string;
+  detail?: string;
 }
 
 /** One reel's rolled-up standing with the student, after weighting and decay. */

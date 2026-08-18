@@ -150,6 +150,9 @@ export async function migrateSession(fromKey: string, toKey: string): Promise<nu
       mutedTopics: [...new Set([...target.mutedTopics, ...social.mutedTopics])],
       saves: [...new Set([...target.saves, ...social.saves])],
       likes: [...new Set([...target.likes, ...social.likes])],
+      dislikeFeedback: { ...social.dislikeFeedback, ...target.dislikeFeedback },
+      seenReels: [...new Set([...(target.seenReels ?? []), ...(social.seenReels ?? [])])],
+      onboarding: target.onboarding ?? social.onboarding ?? null,
     };
     delete state.social[fromKey];
   }
@@ -183,6 +186,11 @@ export async function updateSocial(
     mutedTopics: next.mutedTopics.slice(-50),
     saves: next.saves.slice(-500),
     likes: next.likes.slice(-500),
+    dislikeFeedback: Object.fromEntries(
+      Object.entries(next.dislikeFeedback ?? {}).slice(-500),
+    ),
+    seenReels: (next.seenReels ?? []).slice(-800),
+    onboarding: next.onboarding ?? null,
   };
   persistSoon();
   return state.social[key];

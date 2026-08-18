@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Loader2, Trash2 } from "lucide-react";
 import type { Category, InterestInference, Reel, ReelAffinity, TasteProfile } from "@/lib/types";
-import { ReelPoster } from "@/components/catalog/reel-tile";
+import { ReelThumbnail } from "@/components/catalog/reel-thumbnail";
 import { Button, buttonClasses } from "@/components/ui/button";
 import { Badge, Card, Chip, Meter } from "@/components/ui/primitives";
 import { cn, relativeTime } from "@/lib/utils";
@@ -26,7 +26,11 @@ export function TasteDashboard() {
   const load = useCallback(async () => {
     try {
       const res = await fetch("/api/profile", { cache: "no-store" });
-      setData(res.ok ? ((await res.json()) as ProfileResponse) : null);
+      if (!res.ok) {
+        setData(null);
+        return;
+      }
+      setData((await res.json()) as ProfileResponse);
     } finally {
       setLoading(false);
     }
@@ -58,11 +62,11 @@ export function TasteDashboard() {
       <Card className="items-start gap-4 p-10">
         <h2 className="text-heading-2 text-fg">Nothing recorded yet</h2>
         <p className="max-w-[52ch] text-body-lg text-fg-muted">
-          This page shows exactly what the system has written down about you — every signal, its
-          weight, and the interest it adds up to. It is empty because you have not scrolled yet.
+          Like, save, or watch reels — the agent builds your taste profile from those signals.
+          Your onboarding preferences already shape your feed.
         </p>
         <Link href="/feed" className={buttonClasses({ className: "mt-2" })}>
-          Go and watch a few reels
+          Go to your feed
         </Link>
       </Card>
     );
@@ -195,7 +199,7 @@ export function TasteDashboard() {
         <ul className="mt-5 divide-y divide-line overflow-hidden rounded-lg border border-line bg-surface">
           {watched.map(({ affinity, reel }) => (
             <li key={affinity.reelId} className="flex items-center gap-4 p-4">
-              <ReelPoster reel={reel} className="h-14 w-10 shrink-0" />
+              <ReelThumbnail reel={reel} className="h-14 w-10 shrink-0 rounded-sm" />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-[14px] font-medium text-fg">{reel.title}</p>
                 <p className="mt-0.5 text-small text-fg-muted">{affinity.basis.join(" · ")}</p>

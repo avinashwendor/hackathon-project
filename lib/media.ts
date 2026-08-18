@@ -54,3 +54,32 @@ export function withResolvedMedia(reel: Reel): Reel {
     },
   };
 }
+
+export interface MediaStats {
+  total: number;
+  withStorageKey: number;
+  playable: number;
+  posterOnly: number;
+  byTier: Record<ResolvedMedia["tier"], number>;
+}
+
+/** How many reels can actually play video in the current environment. */
+export function mediaStats(reels: Reel[]): MediaStats {
+  const byTier: MediaStats["byTier"] = { hls: 0, s3: 0, local: 0, poster: 0 };
+  let withStorageKey = 0;
+
+  for (const reel of reels) {
+    if (reel.media.storageKey) withStorageKey++;
+    const tier = resolveMedia(reel).tier;
+    byTier[tier]++;
+  }
+
+  const playable = byTier.hls + byTier.s3 + byTier.local;
+  return {
+    total: reels.length,
+    withStorageKey,
+    playable,
+    posterOnly: byTier.poster,
+    byTier,
+  };
+}

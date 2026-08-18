@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { agentHealth } from "@/lib/agent/pipeline";
+import { ALL_REELS } from "@/data/reels";
 import { dbPing } from "@/lib/db/client";
 import { capabilities, config } from "@/lib/config";
+import { mediaStats } from "@/lib/media";
+import { storageHealth } from "@/lib/storage/health";
 import { storeDriver, storeStats } from "@/lib/store";
 import { indexInfo } from "@/lib/vector";
 
@@ -9,12 +12,16 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET() {
-  const [agent, store, vector, postgresOk] = await Promise.all([
+  const sampleKey = ALL_REELS.find((r) => r.media.storageKey)?.media.storageKey;
+  const [agent, store, vector, postgresOk, objectStorage] = await Promise.all([
     agentHealth(),
     storeStats(),
     indexInfo().catch(() => null),
     config.database.url ? dbPing() : Promise.resolve(false),
+    storageHealth(sampleKey),
   ]);
+
+  const media = mediaStats(ALL_REELS);
 
   return NextResponse.json({
     ok: true,
@@ -28,6 +35,14 @@ export async function GET() {
       vectorCount: vector?.count ?? 0,
       embeddingsCached: vector?.cached ?? false,
       vectorFallback: vector?.fallbackReason ?? null,
+      objectStorage,
+    },
+    media: {
+      total: media.total,
+      withStorageKey: media.withStorageKey,
+      playable: media.playable,
+      posterOnly: media.posterOnly,
+      byTier: media.byTier,
     },
     agent,
     store,

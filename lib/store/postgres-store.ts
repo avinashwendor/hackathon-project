@@ -18,18 +18,23 @@ function eventPayload(event: InteractionEvent): Record<string, unknown> {
   return rest;
 }
 
+function parseJsonColumn<T>(value: unknown, fallback: T): T {
+  if (value === null || value === undefined || value === "") return fallback;
+  if (typeof value === "string") return JSON.parse(value) as T;
+  return value as T;
+}
+
 function rowToEvent(row: {
   id: string;
   session_id: string;
   reel_id: string;
   type: string;
   at: Date;
-  payload: string;
+  payload: unknown;
 }): InteractionEvent {
-  const extra = JSON.parse(row.payload || "{}") as Omit<
-    InteractionEvent,
-    "id" | "sessionId" | "reelId" | "type" | "at"
-  >;
+  const extra = parseJsonColumn<
+    Omit<InteractionEvent, "id" | "sessionId" | "reelId" | "type" | "at">
+  >(row.payload, {});
   return {
     id: row.id,
     sessionId: row.session_id,
@@ -119,7 +124,9 @@ export async function markRecommended(sessionId: string, reelId: string): Promis
 
   const reelIds = [
     ...new Set([
-      ...(existing ? (JSON.parse(existing.reel_ids || "[]") as string[]) : []),
+      ...(existing
+        ? parseJsonColumn<string[]>(existing.reel_ids, [])
+        : []),
       reelId,
     ]),
   ].slice(-30);
@@ -140,7 +147,7 @@ export async function readRecommended(sessionId: string): Promise<string[]> {
     .where("session_id", "=", sessionId)
     .executeTakeFirst();
   if (!row) return [];
-  return JSON.parse(row.reel_ids || "[]") as string[];
+  return parseJsonColumn<string[]>(row.reel_ids, []);
 }
 
 export async function addReel(reel: Reel): Promise<void> {
@@ -176,7 +183,7 @@ export async function readRuntimeReels(): Promise<Reel[]> {
     .orderBy("created_at", "desc")
     .limit(200)
     .execute();
-  return rows.map((r) => JSON.parse(r.reel) as Reel);
+  return rows.map((r) => parseJsonColumn<Reel>(r.reel, {} as Reel)).filter((r) => r.id);
 }
 
 export async function storeStats(): Promise<StoreStats> {
@@ -280,6 +287,9 @@ export async function migrateSession(fromKey: string, toKey: string): Promise<nu
     mutedTopics: [...new Set([...toSocial.mutedTopics, ...fromSocial.mutedTopics])],
     saves: [...new Set([...toSocial.saves, ...fromSocial.saves])],
     likes: [...new Set([...toSocial.likes, ...fromSocial.likes])],
+    dislikeFeedback: { ...fromSocial.dislikeFeedback, ...toSocial.dislikeFeedback },
+    seenReels: [...new Set([...(toSocial.seenReels ?? []), ...(fromSocial.seenReels ?? [])])],
+    onboarding: toSocial.onboarding ?? fromSocial.onboarding ?? null,
   };
   await db
     .insertInto("session_social")
@@ -308,7 +318,7 @@ export async function readSocial(key: string): Promise<SocialState> {
     .where("session_id", "=", key)
     .executeTakeFirst();
   if (!row) return { ...EMPTY_SOCIAL };
-  return JSON.parse(row.state || "{}") as SocialState;
+  return { ...EMPTY_SOCIAL, ...parseJsonColumn<Partial<SocialState>>(row.state, {}) };
 }
 
 export async function updateSocial(
@@ -323,6 +333,11 @@ export async function updateSocial(
     mutedTopics: next.mutedTopics.slice(-50),
     saves: next.saves.slice(-500),
     likes: next.likes.slice(-500),
+    dislikeFeedback: Object.fromEntries(
+      Object.entries(next.dislikeFeedback ?? {}).slice(-500),
+    ),
+    seenReels: (next.seenReels ?? []).slice(-800),
+    onboarding: next.onboarding ?? null,
   };
 
   await getDb()

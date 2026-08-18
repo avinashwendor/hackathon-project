@@ -1,0 +1,463 @@
+{
+  "generatedAt": "2026-08-18T07:44:43.742Z",
+  "totalReels": 192,
+  "catalogTopics": [
+    {
+      "id": "dsa",
+      "label": "Data structures & algorithms",
+      "category": "DSA",
+      "reelCount": 67,
+      "domain": "Software engineering craft"
+    },
+    {
+      "id": "complexity",
+      "label": "Time & space complexity",
+      "category": "DSA",
+      "reelCount": 52,
+      "domain": "Software engineering craft"
+    },
+    {
+      "id": "career",
+      "label": "Engineering career",
+      "category": "Career",
+      "reelCount": 46,
+      "domain": "Career and industry navigation"
+    },
+    {
+      "id": "debugging",
+      "label": "Debugging & profiling",
+      "category": "Other",
+      "reelCount": 45,
+      "domain": "Software engineering craft"
+    },
+    {
+      "id": "api-design",
+      "label": "API design",
+      "category": "HLD",
+      "reelCount": 36,
+      "domain": "Systems and infrastructure"
+    },
+    {
+      "id": "ai",
+      "label": "AI & machine learning",
+      "category": "AI",
+      "reelCount": 33,
+      "domain": "Applied AI and machine learning"
+    },
+    {
+      "id": "tech-news",
+      "label": "Tech news",
+      "category": "Other",
+      "reelCount": 30,
+      "domain": "Developer culture and entertainment"
+    },
+    {
+      "id": "interviews",
+      "label": "Technical interviews",
+      "category": "Career",
+      "reelCount": 29,
+      "domain": "Career and industry navigation"
+    },
+    {
+      "id": "engineering-culture",
+      "label": "How engineering teams work",
+      "category": "Career",
+      "reelCount": 28,
+      "domain": "Career and industry navigation"
+    },
+    {
+      "id": "testing",
+      "label": "Testing",
+      "category": "Other",
+      "reelCount": 25,
+      "domain": "Software engineering craft"
+    },
+    {
+      "id": "code-review",
+      "label": "Code review & collaboration",
+      "category": "Career",
+      "reelCount": 24,
+      "domain": "Software engineering craft"
+    },
+    {
+      "id": "dev-humour",
+      "label": "Developer humour",
+      "category": "Other",
+      "reelCount": 23,
+      "domain": "Developer culture and entertainment"
+    },
+    {
+      "id": "git",
+      "label": "Version control",
+      "category": "Other",
+      "reelCount": 20,
+      "domain": "Software engineering craft"
+    },
+    {
+      "id": "ml-engineering",
+      "label": "ML engineering",
+      "category": "AI",
+      "reelCount": 19,
+      "domain": "Applied AI and machine learning"
+    },
+    {
+      "id": "security",
+      "label": "Security fundamentals",
+      "category": "Cybersecurity",
+      "reelCount": 16,
+      "domain": "Security and trust"
+    },
+    {
+      "id": "distributed-systems",
+      "label": "Distributed systems",
+      "category": "HLD",
+      "reelCount": 14,
+      "domain": "Systems and infrastructure"
+    },
+    {
+      "id": "web-security",
+      "label": "Web attack surface",
+      "category": "Cybersecurity",
+      "reelCount": 12,
+      "domain": "Security and trust"
+    },
+    {
+      "id": "performance",
+      "label": "Performance engineering",
+      "category": "HLD",
+      "reelCount": 10,
+      "domain": "Systems and infrastructure"
+    },
+    {
+      "id": "containers",
+      "label": "Containers & orchestration",
+      "category": "Cloud",
+      "reelCount": 10,
+      "domain": "Systems and infrastructure"
+    },
+    {
+      "id": "databases",
+      "label": "Databases",
+      "category": "HLD",
+      "reelCount": 8,
+      "domain": "Systems and infrastructure"
+    },
+    {
+      "id": "hardware",
+      "label": "Computer hardware",
+      "category": "Hardware",
+      "reelCount": 7,
+      "domain": "Computing hardware"
+    },
+    {
+      "id": "build-in-public",
+      "label": "Building in public",
+      "category": "Career",
+      "reelCount": 6,
+      "domain": "Career and industry navigation"
+    },
+    {
+      "id": "system-design",
+      "label": "System design",
+      "category": "HLD",
+      "reelCount": 5,
+      "domain": "Systems and infrastructure"
+    },
+    {
+      "id": "cloud",
+      "label": "Cloud fundamentals",
+      "category": "Cloud",
+      "reelCount": 5,
+      "domain": "Systems and infrastructure"
+    },
+    {
+      "id": "graphs",
+      "label": "Graph algorithms",
+      "category": "DSA",
+      "reelCount": 4,
+      "domain": "Software engineering craft"
+    },
+    {
+      "id": "hashing",
+      "label": "Hashing",
+      "category": "DSA",
+      "reelCount": 4,
+      "domain": "Software engineering craft"
+    },
+    {
+      "id": "ci-cd",
+      "label": "CI/CD & deployment",
+      "category": "Cloud",
+      "reelCount": 4,
+      "domain": "Systems and infrastructure"
+    },
+    {
+      "id": "indexing",
+      "label": "Database indexing",
+      "category": "HLD",
+      "reelCount": 3,
+      "domain": "Systems and infrastructure"
+    },
+    {
+      "id": "cpu-architecture",
+      "label": "CPU architecture",
+      "category": "Hardware",
+      "reelCount": 3,
+      "domain": "Computing hardware"
+    },
+    {
+      "id": "portfolio",
+      "label": "Portfolio & projects",
+      "category": "Career",
+      "reelCount": 3,
+      "domain": "Career and industry navigation"
+    },
+    {
+      "id": "java",
+      "label": "Java",
+      "category": "Java",
+      "reelCount": 2,
+      "domain": "Software engineering craft"
+    },
+    {
+      "id": "collections",
+      "label": "Collections & data structures in practice",
+      "category": "Java",
+      "reelCount": 2,
+      "domain": "Software engineering craft"
+    },
+    {
+      "id": "queues",
+      "label": "Queues & streaming",
+      "category": "HLD",
+      "reelCount": 2,
+      "domain": "Systems and infrastructure"
+    },
+    {
+      "id": "auth",
+      "label": "Authentication & sessions",
+      "category": "Cybersecurity",
+      "reelCount": 2,
+      "domain": "Security and trust"
+    },
+    {
+      "id": "cryptography",
+      "label": "Applied cryptography",
+      "category": "Cybersecurity",
+      "reelCount": 2,
+      "domain": "Security and trust"
+    },
+    {
+      "id": "communication",
+      "label": "Engineering communication",
+      "category": "Career",
+      "reelCount": 2,
+      "domain": "Career and industry navigation"
+    }
+  ],
+  "catalogTopicIds": [
+    "dsa",
+    "complexity",
+    "career",
+    "debugging",
+    "api-design",
+    "ai",
+    "tech-news",
+    "interviews",
+    "engineering-culture",
+    "testing",
+    "code-review",
+    "dev-humour",
+    "git",
+    "ml-engineering",
+    "security",
+    "distributed-systems",
+    "web-security",
+    "performance",
+    "containers",
+    "databases",
+    "hardware",
+    "build-in-public",
+    "system-design",
+    "cloud",
+    "graphs",
+    "hashing",
+    "ci-cd",
+    "indexing",
+    "cpu-architecture",
+    "portfolio",
+    "java",
+    "collections",
+    "queues",
+    "auth",
+    "cryptography",
+    "communication"
+  ],
+  "clusters": [
+    {
+      "id": "career",
+      "label": "Career & Interviews",
+      "description": "Placements, code review, portfolio, communication",
+      "topicIds": [
+        "career",
+        "interviews",
+        "code-review",
+        "portfolio",
+        "build-in-public",
+        "communication",
+        "engineering-culture"
+      ],
+      "reelCount": 138
+    },
+    {
+      "id": "algorithms",
+      "label": "Algorithms & DSA",
+      "description": "Data structures, complexity, graphs, hashing",
+      "topicIds": [
+        "dsa",
+        "complexity",
+        "graphs",
+        "hashing"
+      ],
+      "reelCount": 127
+    },
+    {
+      "id": "craft",
+      "label": "Software Craft",
+      "description": "Debugging, testing, Git, API design",
+      "topicIds": [
+        "debugging",
+        "testing",
+        "git",
+        "api-design"
+      ],
+      "reelCount": 126
+    },
+    {
+      "id": "culture",
+      "label": "Tech News & Dev Culture",
+      "description": "Industry news, memes, builder culture",
+      "topicIds": [
+        "tech-news",
+        "dev-humour"
+      ],
+      "reelCount": 53
+    },
+    {
+      "id": "ai-ml",
+      "label": "AI & Machine Learning",
+      "description": "LLMs, ML engineering, transformers",
+      "topicIds": [
+        "ai",
+        "ml-engineering"
+      ],
+      "reelCount": 52
+    },
+    {
+      "id": "systems",
+      "label": "Systems & Infrastructure",
+      "description": "System design, distributed systems, databases, performance",
+      "topicIds": [
+        "system-design",
+        "distributed-systems",
+        "databases",
+        "performance",
+        "queues",
+        "indexing"
+      ],
+      "reelCount": 42
+    },
+    {
+      "id": "security",
+      "label": "Security",
+      "description": "App security, web security, auth, cryptography",
+      "topicIds": [
+        "security",
+        "web-security",
+        "auth",
+        "cryptography"
+      ],
+      "reelCount": 32
+    },
+    {
+      "id": "cloud",
+      "label": "Cloud & DevOps",
+      "description": "Containers, CI/CD, cloud platforms",
+      "topicIds": [
+        "cloud",
+        "containers",
+        "ci-cd"
+      ],
+      "reelCount": 19
+    },
+    {
+      "id": "hardware",
+      "label": "Hardware & Low-Level",
+      "description": "CPU, memory, hardware fundamentals",
+      "topicIds": [
+        "hardware",
+        "cpu-architecture"
+      ],
+      "reelCount": 10
+    },
+    {
+      "id": "java",
+      "label": "Java (limited catalog)",
+      "description": "JVM, collections, Spring — few reels today",
+      "topicIds": [
+        "java",
+        "collections"
+      ],
+      "reelCount": 4
+    }
+  ],
+  "viableCategories": [
+    {
+      "category": "Other",
+      "reelCount": 117,
+      "label": "Dev tools & culture"
+    },
+    {
+      "category": "DSA",
+      "reelCount": 22,
+      "label": "Algorithms"
+    },
+    {
+      "category": "Career",
+      "reelCount": 18,
+      "label": "Career"
+    },
+    {
+      "category": "AI",
+      "reelCount": 16,
+      "label": "AI & ML"
+    },
+    {
+      "category": "Cybersecurity",
+      "reelCount": 8,
+      "label": "Security"
+    },
+    {
+      "category": "Cloud",
+      "reelCount": 4,
+      "label": "Cloud & DevOps"
+    },
+    {
+      "category": "HLD",
+      "reelCount": 3,
+      "label": "System design"
+    }
+  ],
+  "viableDifficulties": [
+    "Beginner",
+    "Intermediate"
+  ],
+  "motivationKeys": [
+    "BECOME_EMPLOYABLE",
+    "UNDERSTAND_DEEPLY",
+    "BUILD_SOMETHING",
+    "BELONG",
+    "STAY_CURRENT",
+    "BUY_WELL"
+  ]
+}

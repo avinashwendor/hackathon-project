@@ -1,6 +1,6 @@
 # Railway deployment
 
-Three services on Railway: **Web app**, **Postgres**, **Qdrant**.
+Four pieces on Railway: **Web app**, **Postgres**, **Qdrant**, **S3 (or R2)** for reel video.
 
 ```
 ┌─────────────┐     ┌──────────────┐     ┌─────────────┐
@@ -8,10 +8,11 @@ Three services on Railway: **Web app**, **Postgres**, **Qdrant**.
 │  (Upstream) │     │  accounts,   │     │  reel       │
 │             │────▶│  events,     │     │  vectors    │
 │             │     │  social      │     │  (768d)     │
-└─────────────┘     └──────────────┘     └─────────────┘
-        │
-        ▼
- data/generated/embeddings.*.json  (committed cache — boot-time embed source)
+└──────┬──────┘     └──────────────┘     └─────────────┘
+       │
+       ├────▶ S3 / R2  (192 MP4s — keys in catalog.json)
+       │
+       └────▶ data/generated/embeddings.*.json  (committed cache)
 ```
 
 ---
@@ -65,12 +66,17 @@ Three services on Railway: **Web app**, **Postgres**, **Qdrant**.
 | `GEMINI_API_KEY` | Recommended | [aistudio.google.com](https://aistudio.google.com) — embeddings + scoring |
 | `QDRANT_URL` | Recommended | From Qdrant service |
 | `VECTOR_DRIVER` | Recommended | `qdrant` when Qdrant is linked |
+| `S3_BUCKET` | **Yes for video** | Reel MP4 storage |
+| `S3_PUBLIC_BASE_URL` | **Yes for video** | Public CDN URL prefix for MP4s |
+| `S3_ACCESS_KEY_ID` | **Yes for video** | S3/R2 credentials |
+| `S3_SECRET_ACCESS_KEY` | **Yes for video** | S3/R2 credentials |
+| `STORAGE_DRIVER` | Recommended | `s3` when bucket is configured |
 | `OMEGA_API_KEY` | Optional | Full LLM agent path |
 
 `railway.toml` is already configured:
 
-- Build: `npm run build`
-- Start: `npm run start`
+- Build: Docker (`Dockerfile`, standalone output)
+- Start: `node server.js` (standalone — do not use `next start` in production)
 - Health: `/api/health`
 
 ---
@@ -110,6 +116,70 @@ On boot, all cached vectors are **upserted into Qdrant**. Search, agent retrieva
 
 Railway **must** use Postgres — the filesystem is ephemeral and accounts would vanish on redeploy.
 
+### Reel video (S3 / Cloudflare R2)
+
+| Layer | Location | Purpose |
+| --- | --- | --- |
+| **Metadata** | `data/generated/catalog.json` | 192 imported reels, each with `media.storageKey` |
+| **Files** | S3 bucket (not in git) | MP4s at keys like `reels/reel_000001/foo.mp4` |
+| **Playback URL** | `S3_PUBLIC_BASE_URL` + key | Resolved at runtime in `lib/media.ts` |
+
+Embeddings are **already done** — 253 vectors ship in `data/generated/embeddings.google-gemini-embedding-001.json`. You do **not** need to re-embed on Railway.
+
+Videos are **not** in the repo. Without S3, reels show CSS posters only.
+
+#### Recommended: Cloudflare R2 (S3-compatible, free egress)
+
+1. [Cloudflare dashboard](https://dash.cloudflare.com) → **R2** → **Create bucket** (e.g. `upstream-reels`)
+2. **Manage R2 API tokens** → create token with Object Read & Write
+3. Enable **Public access** on the bucket (R2.dev subdomain or custom domain)
+4. Note: Account ID, Access Key, Secret, public URL
+
+On Railway Web service:
+
+```
+STORAGE_DRIVER=s3
+S3_BUCKET=upstream-reels
+S3_REGION=auto
+S3_ENDPOINT=https://<ACCOUNT_ID>.r2.cloudflarestorage.com
+S3_FORCE_PATH_STYLE=true
+S3_ACCESS_KEY_ID=<R2 access key>
+S3_SECRET_ACCESS_KEY=<R2 secret>
+S3_PUBLIC_BASE_URL=https://pub-xxxx.r2.dev
+```
+
+#### Upload catalog MP4s (run once from your laptop)
+
+Your ingest output lives at the path recorded in `catalog.json` (`sourceDir`, typically `~/Desktop/short videso`):
+
+```bash
+cd upstream
+cp .env.example .env.local   # fill S3_* vars
+
+# Dry run — see what would upload
+npm run sync:s3 -- --dir "/Users/apple/Desktop/short videso" --dry-run
+
+# Upload all 192 reels (skips keys already in bucket)
+npm run sync:s3 -- --dir "/Users/apple/Desktop/short videso"
+
+# Verify locally
+npm run verify:media -- --check-s3
+```
+
+Each reel uploads to the key already in `catalog.json` (`media.storageKey`). No catalog edit needed.
+
+#### AWS S3 alternative
+
+Same vars without `S3_ENDPOINT` / path style:
+
+```
+S3_BUCKET=your-bucket
+S3_REGION=ap-south-1
+S3_PUBLIC_BASE_URL=https://your-bucket.s3.ap-south-1.amazonaws.com
+```
+
+Enable public read on `reels/*` or front with CloudFront.
+
 ---
 
 ## Verify after deploy
@@ -126,18 +196,35 @@ Expected shape:
   "capabilities": {
     "postgres": true,
     "qdrant": true,
-    "googleEmbeddings": true
+    "googleEmbeddings": true,
+    "s3": true
   },
   "storage": {
     "sessionStore": "postgres",
     "postgresOk": true,
     "vectorStore": "qdrant",
     "embeddingProvider": "google:gemini-embedding-001",
-    "vectorCount": 250,
-    "embeddingsCached": true
+    "vectorCount": 253,
+    "embeddingsCached": true,
+    "objectStorage": {
+      "driver": "s3",
+      "configured": true,
+      "ok": true,
+      "bucket": "upstream-reels",
+      "publicBaseUrl": "https://pub-xxxx.r2.dev"
+    }
+  },
+  "media": {
+    "total": 253,
+    "withStorageKey": 192,
+    "playable": 192,
+    "posterOnly": 61,
+    "byTier": { "hls": 0, "s3": 192, "local": 0, "poster": 61 }
   }
 }
 ```
+
+When S3 is missing or empty, `media.playable` stays low and `objectStorage.ok` is `false`.
 
 ---
 
@@ -158,6 +245,8 @@ git push
 
 | Symptom | Fix |
 | --- | --- |
+| Reels show posters, no video | Upload with `npm run sync:s3`; set `S3_PUBLIC_BASE_URL` on Railway |
+| `objectStorage.ok: false` | Check bucket credentials; run `npm run verify:media -- --check-s3` |
 | Signup works then data gone after redeploy | Add Postgres + run `001_init.sql` |
 | Agent search feels random | Set `GEMINI_API_KEY` — local 384d ≠ Google 768d cache |
 | `vectorFallback` in health | Qdrant URL wrong or collection dim mismatch — check logs |

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
-import { CATALOG_REELS, FEED_REELS } from "@/data/reels";
+import { redirect } from "next/navigation";
 import { AppShell } from "@/components/app/app-shell";
 import { HomeFeed } from "@/components/feed/home-feed";
 import { requireAccount } from "@/lib/auth";
+import { prefetchFeed } from "@/lib/feed/build-feed";
+import { readSocial } from "@/lib/store";
 
 export const dynamic = "force-dynamic";
 
@@ -12,12 +14,19 @@ export const metadata: Metadata = {
 };
 
 export default async function FeedPage() {
-  await requireAccount("/feed");
-  const posts = [...FEED_REELS, ...CATALOG_REELS.slice(0, 18)];
+  const viewer = await requireAccount("/feed");
+  const social = await readSocial(viewer.sessionId);
+  if (!social.onboarding?.completedAt) redirect("/onboarding");
+
+  const initial = await prefetchFeed(viewer.sessionId, { limit: 5 });
 
   return (
     <AppShell>
-      <HomeFeed posts={posts} />
+      <HomeFeed
+        initialReels={initial.reels}
+        initialSource={initial.source}
+        initialHasMore={initial.hasMore}
+      />
     </AppShell>
   );
 }

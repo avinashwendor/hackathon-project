@@ -10,8 +10,18 @@ import type {
   Reel,
   TasteFacet,
 } from "@/lib/types";
+import type { DislikeReasonId } from "@/lib/social/dislike-reasons";
+import {
+  dislikeFeedbackMessage,
+  likeFeedbackMessage,
+} from "@/lib/social/feedback-messages";
+import { LIKES_BEFORE_TASTE_REFRESH } from "@/lib/feed/feed-cache";
+import { fetchFeedClient } from "@/lib/feed/client-fetch";
 import { Badge } from "@/components/ui/primitives";
 import { Button } from "@/components/ui/button";
+import { DislikeReasonDialog } from "@/components/feed/dislike-reason-dialog";
+import { ReelShimmer } from "@/components/feed/feed-shimmer";
+import { TasteFeedbackToast, type TasteFeedbackMessage } from "@/components/feed/taste-feedback";
 import { formatCount } from "@/lib/utils";
 import { useAgentRun } from "@/components/agent/use-agent-run";
 import { InteractionBar, type ReelInteractionState, type SocialAction } from "./interaction-bar";
@@ -32,15 +42,36 @@ import { ReelPlayer } from "./reel-player";
 --------------------------------------------------------------------------- */
 
 /** Pure loader: state is only touched by the caller, after the await resolves. */
-async function fetchSocial(): Promise<{ follows: string[]; dislikes: string[] } | null> {
+async function fetchSocial(): Promise<{
+  follows: string[];
+  likes: string[];
+  saves: string[];
+  dislikes: string[];
+} | null> {
   try {
     const res = await fetch("/api/social", { cache: "no-store" });
     if (!res.ok) return null;
-    const json = (await res.json()) as { social: { follows: string[]; dislikes: string[] } };
-    return json.social;
+    const json = (await res.json()) as {
+      social: {
+        follows: string[];
+        likes?: string[];
+        saves?: string[];
+        dislikes?: string[];
+      };
+    };
+    return {
+      follows: json.social.follows,
+      likes: json.social.likes ?? [],
+      saves: json.social.saves ?? [],
+      dislikes: json.social.dislikes ?? [],
+    };
   } catch {
     return null;
   }
+}
+
+async function fetchReels(excludeIds: string[], limit = 1, refresh = false) {
+  return fetchFeedClient({ excludeIds, limit, refresh });
 }
 
 const EMPTY_STATE: ReelInteractionState = {
@@ -56,8 +87,19 @@ interface ProfileSnapshot {
   difficultyBias: number;
 }
 
-export function FeedExperience({ initialReels }: { initialReels: Reel[] }) {
-  const [reels, setReels] = useState(initialReels);
+interface FeedExperienceProps {
+  initialReels?: Reel[];
+  initialHasMore?: boolean;
+}
+
+export function FeedExperience({
+  initialReels,
+  initialHasMore = true,
+}: FeedExperienceProps) {
+  const [reels, setReels] = useState<Reel[]>(initialReels ?? []);
+  const [loading, setLoading] = useState(!initialReels?.length);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(initialHasMore);
   const [activeIndex, setActiveIndex] = useState(0);
   const [muted, setMuted] = useState(true);
   const [states, setStates] = useState<Record<string, ReelInteractionState>>({});
@@ -65,7 +107,14 @@ export function FeedExperience({ initialReels }: { initialReels: Reel[] }) {
   const [follows, setFollows] = useState<string[]>([]);
   const [paused, setPaused] = useState(false);
   const [burst, setBurst] = useState(false);
+  const [dislikeTarget, setDislikeTarget] = useState<Reel | null>(null);
+  const [feedback, setFeedback] = useState<TasteFeedbackMessage | null>(null);
+  const [bootVideoReady, setBootVideoReady] = useState(false);
   const tapRef = useRef<number | null>(null);
+  const reelsRef = useRef<Reel[]>([]);
+  const toastKeyRef = useRef<string | null>(null);
+  const activeIndexRef = useRef(0);
+  const likesSinceRefresh = useRef(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const slideRefs = useRef<(HTMLElement | null)[]>([]);
@@ -76,6 +125,69 @@ export function FeedExperience({ initialReels }: { initialReels: Reel[] }) {
 
   const { status, result, run, reset } = useAgentRun();
   const activeReel = reels[activeIndex];
+
+  useEffect(() => {
+    reelsRef.current = reels;
+  }, [reels]);
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
+  const appendReels = useCallback((incoming: Reel[]) => {
+    setReels((prev) => {
+      const ids = new Set(prev.map((r) => r.id));
+      return [...prev, ...incoming.filter((r) => !ids.has(r.id))];
+    });
+  }, []);
+
+  const loadNext = useCallback(async (count = 1, refresh = false) => {
+    const json = await fetchReels(reelsRef.current.map((r) => r.id), count, refresh);
+    if (!json) return;
+    appendReels(json.reels);
+    setHasMore(json.hasMore);
+  }, [appendReels]);
+
+  const refreshTasteReels = useCallback(async () => {
+    const json = await fetchReels(reelsRef.current.map((r) => r.id), 3, true);
+    if (!json?.reels.length) return;
+    setReels((prev) => {
+      const ids = new Set(prev.map((r) => r.id));
+      const incoming = json.reels.filter((r) => !ids.has(r.id));
+      if (!incoming.length) return prev;
+      const next = [...prev];
+      next.splice(activeIndexRef.current + 1, 0, ...incoming);
+      return next;
+    });
+    setHasMore(json.hasMore);
+  }, []);
+
+  const onTasteSignal = useCallback(() => {
+    likesSinceRefresh.current += 1;
+    if (likesSinceRefresh.current >= LIKES_BEFORE_TASTE_REFRESH) {
+      likesSinceRefresh.current = 0;
+      void refreshTasteReels();
+    }
+  }, [refreshTasteReels]);
+
+  useEffect(() => {
+    if (initialReels?.length) return;
+    let cancelled = false;
+    void (async () => {
+      await loadNext(2);
+      if (!cancelled) setLoading(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [initialReels?.length, loadNext]);
+
+  useEffect(() => {
+    if (loading || loadingMore || !hasMore) return;
+    if (activeIndex < reels.length - 1) return;
+    setLoadingMore(true);
+    void loadNext(1).finally(() => setLoadingMore(false));
+  }, [activeIndex, hasMore, loadNext, loading, loadingMore, reels.length]);
 
   // Restore the social graph so follows and dislikes survive a reload.
   useEffect(() => {
@@ -89,6 +201,12 @@ export function FeedExperience({ initialReels }: { initialReels: Reel[] }) {
         const next = { ...prev };
         for (const id of social.dislikes) {
           next[id] = { ...(next[id] ?? EMPTY_STATE), dismissed: true };
+        }
+        for (const id of social.likes) {
+          next[id] = { ...(next[id] ?? EMPTY_STATE), liked: true };
+        }
+        for (const id of social.saves) {
+          next[id] = { ...(next[id] ?? EMPTY_STATE), saved: true };
         }
         return next;
       });
@@ -208,39 +326,98 @@ export function FeedExperience({ initialReels }: { initialReels: Reel[] }) {
 
   /* --- Actions ---------------------------------------------------------- */
 
+  const showFeedbackOnce = useCallback((key: string, tone: "like" | "dislike", title: string, body: string) => {
+    if (toastKeyRef.current === key) return;
+    toastKeyRef.current = key;
+    setFeedback({ id: key, tone, title, body });
+  }, []);
+
+  const prefetchAfterDislike = useCallback(async () => {
+    await loadNext(1, true);
+  }, [loadNext]);
+
+  const submitDislike = useCallback(
+    async (reason: DislikeReasonId, detail?: string) => {
+      if (!dislikeTarget) return;
+      const reel = dislikeTarget;
+      setStates((prev) => ({
+        ...prev,
+        [reel.id]: { ...(prev[reel.id] ?? EMPTY_STATE), dismissed: true },
+      }));
+      await fetch("/api/social", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "dislike", reelId: reel.id, reason, detail }),
+      });
+      void send([{ reelId: reel.id, type: "not_interested", at: new Date().toISOString() }]);
+      const msg = dislikeFeedbackMessage(reel, reason, detail);
+      showFeedbackOnce(`${reel.id}-dislike-${Date.now()}`, "dislike", msg.title, msg.body);
+      setDislikeTarget(null);
+      await prefetchAfterDislike();
+    },
+    [dislikeTarget, prefetchAfterDislike, send, showFeedbackOnce],
+  );
+
   const act = useCallback(
     (reelId: string, type: EventType) => {
-      let becameDisliked = false;
-      let wasDisliked = false;
+      const reel = reels.find((r) => r.id === reelId);
+
+      if (type === "not_interested") {
+        const dismissed = states[reelId]?.dismissed;
+        if (dismissed) {
+          setStates((prev) => ({
+            ...prev,
+            [reelId]: { ...(prev[reelId] ?? EMPTY_STATE), dismissed: false },
+          }));
+          void fetch("/api/social", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "undislike", reelId }),
+          }).catch(() => {});
+        } else if (reel) {
+          setDislikeTarget(reel);
+        }
+        return;
+      }
 
       setStates((prev) => {
         const current = prev[reelId] ?? EMPTY_STATE;
         const next = { ...current };
-        if (type === "like") next.liked = !current.liked;
-        if (type === "save") next.saved = !current.saved;
-        if (type === "share") next.shared = true;
-        if (type === "not_interested") {
-          next.dismissed = !current.dismissed;
-          becameDisliked = next.dismissed;
-          wasDisliked = current.dismissed;
+
+        if (type === "like") {
+          next.liked = !current.liked;
+          void fetch("/api/social", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: next.liked ? "like" : "unlike", reelId }),
+          }).catch(() => {});
+          if (next.liked) {
+            void send([{ reelId, type: "like", at: new Date().toISOString() }]);
+            if (reel) {
+              const msg = likeFeedbackMessage(reel);
+              showFeedbackOnce(`${reelId}-like`, "like", msg.title, msg.body);
+              onTasteSignal();
+            }
+          }
+        } else if (type === "save") {
+          next.saved = !current.saved;
+          void fetch("/api/social", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: next.saved ? "save" : "unsave", reelId }),
+          }).catch(() => {});
+          if (next.saved) void send([{ reelId, type: "save", at: new Date().toISOString() }]);
+        } else if (type === "share") {
+          next.shared = true;
+          void send([{ reelId, type, at: new Date().toISOString() }]);
+        } else {
+          void send([{ reelId, type, at: new Date().toISOString() }]);
         }
+
         return { ...prev, [reelId]: next };
       });
-
-      if (type === "not_interested") {
-        // A dislike is an explicit instruction, not a weak signal — it also
-        // mutes the reel's topics server-side so the suppression generalises.
-        void fetch("/api/social", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: wasDisliked ? "undislike" : "dislike", reelId }),
-        }).catch(() => {});
-        if (becameDisliked) return;
-      }
-
-      void send([{ reelId, type, at: new Date().toISOString() }]);
     },
-    [send],
+    [reels, send, showFeedbackOnce, onTasteSignal, states],
   );
 
   const toggleFollow = useCallback((handle: string, action: SocialAction) => {
@@ -305,6 +482,14 @@ export function FeedExperience({ initialReels }: { initialReels: Reel[] }) {
 
   return (
     <div className="relative flex h-[calc(100dvh-52px)] justify-center bg-black lg:h-dvh">
+      {(loading || (reels.length > 0 && !bootVideoReady)) && (
+        <div className="absolute inset-0 z-40 flex justify-center bg-black">
+          <div className="relative h-full w-full max-w-[470px]">
+            <ReelShimmer />
+          </div>
+        </div>
+      )}
+      {!loading && (
       <div
         ref={containerRef}
         className="no-scrollbar h-full w-full max-w-[470px] snap-y snap-mandatory overflow-y-scroll overscroll-contain"
@@ -327,6 +512,7 @@ export function FeedExperience({ initialReels }: { initialReels: Reel[] }) {
                 muted={muted}
                 paused={paused && active}
                 className="absolute inset-0"
+                onReady={active ? () => setBootVideoReady(true) : undefined}
               />
 
               <button
@@ -406,17 +592,23 @@ export function FeedExperience({ initialReels }: { initialReels: Reel[] }) {
         })}
 
         <div className="flex h-full snap-start flex-col items-center justify-center gap-5 p-8 text-center">
-          <Compass className="size-9 text-white/70" strokeWidth={1.6} aria-hidden />
-          <p className="max-w-[24ch] text-[22px] font-semibold text-white">You&apos;re all caught up</p>
-          <p className="max-w-[32ch] text-[14px] text-white/60">
-            Ask the agent where to go next — it reads what you just watched and splices the answer
-            in right here.
-          </p>
-          <Button onClick={askAgent} size="lg">
-            Where should I go next?
-          </Button>
+          {loadingMore ? (
+            <Loader2 className="size-8 animate-spin text-white/70" />
+          ) : (
+            <>
+              <Compass className="size-9 text-white/70" strokeWidth={1.6} aria-hidden />
+              <p className="max-w-[24ch] text-[22px] font-semibold text-white">You&apos;re all caught up</p>
+              <p className="max-w-[32ch] text-[14px] text-white/60">
+                Like or pass on reels — fresh picks load one at a time based on your taste.
+              </p>
+              <Button onClick={askAgent} size="lg">
+                Where should I go next?
+              </Button>
+            </>
+          )}
         </div>
       </div>
+      )}
 
       {showCard && (
         <div className="fixed inset-x-0 bottom-[52px] z-50 max-h-[70dvh] overflow-y-auto rounded-t-2xl border-t border-white/12 bg-black/95 p-4 backdrop-blur-xl lg:bottom-0 lg:left-auto lg:max-w-[400px]">
@@ -454,6 +646,20 @@ export function FeedExperience({ initialReels }: { initialReels: Reel[] }) {
       >
         {muted ? <VolumeX className="size-5" /> : <Volume2 className="size-5" />}
       </button>
+
+      <DislikeReasonDialog
+        open={Boolean(dislikeTarget)}
+        reelTitle={dislikeTarget?.title ?? ""}
+        onClose={() => setDislikeTarget(null)}
+        onSubmit={submitDislike}
+      />
+      <TasteFeedbackToast
+        message={feedback}
+        onDismiss={() => {
+          setFeedback(null);
+          toastKeyRef.current = null;
+        }}
+      />
     </div>
   );
 }

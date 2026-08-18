@@ -16,6 +16,9 @@ export async function GET() {
     eventCount: events.length,
     watchedCount: new Set(events.map((e) => e.reelId)).size,
     follows: social.follows,
+    likes: social.likes.length,
+    saves: social.saves.length,
     dislikes: social.dislikes.length,
+    onboarded: Boolean(social.onboarding?.completedAt),
   });
 }
