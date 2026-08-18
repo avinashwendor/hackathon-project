@@ -165,6 +165,9 @@ npm run sync:s3 -- --dir "/Users/apple/Desktop/short videso"
 # Upload login/signup phone preview (from public/auth/ — not shipped in git on all clones)
 npm run sync:auth-s3
 
+# Upload landing scroll-scrub hero frames (120 webp from public/landing/scroll-sequence/)
+npm run sync:landing-s3
+
 # Verify locally
 npm run verify:media -- --check-s3
 ```

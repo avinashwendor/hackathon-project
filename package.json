@@ -12,6 +12,7 @@
     "embed": "node scripts/build-embeddings.mjs",
     "sync:s3": "node scripts/sync-catalog-s3.mjs",
     "sync:auth-s3": "node scripts/sync-auth-assets-s3.mjs",
+    "sync:landing-s3": "node scripts/sync-landing-scroll-s3.mjs",
     "verify:media": "node scripts/verify-media.mjs",
     "transcode": "node scripts/transcode.mjs",
     "agent:eval": "node scripts/eval-agent.mjs",

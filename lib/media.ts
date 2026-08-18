@@ -30,6 +30,10 @@ export const AUTH_PREVIEW_S3_KEYS = {
   poster: "auth/feed-preview-poster.webp",
 } as const;
 
+/** S3 prefix for TripNine-style scroll-scrub landing hero (upload with `npm run sync:landing-s3`). */
+export const LANDING_SCROLL_S3_PREFIX = "landing/scroll-sequence";
+export const LANDING_SCROLL_FRAME_COUNT = 120;
+
 export interface AuthPreviewMedia {
   video: string;
   poster: string;
@@ -58,6 +62,17 @@ export function resolveAuthPreviewMedia(): AuthPreviewMedia {
     poster: "/auth/feed-preview-poster.webp",
     tier: "local",
   };
+}
+
+/** Base path for landing scroll-scrub frame sequence (no trailing slash). */
+export function resolveLandingScrollFrameBase(): string {
+  if (capabilities.s3) return s3ProxyUrl(LANDING_SCROLL_S3_PREFIX);
+  return "/landing/scroll-sequence";
+}
+
+export function landingScrollFrameUrl(base: string, frameIndex: number): string {
+  const n = String(frameIndex + 1).padStart(4, "0");
+  return `${base}/frame_${n}.webp`;
 }
 
 export function resolveMedia(reel: Reel): ResolvedMedia {
