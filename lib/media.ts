@@ -1,4 +1,4 @@
-import { config } from "@/lib/config";
+import { capabilities, config } from "@/lib/config";
 import type { Reel } from "@/lib/types";
 
 /* ---------------------------------------------------------------------------
@@ -22,6 +22,42 @@ export interface ResolvedMedia {
   mp4Url?: string;
   /** Which tier answered, for the diagnostics panel. */
   tier: "hls" | "s3" | "local" | "poster";
+}
+
+/** S3 keys for the login/signup phone preview (upload with `npm run sync:auth-s3`). */
+export const AUTH_PREVIEW_S3_KEYS = {
+  video: "auth/feed-preview.webm",
+  poster: "auth/feed-preview-poster.webp",
+} as const;
+
+export interface AuthPreviewMedia {
+  video: string;
+  poster: string;
+  tier: "s3" | "local";
+}
+
+/** Build a same-origin proxy URL for a private-bucket object key. */
+export function s3ProxyUrl(key: string): string {
+  return `/api/media/s3/${key.split("/").map(encodeURIComponent).join("/")}`;
+}
+
+/**
+ * Auth preview video — served from S3 via the app proxy when configured,
+ * otherwise from `public/auth/` for local dev.
+ */
+export function resolveAuthPreviewMedia(): AuthPreviewMedia {
+  if (capabilities.s3) {
+    return {
+      video: s3ProxyUrl(AUTH_PREVIEW_S3_KEYS.video),
+      poster: s3ProxyUrl(AUTH_PREVIEW_S3_KEYS.poster),
+      tier: "s3",
+    };
+  }
+  return {
+    video: "/auth/feed-preview.webm",
+    poster: "/auth/feed-preview-poster.webp",
+    tier: "local",
+  };
 }
 
 export function resolveMedia(reel: Reel): ResolvedMedia {

@@ -146,6 +146,31 @@ export function HomeFeed({
     }).catch(() => {});
   }, []);
 
+  const sendEvents = useCallback(
+    (events: { reelId: string; type: EventType; watchedMs?: number; durationMs?: number; completion?: number }[]) => {
+      if (!events.length) return;
+      void fetch("/api/events", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          events: events.map((e) => ({ ...e, at: new Date().toISOString() })),
+        }),
+      }).catch(() => {});
+    },
+    [],
+  );
+
+  const reportWatch = useCallback(
+    (reelId: string, watchedMs: number, durationMs: number, completion: number) => {
+      sendEvents([
+        { reelId, type: "view", watchedMs, durationMs, completion },
+        ...(completion >= 0.9 ? [{ reelId, type: "complete" as EventType, completion, durationMs }] : []),
+        ...(completion < 0.25 ? [{ reelId, type: "skip" as EventType, completion }] : []),
+      ]);
+    },
+    [sendEvents],
+  );
+
   const socialAct = useCallback((reelId: string, action: string, extra?: Record<string, string>) => {
     void fetch("/api/social", {
       method: "POST",
@@ -300,6 +325,9 @@ export function HomeFeed({
                 onAction={(type) => act(reel.id, type)}
                 onFollow={() =>
                   toggleFollow(reel.creator.handle, follows.includes(reel.creator.handle))
+                }
+                onWatchReport={({ watchedMs, durationMs, completion }) =>
+                  reportWatch(reel.id, watchedMs, durationMs, completion)
                 }
               />
             ))}

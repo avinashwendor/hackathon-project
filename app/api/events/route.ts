@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getReel } from "@/data/reels";
 import { buildTasteProfile } from "@/lib/agent/taste";
-import { getViewer } from "@/lib/auth";
+import { requireApiAccount } from "@/lib/auth-api";
 import { appendEvents, clearSession, readEvents } from "@/lib/store";
 import { EVENT_TYPES, type InteractionEvent } from "@/lib/types";
 
@@ -23,7 +23,9 @@ const bodySchema = z.object({ events: z.array(eventSchema).max(60) });
 
 /** Append interaction events and return the profile they produce. */
 export async function POST(request: Request) {
-  const { sessionId } = await getViewer();
+  const auth = await requireApiAccount();
+  if (!auth.ok) return auth.response;
+  const { sessionId } = auth;
   const parsed = bodySchema.safeParse(await request.json().catch(() => null));
 
   if (!parsed.success) {
@@ -56,12 +58,14 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  const { sessionId } = await getViewer();
-  return NextResponse.json({ events: await readEvents(sessionId) });
+  const auth = await requireApiAccount();
+  if (!auth.ok) return auth.response;
+  return NextResponse.json({ events: await readEvents(auth.sessionId) });
 }
 
 export async function DELETE() {
-  const { sessionId } = await getViewer();
-  await clearSession(sessionId);
+  const auth = await requireApiAccount();
+  if (!auth.ok) return auth.response;
+  await clearSession(auth.sessionId);
   return NextResponse.json({ cleared: true });
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { presignUpload } from "@/lib/storage";
+import { requireApiAccount } from "@/lib/auth-api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,6 +15,9 @@ const schema = z.object({
 const MAX_BYTES = 512 * 1024 * 1024;
 
 export async function POST(request: Request) {
+  const auth = await requireApiAccount();
+  if (!auth.ok) return auth.response;
+
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });

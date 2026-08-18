@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Bookmark, Heart, MessageCircle, MoreHorizontal, Send, ThumbsDown } from "lucide-react";
 import type { EventType, Reel } from "@/lib/types";
@@ -20,18 +20,38 @@ export function PostCard({
   following,
   onAction,
   onFollow,
+  onWatchReport,
 }: {
   reel: Reel;
   state: PostState;
   following: boolean;
   onAction: (type: EventType) => void;
   onFollow: () => void;
+  onWatchReport?: (payload: {
+    watchedMs: number;
+    durationMs: number;
+    completion: number;
+  }) => void;
 }) {
   const [burst, setBurst] = useState(false);
   const [captionOpen, setCaptionOpen] = useState(false);
   const [inView, setInView] = useState(false);
   const tapRef = useRef<number | null>(null);
   const mediaRef = useRef<HTMLDivElement>(null);
+  const watchRef = useRef<{ start: number; accumulated: number } | null>(null);
+
+  const flushWatch = useCallback(() => {
+    const watch = watchRef.current;
+    if (!watch || !onWatchReport) return;
+    const watchedMs = watch.accumulated + (Date.now() - watch.start);
+    if (watchedMs < 400) return;
+    const durationMs = reel.durationSec * 1000;
+    onWatchReport({
+      watchedMs,
+      durationMs,
+      completion: durationMs > 0 ? watchedMs / durationMs : 0,
+    });
+  }, [onWatchReport, reel.durationSec]);
 
   useEffect(() => {
     const node = mediaRef.current;
@@ -43,6 +63,23 @@ export function PostCard({
     observer.observe(node);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (inView) {
+      watchRef.current = { start: Date.now(), accumulated: 0 };
+    } else {
+      flushWatch();
+      watchRef.current = null;
+    }
+  }, [flushWatch, inView, reel.id]);
+
+  useEffect(() => {
+    const onHide = () => {
+      if (document.visibilityState === "hidden") flushWatch();
+    };
+    document.addEventListener("visibilitychange", onHide);
+    return () => document.removeEventListener("visibilitychange", onHide);
+  }, [flushWatch]);
 
   const like = () => {
     if (!state.liked) {

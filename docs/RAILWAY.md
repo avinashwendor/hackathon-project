@@ -162,6 +162,9 @@ npm run sync:s3 -- --dir "/Users/apple/Desktop/short videso" --dry-run
 # Upload all 192 reels (skips keys already in bucket)
 npm run sync:s3 -- --dir "/Users/apple/Desktop/short videso"
 
+# Upload login/signup phone preview (from public/auth/ — not shipped in git on all clones)
+npm run sync:auth-s3
+
 # Verify locally
 npm run verify:media -- --check-s3
 ```

@@ -20,6 +20,7 @@ const CSP = [
   // The browser talks to this origin and to object storage for video. Model
   // calls all happen server-side, so no provider host belongs here.
   "connect-src 'self' https:",
+  "worker-src 'self' blob:",
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -56,6 +57,13 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       { source: "/:path*", headers: SECURITY_HEADERS },
+      {
+        source: "/code-editor/:path*",
+        headers: [
+          { key: "Cross-Origin-Embedder-Policy", value: "require-corp" },
+          { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+        ],
+      },
       {
         // The agent endpoints spend model tokens; never let them be cached.
         source: "/api/:path*",

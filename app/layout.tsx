@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Grand_Hotel, Inter, JetBrains_Mono, Playfair_Display } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "swap" });
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Skip to content
         </a>
         {children}
+        <Toaster richColors position="top-center" />
       </body>
     </html>
   );

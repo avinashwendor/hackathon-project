@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import {
   Clapperboard,
+  Code2,
   Compass,
   Home,
   PlusSquare,
@@ -29,6 +30,7 @@ const NAV: NavItem[] = [
   { href: "/explore", label: "Explore", icon: Search },
   { href: "/reels", label: "Reels", icon: Clapperboard },
   { href: "/agent", label: "For you", icon: Sparkles, match: (p) => p === "/agent" || p.startsWith("/agent/") },
+  { href: "/code-editor", label: "Code", icon: Code2, match: (p) => p === "/code-editor" || p.startsWith("/code-editor/") || p === "/lab" },
   { href: "/studio", label: "Create", icon: PlusSquare },
   { href: "/profile", label: "Profile", icon: User, match: (p) => p === "/profile" || p.startsWith("/profile/") },
 ];

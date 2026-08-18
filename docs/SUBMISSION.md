@@ -63,18 +63,28 @@ du -sh . --exclude=node_modules --exclude=.next
 
 Your solution should demonstrate:
 
-| Expectation | How Upstream delivers it |
+| Expectation | How Upstream delivers it (live routes) |
 | --- | --- |
-| **Smart, dynamic assistant** | `/agent` “For you” — reads watch history, runs retrieval + hype guardrails, recommends the next teachable reel with a visible trace. |
-| **Logical decisions from user context** | Taste profile from likes, saves, watch time, skips, and dislike reasons; feed re-ranks after ~3 likes; onboarding clusters seed the first feed. |
-| **Practical, real-world usability** | Full E2E: signup → onboarding → feed / reels / explore / profile / create — deployed on Railway with S3-backed video playback. |
-| **Clean, maintainable code** | TypeScript strict mode, focused modules (`lib/feed`, `lib/agent`, `lib/store`), Zod validation, `npm run verify` gate. |
+| **Smart, dynamic assistant** | `/agent` → recommend with full trace; `/api/agent/recommend`, `/api/agent/stream`; `/trap` shallow vs agent comparison |
+| **Logical decisions from user context** | Watch time on **feed + reels**, likes/saves/dislikes + reasons, onboarding → feed queries, re-rank after **3 likes** |
+| **Practical, real-world usability** | Signup → onboarding → feed / reels / explore / profile / **Create** (`/studio`); optional `/code-editor`, `/lab` |
+| **Clean, maintainable code** | `npm run verify`, TypeScript strict, `lib/agent`, `lib/feed`, `lib/store` |
 
-**Challenge vertical:** Choose **one persona** from the organizer deck and design around it. Upstream targets:
+**5-minute demo for judges:**
+
+1. Sign up → onboarding → scroll **Feed** (watch time recorded while video plays).
+2. Like 3 reels → **For you** (`/agent`) → personalized recommendation.
+3. **Explore** / **Profile** — real video thumbnails.
+4. **/trap** — keyword recommender vs Upstream on the Java-meme scenario.
+5. **Create** (`/studio`) — upload a reel; indexed and playable.
+
+**Challenge vertical:**
 
 > **Student / learner scrolling short-form content** — the agent infers *why* they watch (career orientation, DSA prep, etc.) and redirects toward catalog reels with a **checkable outcome**, not keyword clones or hype listicles.
 
-Demo the trap contrast: shallow keyword feed at `/trap` vs Upstream feed at `/feed` and agent at `/agent`.
+Demo the trap contrast: shallow keyword feed at `/trap` vs Upstream feed at `/feed` and agent at `/agent`. Demo the **tech platform**: `/code-editor` (Monaco + terminal + API client) and `/lab` (run tests + preview).
+
+**Scoring for evaluators:** [EVALUATION.md](./EVALUATION.md) — run `npm run eval:submission` for an automated **suggested %** from repo evidence.
 
 ---
 
@@ -113,6 +123,7 @@ git push -u origin main
 npm run dev          # http://localhost:3000
 npm run verify       # typecheck + lint + tests + build
 npm run agent:eval   # agent integration (server running)
+npm run eval:submission  # 100-point rubric (repo files)
 ```
 
 **Suggested flow to test:** Sign up → complete onboarding → like 3 reels on feed → open For you → confirm taste-based suggestions update.
@@ -158,15 +169,20 @@ curl https://<deploy>/api/health
 
 ## Evaluation framework alignment
 
-| Parameter | How Upstream addresses it |
-| --- | --- |
-| **Code quality** | TypeScript strict, ESLint, `npm run typecheck`, modular `lib/` layout |
-| **Security** | scrypt passwords, HMAC sessions, rate limits, Zod on APIs, CSP headers |
-| **Efficiency** | Feed rank cache, lazy `hls.js`, debounced store writes, MMR retrieval |
-| **Testing** | `npm test` + `npm run agent:eval` + `npm run verify` |
-| **Accessibility** | Skip link, focus traps, ARIA on feed controls, reduced-motion CSS |
-| **Problem alignment** | `/trap` vs `/feed`, live trace at `/agent`, taste at `/profile` |
-| **Google services** | **Google AI Studio** `text-embedding-004`; **Google Fonts** via `next/font` |
+| Parameter | Weight | How Upstream addresses it |
+| --- | ---: | --- |
+| **Problem alignment** | 20% | `/trap` vs `/feed`, live trace at `/agent`, taste at `/profile` |
+| **Smart assistant** | 15% | Retrieval + hype guardrails + 8-field recommendation card |
+| **Tech platform (IDE)** | 15% | `/code-editor` + `/lab` — [CODE_EDITOR.md](./CODE_EDITOR.md) |
+| **Code quality** | 10% | TypeScript strict, ESLint, `npm run typecheck`, modular `lib/` |
+| **Security** | 10% | scrypt passwords, HMAC sessions, rate limits, Zod on APIs, CSP + COEP on IDE |
+| **Testing** | 10% | `npm test` + `npm run agent:eval` + `npm run verify` |
+| **Efficiency** | 5% | Feed rank cache, lazy `hls.js`, debounced store writes |
+| **Accessibility** | 5% | Skip link, focus traps, ARIA on feed controls, reduced-motion CSS |
+| **Google services** | 5% | **Google AI Studio** `text-embedding-004`; **Google Fonts** via `next/font` |
+| **Submission hygiene** | 5% | This doc + [EVALUATION.md](./EVALUATION.md) + deploy health |
+
+**Total: 100%** — see [EVALUATION.md](./EVALUATION.md) for pass/fail checklists and `npm run eval:submission`.
 
 ---
 

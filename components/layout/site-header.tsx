@@ -12,6 +12,8 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { href: "/feed", label: "Feed" },
   { href: "/agent", label: "Agent" },
+  { href: "/code-editor", label: "Code editor" },
+  { href: "/lab", label: "Lab" },
   { href: "/trap", label: "The trap" },
   { href: "/library", label: "Library" },
   { href: "/profile", label: "Profile" },
@@ -85,6 +87,8 @@ export function SiteHeader({ className }: { className?: string }) {
         <nav className="border-t border-line px-5 py-3 md:hidden" aria-label="Main">
           {[
             ...NAV,
+            { href: "/code-editor", label: "Code editor" },
+            { href: "/lab", label: "Lab" },
             { href: "/studio", label: "Studio" },
             ...(viewer.signedIn
               ? []

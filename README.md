@@ -19,7 +19,12 @@ Instagram-style signup → home feed → reels → profile. The agent infers int
 ```bash
 npm run verify          # typecheck + lint + tests + build
 npm run agent:eval      # agent integration checks (server running)
+npm run eval:submission # 100-point rubric checklist (repo evidence)
 ```
+
+**Evaluator rubric:** [docs/EVALUATION.md](./docs/EVALUATION.md) — explicit weights (Problem 20 + Assistant 15 + Code IDE 15 + … = **100%**).
+
+**Code editor (tech platform):** `/code-editor` (browser IDE) · `/lab` (Monaco labs) — see [docs/CODE_EDITOR.md](./docs/CODE_EDITOR.md).
 
 ---
 
@@ -133,7 +138,7 @@ cp .env.example .env.local     # set AUTH_SECRET for production deploys
 npm run dev
 ```
 
-**App routes (signed-in):** `/feed` home · `/reels` vertical player · `/explore` grid · `/profile` · `/agent` console · `/trap` shallow vs Upstream · `/library` search · `/studio` ingest
+**App routes (signed-in):** `/feed` home · `/reels` vertical player · `/explore` grid · `/profile` · `/agent` console · `/code-editor` browser IDE · `/lab` Monaco practice · `/trap` shallow vs Upstream · `/library` search · `/studio` ingest
 
 **Auth:** `/signup` · `/login` · `/about` product pitch (public)
 

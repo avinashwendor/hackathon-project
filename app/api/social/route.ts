@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getReel } from "@/data/reels";
-import { getViewer } from "@/lib/auth";
 import { rateLimit } from "@/lib/rate-limit";
 import { DISLIKE_REASON_IDS } from "@/lib/social/dislike-reasons";
 import { appendEvents, readSocial, updateSocial } from "@/lib/store";
+import { requireApiAccount } from "@/lib/auth-api";
 import type { Difficulty } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -60,10 +60,13 @@ export async function POST(request: Request) {
   const limited = await rateLimit(request, { key: "social", limit: 60, windowMs: 60_000 });
   if (limited) return limited;
 
+  const auth = await requireApiAccount();
+  if (!auth.ok) return auth.response;
+
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Invalid request" }, { status: 400 });
 
-  const { sessionId } = await getViewer();
+  const { sessionId } = auth;
   const { action, handle, reelId, topic, reason, detail } = parsed.data;
 
   if (action === "dislike" && reason && !DISLIKE_REASON_IDS.has(reason as never)) {
@@ -181,6 +184,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  const { sessionId } = await getViewer();
-  return NextResponse.json({ social: await readSocial(sessionId) });
+  const auth = await requireApiAccount();
+  if (!auth.ok) return auth.response;
+  return NextResponse.json({ social: await readSocial(auth.sessionId) });
 }

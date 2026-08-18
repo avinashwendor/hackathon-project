@@ -3,7 +3,7 @@ import { TOPIC_BY_ID } from "@/data/ontology";
 import { getReel } from "@/data/reels";
 import { inferDeterministic } from "@/lib/agent/infer";
 import { buildTasteProfile } from "@/lib/agent/taste";
-import { getViewer } from "@/lib/auth";
+import { requireApiAccount } from "@/lib/auth-api";
 import { readEvents } from "@/lib/store";
 
 export const runtime = "nodejs";
@@ -16,7 +16,9 @@ export const dynamic = "force-dynamic";
  */
 export async function GET() {
   try {
-    const { sessionId } = await getViewer();
+    const auth = await requireApiAccount();
+    if (!auth.ok) return auth.response;
+    const { sessionId } = auth;
     const events = await readEvents(sessionId);
     const profile = await buildTasteProfile({ sessionId, events });
 

@@ -4,6 +4,7 @@ import { SCENARIO_BY_ID, scenarioToEvents } from "@/data/scenarios";
 import { getReel } from "@/data/reels";
 import { recommend } from "@/lib/agent/pipeline";
 import { getViewer } from "@/lib/auth";
+import { requireApiAccount } from "@/lib/auth-api";
 import { markRecommended, readEvents, readRecommended, readSocial } from "@/lib/store";
 import type { InteractionEvent } from "@/lib/types";
 
@@ -20,8 +21,6 @@ const bodySchema = z.object({
 });
 
 export async function POST(request: Request) {
-  const { sessionId } = await getViewer();
-
   let body: unknown;
   try {
     body = await request.json();
@@ -35,6 +34,13 @@ export async function POST(request: Request) {
   }
 
   const { scenarioId, allowRepeat } = parsed.data;
+
+  if (!scenarioId) {
+    const auth = await requireApiAccount();
+    if (!auth.ok) return auth.response;
+  }
+
+  const { sessionId } = await getViewer();
   let currentReelId = parsed.data.currentReelId;
   let events: InteractionEvent[];
 

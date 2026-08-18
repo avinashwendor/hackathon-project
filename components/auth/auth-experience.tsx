@@ -16,7 +16,18 @@ interface Issue {
   message: string;
 }
 
-export function AuthExperience({ mode: initialMode }: { mode: AuthMode }) {
+const LOCAL_AUTH_PREVIEW = {
+  video: "/auth/feed-preview.webm",
+  poster: "/auth/feed-preview-poster.webp",
+};
+
+export function AuthExperience({
+  mode: initialMode,
+  previewMedia = LOCAL_AUTH_PREVIEW,
+}: {
+  mode: AuthMode;
+  previewMedia?: { video: string; poster: string };
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get("next") || (initialMode === "signup" ? "/onboarding" : "/feed");
@@ -82,7 +93,7 @@ export function AuthExperience({ mode: initialMode }: { mode: AuthMode }) {
     <div className="flex min-h-dvh flex-col bg-[#fafafa] text-[#262626]">
       <main className="flex flex-1 items-center justify-center px-4 py-10">
         <div className="flex w-full max-w-[935px] items-center justify-center gap-16">
-          <PhonePreview phones={phones} />
+          <PhonePreview phones={phones} previewMedia={previewMedia} />
 
           <div className="w-full max-w-[350px] shrink-0">
             <div className="rounded-sm border border-[#dbdbdb] bg-white px-10 pt-12 pb-8">
@@ -260,12 +271,13 @@ function Field({
   );
 }
 
-const AUTH_FEED_PREVIEW = {
-  video: "/auth/feed-preview.webm",
-  poster: "/auth/feed-preview-poster.webp",
-};
-
-function PhonePreview({ phones }: { phones: typeof FEED_REELS }) {
+function PhonePreview({
+  phones,
+  previewMedia,
+}: {
+  phones: typeof FEED_REELS;
+  previewMedia: { video: string; poster: string };
+}) {
   const front = phones[0];
   const back = phones[1];
   if (!front) return null;
@@ -274,7 +286,7 @@ function PhonePreview({ phones }: { phones: typeof FEED_REELS }) {
     <div className="relative hidden h-[580px] w-[380px] shrink-0 lg:block" aria-hidden>
       {back && (
         <div className="absolute top-8 left-0 h-[520px] w-[250px] -rotate-6 overflow-hidden rounded-[40px] border-[8px] border-[#1a1a1a] bg-black shadow-2xl">
-          <FeedPreviewMedia className="scale-110 object-[center_35%]" />
+          <FeedPreviewMedia previewMedia={previewMedia} className="scale-110 object-[center_35%]" />
           <div className="absolute inset-0 bg-black/25" />
           <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/80 to-transparent p-4">
             <div className="flex items-center gap-2">
@@ -286,7 +298,7 @@ function PhonePreview({ phones }: { phones: typeof FEED_REELS }) {
       )}
       <div className="absolute top-0 right-0 h-[560px] w-[270px] overflow-hidden rounded-[42px] border-[8px] border-[#1a1a1a] bg-black shadow-2xl">
         <div className="absolute top-3 left-1/2 z-10 h-5 w-24 -translate-x-1/2 rounded-full bg-black" />
-        <FeedPreviewMedia className="h-full w-full object-cover" />
+        <FeedPreviewMedia previewMedia={previewMedia} className="h-full w-full object-cover" />
         <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-black/85 via-black/30 to-transparent p-4 pb-6">
           <div className="flex items-center gap-2">
             <Avatar name={front.creator.name} hue={front.creator.hue} size={32} />
@@ -302,11 +314,17 @@ function PhonePreview({ phones }: { phones: typeof FEED_REELS }) {
   );
 }
 
-function FeedPreviewMedia({ className }: { className?: string }) {
+function FeedPreviewMedia({
+  previewMedia,
+  className,
+}: {
+  previewMedia: { video: string; poster: string };
+  className?: string;
+}) {
   return (
     <video
-      src={AUTH_FEED_PREVIEW.video}
-      poster={AUTH_FEED_PREVIEW.poster}
+      src={previewMedia.video}
+      poster={previewMedia.poster}
       autoPlay
       muted
       loop

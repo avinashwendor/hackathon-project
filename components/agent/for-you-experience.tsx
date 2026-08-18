@@ -87,11 +87,14 @@ export function ForYouExperience() {
       <div className="mb-8">
         <Badge tone="primary">For you</Badge>
         <h1 className="mt-3 text-[24px] font-semibold">Your next reel</h1>
-        <p className="mt-2 text-[14px] leading-6 text-fg-muted">
-          Based on what you liked, saved, and watched — not keywords. The agent reads your
-          behaviour and picks one reel worth your next minute.
-        </p>
-      </div>
+          <p className="mt-2 text-[14px] text-fg-muted">
+            Based on what you liked, saved, and watched — not keywords. The agent reads your
+            behaviour and picks one reel worth your next minute.
+          </p>
+          <Link href="/trap" className="mt-3 inline-block text-[13px] font-semibold text-[#0095f6]">
+            See shallow vs Upstream comparison →
+          </Link>
+        </div>
 
       {!hasHistory ? (
         <Card className="gap-4 p-6">

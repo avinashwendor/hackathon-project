@@ -5,6 +5,7 @@ import { detectHype } from "@/lib/agent/hype";
 import { publicUrlFor, storageDriver } from "@/lib/storage";
 import { addReel } from "@/lib/store";
 import { indexReel } from "@/lib/vector";
+import { requireApiAccount } from "@/lib/auth-api";
 import { CATEGORIES, DIFFICULTIES, type Reel } from "@/lib/types";
 
 export const runtime = "nodejs";
@@ -34,6 +35,9 @@ const schema = z.object({
  * contributor sees immediately whether their own copy reads as a promise.
  */
 export async function POST(request: Request) {
+  const auth = await requireApiAccount();
+  if (!auth.ok) return auth.response;
+
   const parsed = schema.safeParse(await request.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json(

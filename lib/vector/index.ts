@@ -98,22 +98,30 @@ export function toRecord(reel: Reel, vector: number[]): VectorRecord {
 
 async function build(): Promise<{ store: VectorStore; info: IndexInfo }> {
   const started = Date.now();
-  const provider = getProvider();
+  let provider = getProvider();
 
-  // Reels ingested in an earlier process are re-registered before the index is
-  // built, so a restart does not lose everything the studio added.
+  // Use committed Google vectors in repo when no API key (demo / first deploy).
+  const googleName = `google:${config.google.embeddingModel}`;
+  let cache = await readCache(provider.name, provider.dims);
+  if (!cache && provider.name.startsWith("local")) {
+    const googleCache = await readCache(googleName, config.google.embeddingDims);
+    if (googleCache && Object.keys(googleCache.vectors).length > 0) {
+      provider = {
+        name: googleName,
+        dims: config.google.embeddingDims,
+        embed: async (texts, taskType) => {
+          const live = getProvider();
+          if (live.name.startsWith("google")) return live.embed(texts, taskType);
+          throw new Error("GEMINI_API_KEY required to embed new text at runtime");
+        },
+      };
+      cache = googleCache;
+    }
+  }
+
   for (const reel of await readRuntimeReels()) registerRuntimeReel(reel);
-
   const reels = ALL_REELS;
 
-  /*
-   * Incremental cache. Each reel is keyed by the hash of the exact text it is
-   * indexed by, so editing one reel re-embeds one reel — not the whole corpus.
-   * That matters because the corpus is a few hundred reels and the embedding
-   * provider is rate-limited to 100 requests a minute: an all-or-nothing cache
-   * turns a one-word edit into a three-minute stall.
-   */
-  const cache = await readCache(provider.name, provider.dims);
   const documents = reels.map(reelDocument);
   const hashes = documents.map(documentHash);
 
