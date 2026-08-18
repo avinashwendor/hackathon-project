@@ -9,8 +9,16 @@ import type {
   AgentStage,
   Confidence,
   InteractionEvent,
+  InterestInference,
   RecommendationCard,
+  Reel,
+  RejectedCandidate,
 } from "@/lib/types";
+import { formatCard } from "./format";
+import { inferInterest } from "./infer";
+import { rerank, type RerankOutcome } from "./rerank";
+import { retrieve } from "./retrieve";
+import { buildTasteProfile, difficultyLabel } from "./taste";
 
 const CONFIDENCE_RANK: Record<Confidence, number> = { Low: 0, Medium: 1, High: 2 };
 
@@ -22,11 +30,36 @@ const CONFIDENCE_RANK: Record<Confidence, number> = { Low: 0, Medium: 1, High: 2
 function capConfidenceBy(claimed: Confidence, ceiling: Confidence): Confidence {
   return CONFIDENCE_RANK[claimed] <= CONFIDENCE_RANK[ceiling] ? claimed : ceiling;
 }
-import { formatCard } from "./format";
-import { inferInterest } from "./infer";
-import { rerank } from "./rerank";
-import { retrieve } from "./retrieve";
-import { buildTasteProfile, difficultyLabel } from "./taste";
+
+function uniqueRejected(rows: RejectedCandidate[]): RejectedCandidate[] {
+  return rows.filter((rejection, i, arr) => arr.findIndex((r) => r.reelId === rejection.reelId) === i);
+}
+
+function composeCard(
+  currentReel: Reel,
+  inference: InterestInference,
+  ranked: RerankOutcome,
+): RecommendationCard {
+  const whyEvidence = inference.evidence.length
+    ? inference.evidence
+        .slice(0, 3)
+        .map((e) => `${e.signal} "${e.title}"`)
+        .join("; ")
+    : "single reel in view, no prior session history";
+  const domainRationale =
+    inference.ladder.find((r) => r.level === "domain")?.rationale ?? inference.underlyingMotivation;
+
+  return {
+    currentReel: `${currentReel.title} (${currentReel.creator.handle}, ${currentReel.category})`,
+    interestDetected: inference.primaryInterest,
+    why: `${whyEvidence}. ${domainRationale}`,
+    recommendedTechReel: ranked.pick.reel.title,
+    category: ranked.pick.reel.category,
+    whyThisRecommendation: ranked.whyThisRecommendation,
+    difficulty: ranked.difficulty,
+    confidence: capConfidenceBy(ranked.confidence, inference.confidence),
+  };
+}
 
 /* ---------------------------------------------------------------------------
    The agent loop.
@@ -215,23 +248,7 @@ export async function recommend(input: RecommendInput): Promise<AgentResult> {
   // 6 — output ------------------------------------------------------------
   t = stages.begin("compose", "Compose the answer");
   const inference = inferred.inference;
-  const whyEvidence = inference.evidence.length
-    ? inference.evidence
-        .slice(0, 3)
-        .map((e) => `${e.signal} "${e.title}"`)
-        .join("; ")
-    : "single reel in view, no prior session history";
-
-  const card: RecommendationCard = {
-    currentReel: `${currentReel.title} (${currentReel.creator.handle}, ${currentReel.category})`,
-    interestDetected: inference.primaryInterest,
-    why: `${whyEvidence}. ${inference.ladder.find((r) => r.level === "domain")?.rationale ?? inference.underlyingMotivation}`,
-    recommendedTechReel: ranked.pick.reel.title,
-    category: ranked.pick.reel.category,
-    whyThisRecommendation: ranked.whyThisRecommendation,
-    difficulty: ranked.difficulty,
-    confidence: capConfidenceBy(ranked.confidence, inference.confidence),
-  };
+  const card = composeCard(currentReel, inference, ranked);
   stages.end("compose", t, "Eight-field card rendered", {
     fields: 8,
     confidence: card.confidence,
@@ -240,9 +257,7 @@ export async function recommend(input: RecommendInput): Promise<AgentResult> {
       : {}),
   });
 
-  const allRejected = [...retrieval.rejected, ...ranked.extraRejections].filter(
-    (rejection, i, arr) => arr.findIndex((r) => r.reelId === rejection.reelId) === i,
-  );
+  const allRejected = uniqueRejected([...retrieval.rejected, ...ranked.extraRejections]);
 
   const diagnostics: AgentDiagnostics = {
     llmModel: llmUsed ? llmModel : "none",

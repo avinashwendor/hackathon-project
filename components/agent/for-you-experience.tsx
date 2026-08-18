@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Loader2, Play, Sparkles } from "lucide-react";
-import type { AgentResult, InteractionEvent, Reel } from "@/lib/types";
+import type { InteractionEvent, Reel } from "@/lib/types";
 import { resolveReelsMedia } from "@/data/reels";
 import { AgentCard } from "@/components/agent/agent-card";
 import { Diagnostics, InferencePanel, RejectedList, StageList } from "@/components/agent/trace";

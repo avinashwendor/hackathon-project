@@ -39,6 +39,11 @@ function firstExisting(base) {
 }
 
 export async function resolve(specifier, context, nextResolve) {
+  if (specifier.startsWith("next/")) {
+    const withJs = specifier.endsWith(".js") ? specifier : `${specifier}.js`;
+    return nextResolve(withJs, context);
+  }
+
   let absolute = null;
 
   if (specifier.startsWith("@/")) {
@@ -53,4 +58,14 @@ export async function resolve(specifier, context, nextResolve) {
   }
 
   return nextResolve(specifier, context);
+}
+
+export async function load(url, context, nextLoad) {
+  if (url.startsWith("file:") && url.split("?")[0].endsWith(".json")) {
+    return nextLoad(url, {
+      ...context,
+      importAttributes: { ...context.importAttributes, type: "json" },
+    });
+  }
+  return nextLoad(url, context);
 }

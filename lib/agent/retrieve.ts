@@ -76,6 +76,129 @@ function difficultyFit(reel: Reel, bias: number): number {
   return Math.max(0, 1 - distance / 1.8);
 }
 
+function rejection(
+  reel: Reel,
+  reason: RejectedCandidate["reason"],
+  detail: string,
+  similarity: number,
+): RejectedCandidate {
+  return {
+    reelId: reel.id,
+    title: reel.title,
+    reason,
+    detail,
+    wouldHaveScored: Number(similarity.toFixed(3)),
+  };
+}
+
+function mutedTopicHit(reel: Reel, mutedTopics: Set<string>): string[] {
+  const mutedHit = reel.topics.filter((t) => mutedTopics.has(t));
+  const majority = mutedHit.length >= Math.ceil(reel.topics.length / 2);
+  return mutedHit.length && majority ? mutedHit : [];
+}
+
+function sameSubtopicOverlap(reel: Reel, currentSubtopics: Set<string>): string[] | null {
+  const overlap = reel.topics.filter((t) => currentSubtopics.has(t));
+  const onlyOverlap = overlap.length > 0 && reel.topics.every((t) => currentSubtopics.has(t));
+  return onlyOverlap ? overlap : null;
+}
+
+function hardReject(
+  reel: Reel,
+  similarity: number,
+  ctx: {
+    exclude: Set<string>;
+    dislikes: Set<string>;
+    mutedTopics: Set<string>;
+    currentSubtopics: Set<string>;
+    breadthDetected: boolean;
+    difficultyBias: number;
+  },
+): RejectedCandidate | null {
+  if (ctx.exclude.has(reel.id)) {
+    return rejection(reel, "already-seen", "Already watched in this session.", similarity);
+  }
+  if (ctx.dislikes.has(reel.id)) {
+    return rejection(reel, "off-interest", "You marked this reel as not interesting.", similarity);
+  }
+  const mutedHit = mutedTopicHit(reel, ctx.mutedTopics);
+  if (mutedHit.length) {
+    return rejection(
+      reel,
+      "off-interest",
+      `Muted after you disliked similar content (${mutedHit.join(", ")}).`,
+      similarity,
+    );
+  }
+  const hype = judgeReel(reel);
+  if (hype.blocked) {
+    const detail = hype.matched.length
+      ? `Promises an outcome instead of teaching one — "${hype.matched[0]}" (${hype.kinds.join(", ")}).`
+      : `Reads as hype (${hype.kinds.join(", ")}).`;
+    return rejection(reel, "hype", detail, similarity);
+  }
+  if (reel.substance < config.agent.substanceFloor) {
+    return rejection(
+      reel,
+      "low-substance",
+      `Nothing transferable in it — substance ${reel.substance.toFixed(2)}, below the ${config.agent.substanceFloor} floor.`,
+      similarity,
+    );
+  }
+  const overlap = sameSubtopicOverlap(reel, ctx.currentSubtopics);
+  if (ctx.breadthDetected && overlap && reel.substance < 0.8) {
+    return rejection(
+      reel,
+      "same-subtopic",
+      `Only connection is "${overlap.join(", ")}" — the same narrow topic they just watched, while their history is broader.`,
+      similarity,
+    );
+  }
+  const fit = difficultyFit(reel, ctx.difficultyBias);
+  if (fit < 0.2) {
+    return rejection(
+      reel,
+      "difficulty-mismatch",
+      `${reel.difficulty} content for a ${difficultyLabel(ctx.difficultyBias).toLowerCase()}-level viewer.`,
+      similarity,
+    );
+  }
+  return null;
+}
+
+async function scoreCandidate(
+  reel: Reel,
+  similarity: number,
+  query: string,
+  profile: TasteProfile,
+  follows: Set<string>,
+): Promise<ScoredCandidate> {
+  const tasteFit = profile.vector.length
+    ? Math.max(0, cosine(profile.vector, (await vectorFor(reel.id)) ?? []))
+    : 0;
+  const fit = difficultyFit(reel, profile.difficultyBias);
+  const followed = follows.has(reel.creator.handle);
+  const reasons: string[] = [];
+  if (similarity > 0.5) reasons.push(`close match to "${query}"`);
+  if (reel.outcome) reasons.push(`teaches: ${reel.outcome}`);
+  if (fit > 0.8) reasons.push(`pitched at ${reel.difficulty}`);
+  if (followed) reasons.push(`you follow ${reel.creator.handle}`);
+
+  const score =
+    similarity * 0.44 + tasteFit * 0.2 + reel.substance * 0.22 + fit * 0.14 + (followed ? 0.08 : 0);
+
+  return {
+    reel,
+    similarity: Number(similarity.toFixed(4)),
+    tasteFit: Number(tasteFit.toFixed(4)),
+    novelty: 0,
+    substance: reel.substance,
+    difficultyFit: Number(fit.toFixed(3)),
+    score: Number(score.toFixed(4)),
+    reasons,
+  };
+}
+
 export async function retrieve(input: RetrievalInput): Promise<RetrievalOutput> {
   const { currentReel, profile, inference } = input;
   const queries = buildQueries(input);
@@ -118,138 +241,27 @@ export async function retrieve(input: RetrievalInput): Promise<RetrievalOutput> 
   const rejected: RejectedCandidate[] = [];
   const scored: ScoredCandidate[] = [];
   const currentSubtopics = new Set(currentReel.topics);
-
   const follows = new Set(input.social?.follows ?? []);
   const dislikes = new Set(input.social?.dislikes ?? []);
   const mutedTopics = new Set(input.social?.mutedTopics ?? []);
+  const guard = {
+    exclude,
+    dislikes,
+    mutedTopics,
+    currentSubtopics,
+    breadthDetected: inference.breadthDetected,
+    difficultyBias: profile.difficultyBias,
+  };
 
   for (const [reelId, { score: similarity, query }] of best) {
     const reel = getReel(reelId);
     if (!reel) continue;
-
-    if (exclude.has(reelId)) {
-      rejected.push({
-        reelId,
-        title: reel.title,
-        reason: "already-seen",
-        detail: "Already watched in this session.",
-        wouldHaveScored: Number(similarity.toFixed(3)),
-      });
+    const blocked = hardReject(reel, similarity, guard);
+    if (blocked) {
+      rejected.push(blocked);
       continue;
     }
-
-    // Explicit rejection is the strongest signal there is. A dislike removes
-    // the reel outright, and the topics it muted remove its neighbours — a
-    // suppression that does not generalise just serves the same thing again.
-    if (dislikes.has(reelId)) {
-      rejected.push({
-        reelId,
-        title: reel.title,
-        reason: "off-interest",
-        detail: "You marked this reel as not interesting.",
-        wouldHaveScored: Number(similarity.toFixed(3)),
-      });
-      continue;
-    }
-
-    const mutedHit = reel.topics.filter((t) => mutedTopics.has(t));
-    // A muted topic only blocks when it is what the reel is mostly about;
-    // otherwise one dislike would quietly delete half the catalogue.
-    if (mutedHit.length && mutedHit.length >= Math.ceil(reel.topics.length / 2)) {
-      rejected.push({
-        reelId,
-        title: reel.title,
-        reason: "off-interest",
-        detail: `Muted after you disliked similar content (${mutedHit.join(", ")}).`,
-        wouldHaveScored: Number(similarity.toFixed(3)),
-      });
-      continue;
-    }
-
-    const hype = judgeReel(reel);
-    if (hype.blocked) {
-      rejected.push({
-        reelId,
-        title: reel.title,
-        reason: "hype",
-        detail: hype.matched.length
-          ? `Promises an outcome instead of teaching one — "${hype.matched[0]}" (${hype.kinds.join(", ")}).`
-          : `Reads as hype (${hype.kinds.join(", ")}).`,
-        wouldHaveScored: Number(similarity.toFixed(3)),
-      });
-      continue;
-    }
-
-    if (reel.substance < config.agent.substanceFloor) {
-      rejected.push({
-        reelId,
-        title: reel.title,
-        reason: "low-substance",
-        detail: `Nothing transferable in it — substance ${reel.substance.toFixed(2)}, below the ${config.agent.substanceFloor} floor.`,
-        wouldHaveScored: Number(similarity.toFixed(3)),
-      });
-      continue;
-    }
-
-    // The anti-shallow rule. Once breadth is detected, a candidate that only
-    // repeats the current reel's exact subtopic is exactly the trap.
-    const overlap = reel.topics.filter((t) => currentSubtopics.has(t));
-    const onlyOverlap = overlap.length > 0 && reel.topics.every((t) => currentSubtopics.has(t));
-    if (inference.breadthDetected && onlyOverlap && reel.substance < 0.8) {
-      rejected.push({
-        reelId,
-        title: reel.title,
-        reason: "same-subtopic",
-        detail: `Only connection is "${overlap.join(", ")}" — the same narrow topic they just watched, while their history is broader.`,
-        wouldHaveScored: Number(similarity.toFixed(3)),
-      });
-      continue;
-    }
-
-    const tasteFit = profile.vector.length
-      ? Math.max(0, cosine(profile.vector, (await vectorFor(reelId)) ?? []))
-      : 0;
-    const fit = difficultyFit(reel, profile.difficultyBias);
-
-    if (fit < 0.2) {
-      rejected.push({
-        reelId,
-        title: reel.title,
-        reason: "difficulty-mismatch",
-        detail: `${reel.difficulty} content for a ${difficultyLabel(profile.difficultyBias).toLowerCase()}-level viewer.`,
-        wouldHaveScored: Number(similarity.toFixed(3)),
-      });
-      continue;
-    }
-
-    const reasons: string[] = [];
-    if (similarity > 0.5) reasons.push(`close match to "${query}"`);
-    if (reel.outcome) reasons.push(`teaches: ${reel.outcome}`);
-    if (fit > 0.8) reasons.push(`pitched at ${reel.difficulty}`);
-
-    // Following a creator is a stated preference, so it earns a real boost —
-    // but a bounded one. Large enough to break a tie, too small to drag a weak
-    // reel past a strong one and turn the feed into a single channel.
-    const followed = follows.has(reel.creator.handle);
-    if (followed) reasons.push(`you follow ${reel.creator.handle}`);
-
-    const score =
-      similarity * 0.44 +
-      tasteFit * 0.2 +
-      reel.substance * 0.22 +
-      fit * 0.14 +
-      (followed ? 0.08 : 0);
-
-    scored.push({
-      reel,
-      similarity: Number(similarity.toFixed(4)),
-      tasteFit: Number(tasteFit.toFixed(4)),
-      novelty: 0,
-      substance: reel.substance,
-      difficultyFit: Number(fit.toFixed(3)),
-      score: Number(score.toFixed(4)),
-      reasons,
-    });
+    scored.push(await scoreCandidate(reel, similarity, query, profile, follows));
   }
 
   scored.sort((a, b) => b.score - a.score);

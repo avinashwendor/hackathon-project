@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Editor from '@monaco-editor/react';
 import { toast } from 'sonner';
 import { Play, RotateCcw, CheckCircle2, Terminal, Eye, Code2, 
   FileCode, Folder, Plus, Trash2, Maximize2, Minimize2, 
-  Settings, Copy, Check, Sparkles, FileText, CheckCircle, XCircle, ChevronRight, ChevronDown, RefreshCw
+  Copy, Check, Sparkles, CheckCircle, XCircle, ChevronDown, RefreshCw
 } from 'lucide-react';
+import { errorMessage, formatUnknown } from '@/lib/errors';
 
 export interface CodeFile {
   name: string;
@@ -103,8 +104,8 @@ export default function MonacoCodeEditor({
 
   // Editor configuration
   const [theme, setTheme] = useState('vs-dark');
-  const [fontSize, setFontSize] = useState(14);
-  const [showMinimap, setShowMinimap] = useState(false);
+  const fontSize = 14;
+  const showMinimap = false;
   const [isFullScreen, setIsFullScreen] = useState(false);
   
   // Output and Execution state
@@ -193,20 +194,20 @@ export default function MonacoCodeEditor({
     setTimeout(() => {
       if (mainFile.language === 'javascript' || mainFile.language === 'typescript') {
         const customConsole = {
-          log: (...args: any[]) => {
-            logs.push(args.map(arg => typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)).join(' '));
+          log: (...args: unknown[]) => {
+            logs.push(args.map((arg) => formatUnknown(arg)).join(' '));
           },
-          error: (...args: any[]) => {
-            logs.push(`[ERROR]: ${args.map(arg => String(arg)).join(' ')}`);
+          error: (...args: unknown[]) => {
+            logs.push(`[ERROR]: ${args.map((arg) => formatUnknown(arg)).join(' ')}`);
           },
-          warn: (...args: any[]) => {
-            logs.push(`[WARN]: ${args.map(arg => String(arg)).join(' ')}`);
+          warn: (...args: unknown[]) => {
+            logs.push(`[WARN]: ${args.map((arg) => formatUnknown(arg)).join(' ')}`);
           },
-          info: (...args: any[]) => {
-            logs.push(`[INFO]: ${args.map(arg => String(arg)).join(' ')}`);
+          info: (...args: unknown[]) => {
+            logs.push(`[INFO]: ${args.map((arg) => formatUnknown(arg)).join(' ')}`);
           },
-          table: (data: any) => {
-            logs.push(`[TABLE]: ${JSON.stringify(data, null, 2)}`);
+          table: (data: unknown) => {
+            logs.push(`[TABLE]: ${formatUnknown(data)}`);
           }
         };
 
@@ -216,8 +217,8 @@ export default function MonacoCodeEditor({
           runFn(customConsole);
           const endTime = performance.now();
           logs.push(`\n⚡ Executed in ${(endTime - startTime).toFixed(2)}ms with Exit Code 0`);
-        } catch (err: any) {
-          logs.push(`[Runtime Exception]: ${err.message}`);
+        } catch (err: unknown) {
+          logs.push(`[Runtime Exception]: ${errorMessage(err)}`);
         }
       } else if (mainFile.language === 'python') {
         logs.push(`[Upstream Python 3.11 WASM Engine] Executing ${mainFile.name}...`);
@@ -234,8 +235,8 @@ export default function MonacoCodeEditor({
           }
           logs.push(`----------------------------------------`);
           logs.push(`⚡ Executed in 14.2ms | Memory: 4.2 MB | Exit Code: 0`);
-        } catch (err: any) {
-          logs.push(`[SyntaxError]: ${err.message}`);
+        } catch (err: unknown) {
+          logs.push(`[SyntaxError]: ${errorMessage(err)}`);
         }
       } else if (mainFile.language === 'html' || mainFile.language === 'css') {
         setActiveRightTab('preview');
@@ -276,8 +277,8 @@ export default function MonacoCodeEditor({
             actual = tc.expectedOutput;
           }
           passed = actual.trim() === tc.expectedOutput.trim();
-        } catch (err: any) {
-          actual = `Error: ${err.message}`;
+        } catch (err: unknown) {
+          actual = `Error: ${errorMessage(err)}`;
           passed = false;
         }
 
@@ -590,7 +591,7 @@ export default function MonacoCodeEditor({
               value={activeFile.content}
               onChange={(value) => handleCodeChange(value || '')}
               onMount={(editor) => {
-                editor.onDidChangeCursorPosition((e: any) => {
+                editor.onDidChangeCursorPosition((e) => {
                   setLineCol({ line: e.position.lineNumber, col: e.position.column });
                 });
               }}

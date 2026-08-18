@@ -1,122 +1,28 @@
-import { createHmac, randomBytes, scrypt, timingSafeEqual } from "node:crypto";
-import { promisify } from "node:util";
+import { randomBytes } from "node:crypto";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { AUTH_COOKIE } from "@/lib/auth-cookie";
+import {
+  SESSION_MAX_AGE_SEC,
+  hashPassword,
+  issueToken,
+  readToken,
+  validateCredentials,
+  verifyPassword,
+  type CredentialIssue,
+} from "@/lib/auth-crypto";
 import { getAccountByEmail, getAccountById, saveAccount, type Account } from "@/lib/store";
 
 /* ---------------------------------------------------------------------------
-   Authentication.
+   Authentication session layer.
 
-   Deliberately dependency-free and deliberately boring: scrypt for password
-   hashing, an HMAC-signed session cookie, constant-time comparison everywhere a
-   secret is checked.
-
-   The interesting decision is what an account is *for* here. Upstream watches
-   what you watch, so an account exists to give that record an owner who can
-   read and delete it. The feed is gated: you sign up, then you scroll.
+   Crypto lives in `lib/auth-crypto.ts`. This file only binds those primitives
+   to Next.js cookies so a unit test can exercise hashing without a request.
 --------------------------------------------------------------------------- */
 
-const scryptAsync = promisify(scrypt);
-
 export const SESSION_COOKIE = "upstream_sid";
-export { AUTH_COOKIE };
-const SESSION_MAX_AGE = 60 * 60 * 24 * 30;
-
-/**
- * In production this must be set. In development a per-process random secret is
- * fine — it only means sessions do not survive a restart, which is the correct
- * trade against shipping a hardcoded default that would be a real vulnerability.
- */
-const SECRET =
-  process.env.AUTH_SECRET ??
-  (process.env.NODE_ENV === "production"
-    ? (() => {
-        console.warn(
-          "[auth] AUTH_SECRET is not set — sessions will not survive a restart or scale beyond one instance.",
-        );
-        return randomBytes(32).toString("hex");
-      })()
-    : randomBytes(32).toString("hex"));
-
-/* --- Passwords ----------------------------------------------------------- */
-
-export async function hashPassword(password: string): Promise<string> {
-  const salt = randomBytes(16).toString("hex");
-  const derived = (await scryptAsync(password, salt, 64)) as Buffer;
-  return `scrypt$${salt}$${derived.toString("hex")}`;
-}
-
-export async function verifyPassword(password: string, stored: string): Promise<boolean> {
-  const [scheme, salt, hash] = stored.split("$");
-  if (scheme !== "scrypt" || !salt || !hash) return false;
-  const derived = (await scryptAsync(password, salt, 64)) as Buffer;
-  const expected = Buffer.from(hash, "hex");
-  // Length check first: timingSafeEqual throws on a mismatch rather than
-  // returning false, which would leak through an exception path.
-  if (derived.length !== expected.length) return false;
-  return timingSafeEqual(derived, expected);
-}
-
-/* --- Tokens -------------------------------------------------------------- */
-
-function sign(payload: string): string {
-  return createHmac("sha256", SECRET).update(payload).digest("base64url");
-}
-
-export function issueToken(accountId: string): string {
-  const expires = Date.now() + SESSION_MAX_AGE * 1000;
-  const payload = `${accountId}.${expires}`;
-  return `${payload}.${sign(payload)}`;
-}
-
-export function readToken(token: string): { accountId: string } | null {
-  const parts = token.split(".");
-  if (parts.length !== 3) return null;
-  const [accountId, expiresRaw, signature] = parts;
-  const payload = `${accountId}.${expiresRaw}`;
-
-  const expected = Buffer.from(sign(payload));
-  const provided = Buffer.from(signature);
-  if (expected.length !== provided.length || !timingSafeEqual(expected, provided)) return null;
-
-  const expires = Number(expiresRaw);
-  if (!Number.isFinite(expires) || expires < Date.now()) return null;
-
-  return { accountId };
-}
-
-/* --- Validation ---------------------------------------------------------- */
-
-export interface CredentialIssue {
-  field: "email" | "password" | "name";
-  message: string;
-}
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-export function validateCredentials(input: {
-  email: string;
-  password: string;
-  name?: string;
-}): CredentialIssue[] {
-  const issues: CredentialIssue[] = [];
-  if (!EMAIL_RE.test(input.email) || input.email.length > 254) {
-    issues.push({ field: "email", message: "That does not look like an email address." });
-  }
-  if (input.password.length < 8) {
-    issues.push({ field: "password", message: "Use at least 8 characters." });
-  }
-  if (input.password.length > 200) {
-    issues.push({ field: "password", message: "That is longer than 200 characters." });
-  }
-  if (input.name !== undefined && input.name.length > 60) {
-    issues.push({ field: "name", message: "Keep the name under 60 characters." });
-  }
-  return issues;
-}
-
-/* --- Session ------------------------------------------------------------- */
+export { AUTH_COOKIE, hashPassword, issueToken, readToken, validateCredentials, verifyPassword };
+export type { CredentialIssue };
 
 export interface Viewer {
   /** Always present — the scroll session, signed in or not. */
@@ -133,7 +39,7 @@ const COOKIE_OPTIONS = {
   sameSite: "lax" as const,
   path: "/",
   secure: process.env.NODE_ENV === "production",
-  maxAge: SESSION_MAX_AGE,
+  maxAge: SESSION_MAX_AGE_SEC,
 };
 
 /**

@@ -4,10 +4,10 @@ import {
   categoriesFromTopics,
   isValidLegacyOnboarding,
   isValidOnboarding,
-  VIABLE_DIFFICULTIES,
 } from "@/lib/onboarding/catalog-options";
 import { getViewer } from "@/lib/auth";
 import { readSocial, updateSocial } from "@/lib/store";
+import { DIFFICULTIES } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 const sharedFields = {
   topics: z.array(z.string()).min(1).max(8),
   motivation: z.string().min(1),
-  difficulty: z.enum(VIABLE_DIFFICULTIES as unknown as [string, ...string[]]),
+  difficulty: z.enum(DIFFICULTIES),
   goal: z.string().min(4).max(200),
 };
 

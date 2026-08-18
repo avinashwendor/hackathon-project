@@ -27,7 +27,7 @@ npm run eval:submission
 | 1 | **Problem alignment** | **20** | Student-scroll persona; agent reads *why* not *what*; hype guardrail demonstrated | `README.md`, `/trap`, `/agent`, `lib/agent/hype.ts`, `lib/agent/infer.ts` |
 | 2 | **Smart assistant / context** | **15** | Taste profile + recommendation card with 8 fields + stage trace | `lib/agent/*`, `/api/agent/recommend`, `/profile` |
 | 3 | **Tech platform (code editor)** | **15** | In-browser IDE matching AuMinds pattern: Monaco + terminal + API tester | `app/code-editor/`, `components/BrowserCodeEditor.tsx`, `docs/CODE_EDITOR.md` |
-| 4 | **Code quality** | **10** | TypeScript strict, modular `lib/`, ESLint clean | `npm run typecheck`, `npm run lint` |
+| 4 | **Code quality** | **10** | TypeScript strict (`noUnusedLocals`), no `any` in `lib/`/`app/`, ESLint, crypto split from cookies | `npm run typecheck`, `npm run lint`, `lib/auth-crypto.ts` |
 | 5 | **Security** | **10** | scrypt auth, HMAC sessions, Zod APIs, CSP/COOP/COEP on IDE route | `lib/auth.ts`, `next.config.ts`, `lib/rate-limit.ts` |
 | 6 | **Testing & verify gate** | **10** | Unit tests + agent eval + verify script pass | `npm test`, `npm run agent:eval`, `npm run verify` |
 | 7 | **Efficiency** | **5** | Feed rank cache, lazy hls.js, debounced store | `lib/feed/feed-cache.ts`, dynamic imports in player |

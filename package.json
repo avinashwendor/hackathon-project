@@ -19,6 +19,7 @@
     "eval:submission": "node scripts/eval-submission.mjs",
     "test": "node --import ./tests/register.mjs --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test tests/*.test.mjs",
     "test:watch": "node --import ./tests/register.mjs --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test --watch tests/*.test.mjs",
+    "test:coverage": "node --import ./tests/register.mjs --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test --experimental-test-coverage tests/*.test.mjs",
     "import:catalog": "node scripts/import-catalog.mjs",
     "verify": "npm run typecheck && npm run lint && npm test && npm run build"
   },
