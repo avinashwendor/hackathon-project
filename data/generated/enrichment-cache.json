@@ -1,0 +1,3061 @@
+{
+  "reel_000001": {
+    "reel_id": "reel_000001",
+    "summary": "Short news-style clip announcing the release of GPT-5.2 from OpenAI.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "tech-news",
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000002": {
+    "reel_id": "reel_000002",
+    "summary": "A rapid-fire roundup of web development concepts, part 7 of a series.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "101 concepts you must know"
+    ],
+    "topics": [
+      "web-security",
+      "api-design",
+      "performance"
+    ],
+    "prerequisites": []
+  },
+  "reel_000003": {
+    "reel_id": "reel_000003",
+    "summary": "A reel showcasing controversial opinions held by software engineers.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [
+      "controversial opinions"
+    ],
+    "topics": [
+      "engineering-culture",
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000004": {
+    "reel_id": "reel_000004",
+    "summary": "A 100-second overview of the .NET framework and its ecosystem.",
+    "outcome": "Explain in broad terms what .NET is and what kind of applications it targets.",
+    "difficulty": "Beginner",
+    "substance": 0.45,
+    "hype_markers": [],
+    "topics": [
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000005": {
+    "reel_id": "reel_000005",
+    "summary": "A rapid-fire roundup of web development concepts, part 8 of a series.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "101 concepts you must know"
+    ],
+    "topics": [
+      "api-design",
+      "caching",
+      "databases"
+    ],
+    "prerequisites": []
+  },
+  "reel_000006": {
+    "reel_id": "reel_000006",
+    "summary": "A 60-second overview of the TCP/IP networking model.",
+    "outcome": "Describe the basic layers of the TCP/IP model and how data moves between them.",
+    "difficulty": "Beginner",
+    "substance": 0.4,
+    "hype_markers": [],
+    "topics": [
+      "system-design"
+    ],
+    "prerequisites": []
+  },
+  "reel_000007": {
+    "reel_id": "reel_000007",
+    "summary": "A short reel promoting a method or resource for learning algorithms, with a link in bio.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [
+      "Link in bio",
+      "The most effective way"
+    ],
+    "topics": [
+      "dsa",
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000008": {
+    "reel_id": "reel_000008",
+    "summary": "A short reel about general learning strategies, with no technical specifics.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000009": {
+    "reel_id": "reel_000009",
+    "summary": "A brief showcase of building a LeetCode-style coding practice website.",
+    "outcome": "",
+    "difficulty": "Intermediate",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "web-security",
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000010": {
+    "reel_id": "reel_000010",
+    "summary": "A 60-second overview of the WebSockets protocol for persistent client-server connections.",
+    "outcome": "Describe what WebSockets are and contrast them with plain HTTP.",
+    "difficulty": "Beginner",
+    "substance": 0.45,
+    "hype_markers": [],
+    "topics": [
+      "api-design",
+      "system-design"
+    ],
+    "prerequisites": []
+  },
+  "reel_000011": {
+    "reel_id": "reel_000011",
+    "summary": "A short reel whose entire content is the text 'The link is neetcode.io' with no transcript or explanation.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000012": {
+    "reel_id": "reel_000012",
+    "summary": "A clip of CS50's Brian Yu explaining why languages like C and Rust can run faster than Python.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.35,
+    "hype_markers": [],
+    "topics": [
+      "performance"
+    ],
+    "prerequisites": []
+  },
+  "reel_000013": {
+    "reel_id": "reel_000013",
+    "summary": "A short reel titled 'I used to hate TypeScript' with no description or transcript, so the actual content is unknown.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [],
+    "prerequisites": []
+  },
+  "reel_000014": {
+    "reel_id": "reel_000014",
+    "summary": "A teaser from GitKraken teasing 6 lesser-known Git commands that solve daily workflow problems, with the full video on YouTube.",
+    "outcome": "",
+    "difficulty": "Intermediate",
+    "substance": 0.25,
+    "hype_markers": [
+      "We just dropped 6 commands",
+      "would save hours",
+      "there's no discovery layer"
+    ],
+    "topics": [
+      "git"
+    ],
+    "prerequisites": [
+      "basic Git usage"
+    ]
+  },
+  "reel_000015": {
+    "reel_id": "reel_000015",
+    "summary": "A product announcement from GitKraken showing a new feature to launch Claude Code or Codex CLI sessions from the Agents panel using isolated worktrees.",
+    "outcome": "",
+    "difficulty": "Intermediate",
+    "substance": 0.3,
+    "hype_markers": [
+      "Parallel AI agents without the chaos",
+      "That's code flow",
+      "New:"
+    ],
+    "topics": [
+      "git",
+      "ai"
+    ],
+    "prerequisites": [
+      "Git worktrees, CLI-based AI coding agents"
+    ]
+  },
+  "reel_000016": {
+    "reel_id": "reel_000016",
+    "summary": "Part 4 of a Fireship 'concepts you should know for web dev' series, a fast-paced rapid-fire of web development concepts.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "concepts you should probably know"
+    ],
+    "topics": [],
+    "prerequisites": []
+  },
+  "reel_000017": {
+    "reel_id": "reel_000017",
+    "summary": "Part 5 of Fireship's '101 concepts you must know for web dev' rapid-fire series.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "101 concepts you must know"
+    ],
+    "topics": [],
+    "prerequisites": []
+  },
+  "reel_000018": {
+    "reel_id": "reel_000018",
+    "summary": "A Fireship news-style reel covering a critical 10.0 vulnerability in React.js.",
+    "outcome": "",
+    "difficulty": "Intermediate",
+    "substance": 0.4,
+    "hype_markers": [
+      "critical vulnerability"
+    ],
+    "topics": [
+      "web-security",
+      "tech-news"
+    ],
+    "prerequisites": [
+      "basic React knowledge"
+    ]
+  },
+  "reel_000019": {
+    "reel_id": "reel_000019",
+    "summary": "Part 6 of Fireship's '101 concepts you must know for web dev' rapid-fire series.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "101 concepts you must know"
+    ],
+    "topics": [],
+    "prerequisites": []
+  },
+  "reel_000020": {
+    "reel_id": "reel_000020",
+    "summary": "A clip from a longer interview with CS50's David Malan discussing how he improved his public speaking skills.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "communication",
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000021": {
+    "reel_id": "reel_000021",
+    "summary": "A short clip from a podcast interview with CS50's David Malan arguing for the importance of learning computer science fundamentals.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "engineering-culture",
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000022": {
+    "reel_id": "reel_000022",
+    "summary": "A short clip from a podcast interview with CS50's David Malan discussing what is actually important to focus on.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "engineering-culture",
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000023": {
+    "reel_id": "reel_000023",
+    "summary": "A short clip from a podcast interview with CS50's David Malan sharing his biggest regret for students.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000024": {
+    "reel_id": "reel_000024",
+    "summary": "A short clip from a podcast discussing Casey Muratori's practice of avoiding AI programming tools and whether developers should rely less on AI.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.25,
+    "hype_markers": [
+      "Should the rest of us consider relying less on AI?"
+    ],
+    "topics": [
+      "ai",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000025": {
+    "reel_id": "reel_000025",
+    "summary": "A promotional clip for GitKraken Desktop and Kepler, highlighting features for running multiple AI coding agents across one or many repositories.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [
+      "agents doing the heavy lifting"
+    ],
+    "topics": [
+      "ai",
+      "git"
+    ],
+    "prerequisites": []
+  },
+  "reel_000026": {
+    "reel_id": "reel_000026",
+    "summary": "A fast-paced commentary reel joking about unhinged tech trends predicted for 2026 in the style of Fireship.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "Unhinged tech trends for 2026…"
+    ],
+    "topics": [
+      "tech-news",
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000027": {
+    "reel_id": "reel_000027",
+    "summary": "A follow-up fast-paced commentary reel joking about more unhinged tech trends predicted for 2026 in the style of Fireship.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "Even more unhinged tech trends for 2026…"
+    ],
+    "topics": [
+      "tech-news",
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000028": {
+    "reel_id": "reel_000028",
+    "summary": "A short clip introducing an AWS Developer's \"spec or vibe\" framing as a question to ask before prompting AI tools.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.25,
+    "hype_markers": [
+      "the most useful question to ask before you start prompting your AI"
+    ],
+    "topics": [
+      "ai",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000029": {
+    "reel_id": "reel_000029",
+    "summary": "A short clip from GitKon with career advice urging developers to focus on problem solving rather than just writing syntax, especially when using AI-generated code.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "the most honest career advice in the age of AI"
+    ],
+    "topics": [
+      "career",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000030": {
+    "reel_id": "reel_000030",
+    "summary": "A short clip from a podcast claiming that only 1% of programmers have a particular skill that AI likely cannot replace.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "Only 1% of Programmers have this skill and AI probably won't help"
+    ],
+    "topics": [
+      "career",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000031": {
+    "reel_id": "reel_000031",
+    "summary": "Short promo clip for a podcast episode arguing that over-reliance on LLMs can reduce a developer's independent problem-solving ability.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [
+      "LLMs make you dumber"
+    ],
+    "topics": [
+      "ai",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000032": {
+    "reel_id": "reel_000032",
+    "summary": "Hindi-language meme/joke reel contrasting developers who use Git/GitHub with others who still send zip files.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour",
+      "git"
+    ],
+    "prerequisites": []
+  },
+  "reel_000033": {
+    "reel_id": "reel_000033",
+    "summary": "Hindi-language meme clip with a 'fight' framing using tech figures, primarily entertainment.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour",
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000034": {
+    "reel_id": "reel_000034",
+    "summary": "Promotional countdown teaser for the StrapiConf event featuring the creator.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "tech-news",
+      "build-in-public"
+    ],
+    "prerequisites": []
+  },
+  "reel_000035": {
+    "reel_id": "reel_000035",
+    "summary": "Fast-paced commentary reel listing trending or attention-grabbing technology topics for 2026.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.25,
+    "hype_markers": [
+      "unhinged tech trends"
+    ],
+    "topics": [
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000036": {
+    "reel_id": "reel_000036",
+    "summary": "Follow-up reel listing additional technology trends to watch in 2026.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.25,
+    "hype_markers": [
+      "you should know"
+    ],
+    "topics": [
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000037": {
+    "reel_id": "reel_000037",
+    "summary": "Promotional clip for a GitKraken tool that humorously critiques users' commit messages with a 'chaos score'.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "git",
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000038": {
+    "reel_id": "reel_000038",
+    "summary": "Teaser clip asking whether a specific LeetCode problem holds a deeper insight, without revealing the solution in the title.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [
+      "Do you think this problem has a deeper meaning?"
+    ],
+    "topics": [
+      "dsa",
+      "interviews"
+    ],
+    "prerequisites": []
+  },
+  "reel_000039": {
+    "reel_id": "reel_000039",
+    "summary": "Hook-style clip claiming CS graduates struggle with a LeetCode Easy problem, framed as engagement bait.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [
+      "CS Grads can't solve this LeetCode Easy question"
+    ],
+    "topics": [
+      "dsa",
+      "interviews"
+    ],
+    "prerequisites": []
+  },
+  "reel_000040": {
+    "reel_id": "reel_000040",
+    "summary": "Short branding/self-promotion clip for the neetcode.io platform, with no instructional content in the title.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "interviews"
+    ],
+    "prerequisites": []
+  },
+  "reel_000041": {
+    "reel_id": "reel_000041",
+    "summary": "Short meme clip mocking a coder who mimics Neetcode-style competitive programming.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.08,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour",
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000042": {
+    "reel_id": "reel_000042",
+    "summary": "Short meme clip mocking a coder who imitates Neetcode's style.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.08,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour",
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000043": {
+    "reel_id": "reel_000043",
+    "summary": "Short promo clip claiming technical skills alone are useless, advertising a full podcast episode.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.12,
+    "hype_markers": [
+      "Full episode on Youtube, Spotify and Apple Podcasts (link in bio)"
+    ],
+    "topics": [
+      "career",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000044": {
+    "reel_id": "reel_000044",
+    "summary": "Short promo for a podcast clip in which Chris breaks down CSS logical properties.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [
+      "newskills"
+    ],
+    "topics": [
+      "tech-news",
+      "web-development"
+    ],
+    "prerequisites": []
+  },
+  "reel_000045": {
+    "reel_id": "reel_000045",
+    "summary": "Historical anecdote narrating how Dijkstra conceived the shortest-path algorithm while shopping in 1956.",
+    "outcome": "Recall the origin story of Dijkstra's shortest-path algorithm.",
+    "difficulty": "Beginner",
+    "substance": 0.35,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "graphs"
+    ],
+    "prerequisites": []
+  },
+  "reel_000046": {
+    "reel_id": "reel_000046",
+    "summary": "Short clip of CS50's Colton Ogden arguing it is beneficial to learn coding without relying on AI.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.18,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000047": {
+    "reel_id": "reel_000047",
+    "summary": "Short tutorial on the optional chaining (?.) operator in JavaScript.",
+    "outcome": "Use the optional chaining operator to safely access nested object properties.",
+    "difficulty": "Beginner",
+    "substance": 0.45,
+    "hype_markers": [],
+    "topics": [
+      "javascript"
+    ],
+    "prerequisites": []
+  },
+  "reel_000048": {
+    "reel_id": "reel_000048",
+    "summary": "News-style roundup about Anthropic's reported acquisition of a JavaScript runtime, presented in Fireship's signature rapid-fire style.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.25,
+    "hype_markers": [],
+    "topics": [
+      "tech-news",
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000049": {
+    "reel_id": "reel_000049",
+    "summary": "News-style roundup about AI agents transacting or paying one another, presented in Fireship's rapid-fire style.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.22,
+    "hype_markers": [],
+    "topics": [
+      "tech-news",
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000050": {
+    "reel_id": "reel_000050",
+    "summary": "Part 2 of a Fireship clip collecting controversial opinions held by software engineers.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "engineering-culture",
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000051": {
+    "reel_id": "reel_000051",
+    "summary": "A short coding challenge asking the viewer to predict the output of an unseen code snippet.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000052": {
+    "reel_id": "reel_000052",
+    "summary": "Shares survey statistics from GitKraken's podcast about developer productivity with AI coding tools, noting that perceived productivity scales with how agentic the workflow is.",
+    "outcome": "Cite two statistics about developer sentiment toward AI coding tools and note the correlation between agentic workflows and perceived productivity.",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [],
+    "topics": [
+      "ai",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000053": {
+    "reel_id": "reel_000053",
+    "summary": "Career advice clip claiming that standout projects are needed for a good resume, with a call to comment for project links.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "to get a good job in today's time",
+      "you need a resume that stands out",
+      "Comment \"Project\" to get links"
+    ],
+    "topics": [
+      "career",
+      "portfolio"
+    ],
+    "prerequisites": []
+  },
+  "reel_000054": {
+    "reel_id": "reel_000054",
+    "summary": "CS50's Brian Yu recommends computer science books for deepening foundational knowledge.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000055": {
+    "reel_id": "reel_000055",
+    "summary": "An introduction to the transformer architecture that underlies tools like ChatGPT.",
+    "outcome": "Explain at a high level what a transformer is and why it is relevant to modern AI tools.",
+    "difficulty": "Beginner",
+    "substance": 0.55,
+    "hype_markers": [],
+    "topics": [
+      "ai",
+      "transformers"
+    ],
+    "prerequisites": []
+  },
+  "reel_000056": {
+    "reel_id": "reel_000056",
+    "summary": "A Hindi meme encouraging viewers to land a job first before discussing salary, with a plug for a job portal.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour",
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000057": {
+    "reel_id": "reel_000057",
+    "summary": "A clickbait-style vlog in which the creator confronts Microsoft employees about a Windows issue.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "What happened next will leave you shell-shocked!"
+    ],
+    "topics": [
+      "dev-humour",
+      "entertainment"
+    ],
+    "prerequisites": []
+  },
+  "reel_000058": {
+    "reel_id": "reel_000058",
+    "summary": "An overview of React server components.",
+    "outcome": "Describe what React server components are and how they differ from traditional client-rendered components.",
+    "difficulty": "Intermediate",
+    "substance": 0.55,
+    "hype_markers": [],
+    "topics": [
+      "api-design",
+      "performance"
+    ],
+    "prerequisites": [
+      "React basics"
+    ]
+  },
+  "reel_000059": {
+    "reel_id": "reel_000059",
+    "summary": "A warning about not storing sensitive data inside JSON Web Tokens.",
+    "outcome": "Explain why sensitive data should not be placed in JWT payloads and that JWTs are signed, not encrypted.",
+    "difficulty": "Intermediate",
+    "substance": 0.5,
+    "hype_markers": [],
+    "topics": [
+      "auth",
+      "web-security",
+      "cryptography"
+    ],
+    "prerequisites": [
+      "Basic understanding of JSON"
+    ]
+  },
+  "reel_000060": {
+    "reel_id": "reel_000060",
+    "summary": "Introduces the Arazzo specification, which defines deterministic step-by-step API workflows for AI agents with success criteria and retry logic.",
+    "outcome": "Describe the problem Arazzo aims to solve and list its core features such as deterministic workflows, success criteria, retry logic, and branching.",
+    "difficulty": "Intermediate",
+    "substance": 0.55,
+    "hype_markers": [],
+    "topics": [
+      "api-design",
+      "ai"
+    ],
+    "prerequisites": [
+      "Basic familiarity with REST APIs and LLM agents"
+    ]
+  },
+  "reel_000061": {
+    "reel_id": "reel_000061",
+    "summary": "Short opinion clip arguing that engineers threatened by AI are those who view their job as just writing code, not as solving problems.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "Full session on our YT"
+    ],
+    "topics": [
+      "ai",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000062": {
+    "reel_id": "reel_000062",
+    "summary": "Promotional reel for a GeeksforGeeks job board listing 150+ companies hiring, asking viewers to comment a keyword for a link.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [
+      "150+ companies hiring",
+      "200+ active job openings",
+      "15 LPA average package",
+      "Get Hired by GfG just got better",
+      "Comment “JOBS” and we’ll send you top 3 tech jobs"
+    ],
+    "topics": [
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000063": {
+    "reel_id": "reel_000063",
+    "summary": "Podcast clip where Rachel advises students on how to identify what makes them unique for college or job applications.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "portfolio"
+    ],
+    "prerequisites": []
+  },
+  "reel_000064": {
+    "reel_id": "reel_000064",
+    "summary": "CS50 clip where Carter Zenke discusses how to stay motivated when technology evolves faster than learners can keep up.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "engineering-culture",
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000065": {
+    "reel_id": "reel_000065",
+    "summary": "freeCodeCamp podcast clip where Mark recounts being asked to teach a college course with one day's notice and says yes anyway.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "communication"
+    ],
+    "prerequisites": []
+  },
+  "reel_000066": {
+    "reel_id": "reel_000066",
+    "summary": "CS50 clip where Brian Yu explains what P and NP problems are.",
+    "outcome": "Explain the difference between P and NP problems.",
+    "difficulty": "Beginner",
+    "substance": 0.45,
+    "hype_markers": [],
+    "topics": [
+      "complexity"
+    ],
+    "prerequisites": []
+  },
+  "reel_000067": {
+    "reel_id": "reel_000067",
+    "summary": "CS50 clip where Carter Zenke gives advice on how to approach the CS50 course.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000068": {
+    "reel_id": "reel_000068",
+    "summary": "freeCodeCamp podcast clip where Chris Coyier discusses CodePen's culture of immediately fixing any user-facing bug.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "What's the secret to building an app that pretty much never breaks"
+    ],
+    "topics": [
+      "engineering-culture",
+      "debugging"
+    ],
+    "prerequisites": []
+  },
+  "reel_000069": {
+    "reel_id": "reel_000069",
+    "summary": "CS50 clip recounting how David Malan realized computer science was the field for him.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000070": {
+    "reel_id": "reel_000070",
+    "summary": "Six-second meme reel joking that practicing DSA scrambles your brain.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000071": {
+    "reel_id": "reel_000071",
+    "summary": "Short clip of Carter Zenke giving a tip on keeping foundational skills sharp despite AI assistance.",
+    "outcome": "Recall one suggested practice for maintaining core CS fundamentals when relying on AI tools.",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000072": {
+    "reel_id": "reel_000072",
+    "summary": "Brian Yu argues that learning by doing is the most effective way to master new skills.",
+    "outcome": "Articulate the learning-by-doing argument and apply it to picking up a new skill.",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000073": {
+    "reel_id": "reel_000073",
+    "summary": "Mark on the freeCodeCamp podcast discusses problem solving as a core developer skill.",
+    "outcome": "Describe why problem solving matters in programming and how to approach it.",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "debugging",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000074": {
+    "reel_id": "reel_000074",
+    "summary": "Colton Ogden offers his take on whether learning to code still matters.",
+    "outcome": "Summarize one educator's position on the continued relevance of learning to code.",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000075": {
+    "reel_id": "reel_000075",
+    "summary": "Promotion asking viewers to comment \"Jobs\" to receive a job offer link via DM.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "Comment \"Jobs\" to find your dream job in your DM!"
+    ],
+    "topics": [
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000076": {
+    "reel_id": "reel_000076",
+    "summary": "Panel clip from Context Conference discussing whether AI dev tools are improving developer productivity.",
+    "outcome": "Identify one point from the panel on the real impact of AI tools across the SDLC.",
+    "difficulty": "Intermediate",
+    "substance": 0.25,
+    "hype_markers": [],
+    "topics": [
+      "ai",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000077": {
+    "reel_id": "reel_000077",
+    "summary": "Carter Zenke shares advice on escaping tutorial hell.",
+    "outcome": "Recall one strategy for moving past tutorial hell into building projects.",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000078": {
+    "reel_id": "reel_000078",
+    "summary": "Carter Zenke makes the case for investing in your own skills.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000079": {
+    "reel_id": "reel_000079",
+    "summary": "Three-second engagement-bait clip asking viewers to comment an answer to a coding puzzle.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "Comment the answer below!"
+    ],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000080": {
+    "reel_id": "reel_000080",
+    "summary": "Gavin gives a brief explanation of the Blazor framework for full-stack C# web development.",
+    "outcome": "Describe what Blazor is and why a developer might use it instead of separating C# and JS stacks.",
+    "difficulty": "Intermediate",
+    "substance": 0.45,
+    "hype_markers": [],
+    "topics": [
+      "api-design",
+      "engineering-culture"
+    ],
+    "prerequisites": [
+      "C# basics",
+      "JavaScript basics"
+    ]
+  },
+  "reel_000081": {
+    "reel_id": "reel_000081",
+    "summary": "Promotional reel for GeeksforGeeks live programs, framed as an urgent call to learn AI before it becomes mandatory.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "The smartest developers right now aren’t waiting for AI to become mandatory",
+      "FREE by enrolling in selected GeeksforGeeks live programs"
+    ],
+    "topics": [
+      "career",
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000082": {
+    "reel_id": "reel_000082",
+    "summary": "Explains how Netflix stores its video library in distributed cloud storage and delivers it through its Open Connect CDN.",
+    "outcome": "Describe at a high level how Netflix uses distributed storage, transcoding, and a global CDN to deliver video.",
+    "difficulty": "Beginner",
+    "substance": 0.55,
+    "hype_markers": [],
+    "topics": [
+      "distributed-systems",
+      "cloud",
+      "system-design",
+      "caching"
+    ],
+    "prerequisites": [
+      "basic understanding of cloud storage and CDNs"
+    ]
+  },
+  "reel_000083": {
+    "reel_id": "reel_000083",
+    "summary": "Lists three techniques—caching with Redis/Memcached, timeouts with smart retries, and circuit breakers—to fix microservices slowed down by external API calls.",
+    "outcome": "Apply caching, timeout/retry, and circuit breaker patterns to reduce latency caused by external API dependencies.",
+    "difficulty": "Intermediate",
+    "substance": 0.6,
+    "hype_markers": [],
+    "topics": [
+      "performance",
+      "caching",
+      "system-design"
+    ],
+    "prerequisites": [
+      "familiarity with microservices and HTTP APIs"
+    ]
+  },
+  "reel_000084": {
+    "reel_id": "reel_000084",
+    "summary": "Explains that apps can still infer user location and behavior via IP, Wi-Fi, SIM region, and device settings even when permissions are denied.",
+    "outcome": "Recognize indirect tracking signals like IP geolocation and device metadata that bypass explicit permission controls.",
+    "difficulty": "Beginner",
+    "substance": 0.45,
+    "hype_markers": [],
+    "topics": [
+      "security",
+      "web-security",
+      "privacy"
+    ],
+    "prerequisites": []
+  },
+  "reel_000085": {
+    "reel_id": "reel_000085",
+    "summary": "Promotional reel for GeeksforGeeks Summer Skill Up Program covering Data Analytics, Data Science, Cloud, DevOps, and GenAI.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "To get in MNC’s like Amazon you need a proper roadmap"
+    ],
+    "topics": [
+      "career",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000086": {
+    "reel_id": "reel_000086",
+    "summary": "Brief interview-style answer outline for reducing API response time from 2s to 200ms, covering profiling, Redis caching, and related steps.",
+    "outcome": "List concrete techniques (profiling, caching, query optimization, async processing) used to cut API latency.",
+    "difficulty": "Intermediate",
+    "substance": 0.45,
+    "hype_markers": [
+      "Comment “Link” to get Detailed Notes"
+    ],
+    "topics": [
+      "performance",
+      "caching",
+      "api-design"
+    ],
+    "prerequisites": [
+      "basic understanding of REST APIs and databases"
+    ]
+  },
+  "reel_000087": {
+    "reel_id": "reel_000087",
+    "summary": "Begins a system design breakdown of idempotency keys for duplicate API request handling, framed as a teaser for a paid course.",
+    "outcome": "",
+    "difficulty": "Intermediate",
+    "substance": 0.2,
+    "hype_markers": [
+      "Unlock more such practical problem-solutions just like this one with just one sign up"
+    ],
+    "topics": [
+      "api-design",
+      "system-design"
+    ],
+    "prerequisites": [
+      "basic understanding of REST APIs"
+    ]
+  },
+  "reel_000088": {
+    "reel_id": "reel_000088",
+    "summary": "Promotional reel for GitKraken CLI, comparing multi-repo Git management to an orchestra playing different songs.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "git",
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000089": {
+    "reel_id": "reel_000089",
+    "summary": "A short reel titled 'HTTP explained in 60 seconds' with a broad hashtag dump and no visible technical content in the metadata.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "api-design"
+    ],
+    "prerequisites": []
+  },
+  "reel_000090": {
+    "reel_id": "reel_000090",
+    "summary": "Short tech-news style reel referencing the US-EAST-1 AWS region as a recurring single point of failure, in a Fireship house style.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "cloud",
+      "distributed-systems",
+      "tech-news"
+    ],
+    "prerequisites": [
+      "basic awareness of AWS regions"
+    ]
+  },
+  "reel_000091": {
+    "reel_id": "reel_000091",
+    "summary": "Hindi-language meme reel joking that you should not push code to production through a proper CI/CD pipeline with pull request approvals.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.08,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour",
+      "ci-cd"
+    ],
+    "prerequisites": []
+  },
+  "reel_000092": {
+    "reel_id": "reel_000092",
+    "summary": "Short promotional clip from GitKraken featuring a GitHub Cloud Solutions Engineer discussing the importance of developers learning to work with AI tools.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.18,
+    "hype_markers": [
+      "the best developers we know",
+      "skills that separate thriving developers from those getting left behind"
+    ],
+    "topics": [
+      "ai",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000093": {
+    "reel_id": "reel_000093",
+    "summary": "Promotional reel for a GeeksforGeeks Summer SkillUp program, asking viewers to comment a keyword to receive a link.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "Comment \"GFG\" to get the link",
+      "Internships, Placements, Software Developer"
+    ],
+    "topics": [
+      "career",
+      "interviews"
+    ],
+    "prerequisites": []
+  },
+  "reel_000094": {
+    "reel_id": "reel_000094",
+    "summary": "Meme reel using a code-style boolean check ('isReadingCaption() && hack = true') implying reading the caption unlocks a hacking trick.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "hack = true"
+    ],
+    "topics": [
+      "dev-humour",
+      "security"
+    ],
+    "prerequisites": []
+  },
+  "reel_000095": {
+    "reel_id": "reel_000095",
+    "summary": "Comedy reel joking about the creator's Instagram being hacked, referencing deepfakes and Pegasus spyware.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour",
+      "security"
+    ],
+    "prerequisites": []
+  },
+  "reel_000096": {
+    "reel_id": "reel_000096",
+    "summary": "Self-deprecating meme reel about a developer who copies code from Google and Stack Overflow as their job.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.06,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000097": {
+    "reel_id": "reel_000097",
+    "summary": "Hindi-language meme reel referencing the 'Tum Tum' song and Anonymous hackers with engagement-bait hashtags.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.03,
+    "hype_markers": [
+      "likekaronitohackhojaoge",
+      "likekaronitohackhojaoge",
+      "commentmelikhonicedance"
+    ],
+    "topics": [
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000098": {
+    "reel_id": "reel_000098",
+    "summary": "Short meme reel prompting viewers to caption an Android development clip.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000099": {
+    "reel_id": "reel_000099",
+    "summary": "Short clip from NeetCode claiming to demonstrate 'the easiest algorithm ever', likely involving a hashmap technique.",
+    "outcome": "A viewer could recall the specific trick or one-liner trick used in the clip.",
+    "difficulty": "Beginner",
+    "substance": 0.45,
+    "hype_markers": [
+      "The easiest algorithm ever"
+    ],
+    "topics": [
+      "dsa",
+      "hashing"
+    ],
+    "prerequisites": [
+      "basic programming"
+    ]
+  },
+  "reel_000100": {
+    "reel_id": "reel_000100",
+    "summary": "Short clip from NeetCode presenting the creator as the 'final boss' of a coding interview, likely a motivational interview tip.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [
+      "final boss of your coding interview"
+    ],
+    "topics": [
+      "interviews",
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000101": {
+    "reel_id": "reel_000101",
+    "summary": "Short-form DSA tip about an approach for binary tree interview questions.",
+    "outcome": "Recall one specific trick the creator uses for binary tree problems.",
+    "difficulty": "Intermediate",
+    "substance": 0.35,
+    "hype_markers": [
+      "a little secret"
+    ],
+    "topics": [
+      "dsa",
+      "graphs"
+    ],
+    "prerequisites": [
+      "binary trees",
+      "recursion"
+    ]
+  },
+  "reel_000102": {
+    "reel_id": "reel_000102",
+    "summary": "Short-form DSA tip about a technique for linked list problems.",
+    "outcome": "Recall one specific trick the creator uses for linked list problems.",
+    "difficulty": "Intermediate",
+    "substance": 0.35,
+    "hype_markers": [
+      "A neet little trick"
+    ],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": [
+      "linked lists"
+    ]
+  },
+  "reel_000103": {
+    "reel_id": "reel_000103",
+    "summary": "Walkthrough or solution outline for the LeetCode 860 \"Lemonade Change\" problem.",
+    "outcome": "Describe an approach to the Lemonade Change problem.",
+    "difficulty": "Beginner",
+    "substance": 0.4,
+    "hype_markers": [],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": [
+      "basic programming"
+    ]
+  },
+  "reel_000104": {
+    "reel_id": "reel_000104",
+    "summary": "Short-form explanation justifying an algorithm via proof by contradiction.",
+    "outcome": "Explain what proof by contradiction means in the context of a coding problem.",
+    "difficulty": "Intermediate",
+    "substance": 0.35,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "complexity"
+    ],
+    "prerequisites": [
+      "basic math",
+      "algorithms"
+    ]
+  },
+  "reel_000105": {
+    "reel_id": "reel_000105",
+    "summary": "Short-form tip about handling recursive problems where the return value is not the final answer.",
+    "outcome": "Apply a technique for recursions where the return value isn't the answer.",
+    "difficulty": "Intermediate",
+    "substance": 0.35,
+    "hype_markers": [
+      "a trick"
+    ],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": [
+      "recursion"
+    ]
+  },
+  "reel_000106": {
+    "reel_id": "reel_000106",
+    "summary": "Short-form DSA tip about handling palindrome-style problems.",
+    "outcome": "Recall a technique for palindrome-related problems.",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "Palindromes were tricky until I learned this"
+    ],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": [
+      "strings"
+    ]
+  },
+  "reel_000107": {
+    "reel_id": "reel_000107",
+    "summary": "Short-form explanation of one advantage of binary search trees.",
+    "outcome": "State one advantage binary search trees offer over other data structures.",
+    "difficulty": "Beginner",
+    "substance": 0.35,
+    "hype_markers": [],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": [
+      "binary trees"
+    ]
+  },
+  "reel_000108": {
+    "reel_id": "reel_000108",
+    "summary": "Walkthrough or solution outline for LeetCode 98, validating a binary search tree.",
+    "outcome": "Describe how to validate a binary search tree.",
+    "difficulty": "Beginner",
+    "substance": 0.45,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "graphs"
+    ],
+    "prerequisites": [
+      "binary search trees"
+    ]
+  },
+  "reel_000109": {
+    "reel_id": "reel_000109",
+    "summary": "Short-form reel introducing a hard DSA problem, framed as a challenge to the audience.",
+    "outcome": "",
+    "difficulty": "Intermediate",
+    "substance": 0.1,
+    "hype_markers": [
+      "a little too hard for you"
+    ],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000110": {
+    "reel_id": "reel_000110",
+    "summary": "Short-form reel framing DFS vs BFS as a playful comparison.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [
+      "Who would win in a fight"
+    ],
+    "topics": [
+      "dsa",
+      "graphs"
+    ],
+    "prerequisites": []
+  },
+  "reel_000111": {
+    "reel_id": "reel_000111",
+    "summary": "Short clip discussing whether a specific LeetCode problem should be classified as easy difficulty.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000112": {
+    "reel_id": "reel_000112",
+    "summary": "Clip promising an opinion-based take on AI hype.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [
+      "i can change your mind"
+    ],
+    "topics": [
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000113": {
+    "reel_id": "reel_000113",
+    "summary": "Clip offering personal tips on how the creator got better at LeetCode.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "this is how i actually got good at leetcode"
+    ],
+    "topics": [
+      "dsa",
+      "interviews"
+    ],
+    "prerequisites": []
+  },
+  "reel_000114": {
+    "reel_id": "reel_000114",
+    "summary": "Walkthrough of LeetCode 128 - Longest Consecutive Sequence.",
+    "outcome": "Recognize the optimal hash-set approach for finding the longest consecutive sequence in O(n) time.",
+    "difficulty": "Intermediate",
+    "substance": 0.7,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "hashing"
+    ],
+    "prerequisites": [
+      "basic hashmap usage"
+    ]
+  },
+  "reel_000115": {
+    "reel_id": "reel_000115",
+    "summary": "Walkthrough of LeetCode 36 - Valid Sudoku.",
+    "outcome": "Validate a 9x9 Sudoku board using hash sets for rows, columns, and sub-boxes.",
+    "difficulty": "Beginner",
+    "substance": 0.6,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "hashing"
+    ],
+    "prerequisites": [
+      "basic hashmap usage"
+    ]
+  },
+  "reel_000116": {
+    "reel_id": "reel_000116",
+    "summary": "Walkthrough of LeetCode 322 - Coin Change.",
+    "outcome": "Apply bottom-up or top-down dynamic programming to find the minimum number of coins to make an amount.",
+    "difficulty": "Intermediate",
+    "substance": 0.7,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "dynamic-programming"
+    ],
+    "prerequisites": [
+      "basic recursion",
+      "dynamic programming concepts"
+    ]
+  },
+  "reel_000117": {
+    "reel_id": "reel_000117",
+    "summary": "Walkthrough of LeetCode 853 - Car Fleet.",
+    "outcome": "Model car fleets using a stack sorted by start position and target time/velocity logic.",
+    "difficulty": "Intermediate",
+    "substance": 0.6,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "queues"
+    ],
+    "prerequisites": [
+      "basic sorting"
+    ]
+  },
+  "reel_000118": {
+    "reel_id": "reel_000118",
+    "summary": "Walkthrough of LeetCode 2 - Add Two Numbers.",
+    "outcome": "Iterate two linked lists simultaneously while handling carry to produce the sum as a new linked list.",
+    "difficulty": "Beginner",
+    "substance": 0.6,
+    "hype_markers": [],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": [
+      "linked list traversal"
+    ]
+  },
+  "reel_000119": {
+    "reel_id": "reel_000119",
+    "summary": "Walkthrough of LeetCode 20 - Valid Parenthesis.",
+    "outcome": "Use a stack to validate balanced parentheses, brackets, and braces.",
+    "difficulty": "Beginner",
+    "substance": 0.6,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "queues"
+    ],
+    "prerequisites": [
+      "basic stack usage"
+    ]
+  },
+  "reel_000120": {
+    "reel_id": "reel_000120",
+    "summary": "Clip suggesting an order to study algorithms topics.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [
+      "best order to learn algorithms"
+    ],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000121": {
+    "reel_id": "reel_000121",
+    "summary": "Commentary on whether coding interviews have become harder over time.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "interviews",
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000122": {
+    "reel_id": "reel_000122",
+    "summary": "A problem-solving tip suggesting reversing a problem statement to simplify it.",
+    "outcome": "Apply the strategy of reversing or reframing a problem statement to make it easier to solve.",
+    "difficulty": "Intermediate",
+    "substance": 0.4,
+    "hype_markers": [],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": [
+      "basic problem solving"
+    ]
+  },
+  "reel_000123": {
+    "reel_id": "reel_000123",
+    "summary": "A practice problem intended as a review of heap data structures.",
+    "outcome": "Solve a heap-based practice problem to reinforce heap operations.",
+    "difficulty": "Intermediate",
+    "substance": 0.4,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "complexity"
+    ],
+    "prerequisites": [
+      "basic data structures"
+    ]
+  },
+  "reel_000124": {
+    "reel_id": "reel_000124",
+    "summary": "A meme or joke referring to AI praising an engineer's skills.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000125": {
+    "reel_id": "reel_000125",
+    "summary": "A joke about solving Leetcode hard problems to impress someone romantically.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000126": {
+    "reel_id": "reel_000126",
+    "summary": "A motivational clip about practice improving coding skills.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000127": {
+    "reel_id": "reel_000127",
+    "summary": "A question/joke about whether Amazon would rehire the creator.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "interviews",
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000128": {
+    "reel_id": "reel_000128",
+    "summary": "A playful framing of the happy number problem as 'would you be happy or unhappy.'",
+    "outcome": "Identify the happy number problem and apply cycle detection to classify a number.",
+    "difficulty": "Intermediate",
+    "substance": 0.45,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "hashing"
+    ],
+    "prerequisites": [
+      "basic programming"
+    ]
+  },
+  "reel_000129": {
+    "reel_id": "reel_000129",
+    "summary": "A question to viewers about their study or course schedule.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000130": {
+    "reel_id": "reel_000130",
+    "summary": "A 7-second teaser covering transaction state machines, idempotency keys, and crash recovery for payment systems, with a prompt to comment for a course link.",
+    "outcome": "Recognize the role of transaction state machines and idempotency keys in ensuring payment reliability across crashes.",
+    "difficulty": "Intermediate",
+    "substance": 0.35,
+    "hype_markers": [
+      "Comment \"Link\" for detailed course."
+    ],
+    "topics": [
+      "system-design",
+      "databases",
+      "distributed-systems"
+    ],
+    "prerequisites": [
+      "basic system design concepts"
+    ]
+  },
+  "reel_000131": {
+    "reel_id": "reel_000131",
+    "summary": "A short meme-style reel asking whether the viewer is coding late at night, posted by a coding channel with no technical content.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000132": {
+    "reel_id": "reel_000132",
+    "summary": "Promotional announcement for the CS50x 2026 course, featuring David Malan and an AI theme, available on edX.",
+    "outcome": "Know that CS50x 2026 is being offered on edX starting January 1, 2026 and where to register.",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "ai",
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000133": {
+    "reel_id": "reel_000133",
+    "summary": "A brief, oversimplified explanation that REST APIs allow two systems to communicate over HTTP, using a shopping analogy.",
+    "outcome": "Recognize that REST stands for Representational State Transfer and that clients send HTTP requests to a server to receive representations like JSON.",
+    "difficulty": "Beginner",
+    "substance": 0.35,
+    "hype_markers": [],
+    "topics": [
+      "api-design"
+    ],
+    "prerequisites": []
+  },
+  "reel_000134": {
+    "reel_id": "reel_000134",
+    "summary": "Promotional clip about CS50 AP being taught at a New York City gifted school, featuring alumni career outcomes.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "education"
+    ],
+    "prerequisites": []
+  },
+  "reel_000135": {
+    "reel_id": "reel_000135",
+    "summary": "Promotional teaser for a video where a creator attends the first CS50 lecture at Harvard with David Malan.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [
+      "world’s most popular course"
+    ],
+    "topics": [
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000136": {
+    "reel_id": "reel_000136",
+    "summary": "Short promotional reel claiming a single DSA resource can help crack any job offer in 2026, with no actual content shown.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [
+      "The only DSA Resource you required to crack any job offer in 2026."
+    ],
+    "topics": [
+      "dsa",
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000137": {
+    "reel_id": "reel_000137",
+    "summary": "Promotional announcement that CS50 is being offered at the University of Oxford starting October 2024.",
+    "outcome": "Know that CS50 is being run at Oxford with an application link.",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000138": {
+    "reel_id": "reel_000138",
+    "summary": "A very short explanation that binary search requires a sorted array because it splits the search range based on comparing the target to the middle element.",
+    "outcome": "Explain why binary search only works on sorted input.",
+    "difficulty": "Beginner",
+    "substance": 0.5,
+    "hype_markers": [],
+    "topics": [
+      "dsa",
+      "complexity"
+    ],
+    "prerequisites": []
+  },
+  "reel_000139": {
+    "reel_id": "reel_000139",
+    "summary": "A sales promotion for GeeksforGeeks summer courses with a discount code and a call to comment for a link.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "comment “summer” to get the link.",
+      "Use my code AVREEN30"
+    ],
+    "topics": [
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000140": {
+    "reel_id": "reel_000140",
+    "summary": "A 69-second clip where a host breaks down the principles of the Zen of Python.",
+    "outcome": "Recall a few guiding aphorisms from the Zen of Python and what they imply for writing Pythonic code.",
+    "difficulty": "Beginner",
+    "substance": 0.5,
+    "hype_markers": [],
+    "topics": [
+      "engineering-culture"
+    ],
+    "prerequisites": [
+      "Basic Python familiarity"
+    ]
+  },
+  "reel_000141": {
+    "reel_id": "reel_000141",
+    "summary": "A fast-paced part 2 of a 101 web development concepts series by Fireship, covering multiple frontend/backend topics in roughly 100 seconds.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "101 concepts you must know"
+    ],
+    "topics": [
+      "web-security",
+      "api-design",
+      "performance"
+    ],
+    "prerequisites": []
+  },
+  "reel_000142": {
+    "reel_id": "reel_000142",
+    "summary": "A fast-paced part 3 of a 101 web development concepts series by Fireship, covering multiple frontend/backend topics in roughly 80 seconds.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "101 concepts you must know"
+    ],
+    "topics": [
+      "api-design",
+      "web-security",
+      "performance"
+    ],
+    "prerequisites": []
+  },
+  "reel_000143": {
+    "reel_id": "reel_000143",
+    "summary": "A promotional clip for GeeksforGeeks' Summer Skill Program, advertising a discounted course bundle covering DSA, fundamentals, projects and placement prep.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [
+      "USE CODE ANKIT30 FOR 30% DISCOUNT",
+      "4.44 lakh se zyada log"
+    ],
+    "topics": [
+      "career",
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000144": {
+    "reel_id": "reel_000144",
+    "summary": "A Fireship short explaining what the creator calls the most fundamental algorithm-implementation mechanism.",
+    "outcome": "",
+    "difficulty": "Intermediate",
+    "substance": 0.35,
+    "hype_markers": [
+      "most fundamental mechanism"
+    ],
+    "topics": [
+      "dsa",
+      "complexity"
+    ],
+    "prerequisites": []
+  },
+  "reel_000145": {
+    "reel_id": "reel_000145",
+    "summary": "A Fireship Computer Science 101 clip explaining some kind of implementation concept.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000146": {
+    "reel_id": "reel_000146",
+    "summary": "Linux 101 part 6 by Fireship, focused on figuring out which binary gets executed (likely covering PATH and command resolution).",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.45,
+    "hype_markers": [],
+    "topics": [
+      "containers"
+    ],
+    "prerequisites": [
+      "basic command-line usage"
+    ]
+  },
+  "reel_000147": {
+    "reel_id": "reel_000147",
+    "summary": "Linux 101 part 7 by Fireship, highlighting standard command-line utilities worth knowing.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.45,
+    "hype_markers": [],
+    "topics": [
+      "containers"
+    ],
+    "prerequisites": [
+      "basic Linux familiarity"
+    ]
+  },
+  "reel_000148": {
+    "reel_id": "reel_000148",
+    "summary": "A Fireship tech-news style clip announcing a new Linux distribution aimed at developers.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "new Linux distro in town"
+    ],
+    "topics": [
+      "containers",
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000149": {
+    "reel_id": "reel_000149",
+    "summary": "Linux 101 part 5 by Fireship, framed as an 'existential crisis' likely about a foundational Linux concept.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.4,
+    "hype_markers": [],
+    "topics": [
+      "containers"
+    ],
+    "prerequisites": [
+      "basic Linux familiarity"
+    ]
+  },
+  "reel_000150": {
+    "reel_id": "reel_000150",
+    "summary": "A fast-paced 101 web development concepts rundown by Fireship, covering many frontend/backend topics in under 80 seconds.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "101 Concepts you must know"
+    ],
+    "topics": [
+      "api-design",
+      "web-security",
+      "performance"
+    ],
+    "prerequisites": []
+  },
+  "reel_000151": {
+    "reel_id": "reel_000151",
+    "summary": "A fast-paced Fireship-style overview covering a broad range of Linux topics in roughly 90 seconds.",
+    "outcome": "Recognize common Linux concepts, commands, and terminology at a surface level.",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "Everything you need to know about Linux"
+    ],
+    "topics": [
+      "hardware"
+    ],
+    "prerequisites": []
+  },
+  "reel_000152": {
+    "reel_id": "reel_000152",
+    "summary": "A short continuation reel with additional Linux facts and trivia.",
+    "outcome": "Identify a few extra Linux-related terms or concepts.",
+    "difficulty": "Beginner",
+    "substance": 0.25,
+    "hype_markers": [
+      "More stuff you need to know about Linux…"
+    ],
+    "topics": [
+      "hardware"
+    ],
+    "prerequisites": []
+  },
+  "reel_000153": {
+    "reel_id": "reel_000153",
+    "summary": "A news-style reel commenting on an OpenAI announcement framed as making existing tech stacks obsolete.",
+    "outcome": "Summarize the recent OpenAI news being discussed.",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "OpenAI just made your entire tech stack obsolete…"
+    ],
+    "topics": [
+      "ai",
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000154": {
+    "reel_id": "reel_000154",
+    "summary": "A news-style reel about a new JavaScript UI framework positioned as an alternative to React.",
+    "outcome": "Name the new framework discussed and its stated differentiators.",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "This new JS framework wants you to quit React…"
+    ],
+    "topics": [
+      "api-design",
+      "tech-news"
+    ],
+    "prerequisites": [
+      "Basic familiarity with React or front-end frameworks"
+    ]
+  },
+  "reel_000155": {
+    "reel_id": "reel_000155",
+    "summary": "A news-style reel about a recent React update or announcement.",
+    "outcome": "Describe the React change or feature discussed in the video.",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "React wants to win you back…"
+    ],
+    "topics": [
+      "api-design",
+      "tech-news"
+    ],
+    "prerequisites": [
+      "Basic familiarity with React"
+    ]
+  },
+  "reel_000156": {
+    "reel_id": "reel_000156",
+    "summary": "A news-style reel about OpenAI releasing a browser product, comparing it to existing options.",
+    "outcome": "Recall what the OpenAI browser does and how it compares to incumbents.",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "OpenAI’s new browser feels familiar…"
+    ],
+    "topics": [
+      "ai",
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000157": {
+    "reel_id": "reel_000157",
+    "summary": "A fast-paced highlight reel showcasing a curated list of notable computer science algorithms.",
+    "outcome": "Recognize the names and rough purpose of several well-known algorithms.",
+    "difficulty": "Beginner",
+    "substance": 0.35,
+    "hype_markers": [
+      "These are the most interesting algorithms ever engineered…"
+    ],
+    "topics": [
+      "dsa",
+      "complexity"
+    ],
+    "prerequisites": []
+  },
+  "reel_000158": {
+    "reel_id": "reel_000158",
+    "summary": "A news-style opinion reel debating whether a recent Google model announcement outpaces OpenAI.",
+    "outcome": "Summarize the competitive positioning between Google and OpenAI as presented.",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "Did Google just kill OpenAI?"
+    ],
+    "topics": [
+      "ai",
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000159": {
+    "reel_id": "reel_000159",
+    "summary": "Part 3 of a Linux 101 series covering the shell at a rapid pace.",
+    "outcome": "Define what a shell is and list a few common shell behaviors.",
+    "difficulty": "Beginner",
+    "substance": 0.5,
+    "hype_markers": [],
+    "topics": [
+      "hardware"
+    ],
+    "prerequisites": [
+      "Basic familiarity with operating systems"
+    ]
+  },
+  "reel_000160": {
+    "reel_id": "reel_000160",
+    "summary": "Part 4 of a Linux 101 series covering the terminal at a rapid pace.",
+    "outcome": "Describe what a terminal is and how it relates to the shell.",
+    "difficulty": "Beginner",
+    "substance": 0.5,
+    "hype_markers": [],
+    "topics": [
+      "hardware"
+    ],
+    "prerequisites": [
+      "Basic familiarity with operating systems"
+    ]
+  },
+  "reel_000161": {
+    "reel_id": "reel_000161",
+    "summary": "Podcast clip of Shawn Swyx Wang giving career advice to junior developers navigating AI-assisted coding tools.",
+    "outcome": "Identify one area where a junior developer can add value beyond what AI coding tools produce.",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000162": {
+    "reel_id": "reel_000162",
+    "summary": "Podcast clip of Chris Coyier arguing that companies need real humans to own critical outcomes rather than AI tools.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000163": {
+    "reel_id": "reel_000163",
+    "summary": "CS50 clip of David Malan explaining reasons to learn the C programming language in 2026.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.25,
+    "hype_markers": [
+      "link in bio"
+    ],
+    "topics": [
+      "career",
+      "c"
+    ],
+    "prerequisites": []
+  },
+  "reel_000164": {
+    "reel_id": "reel_000164",
+    "summary": "CS50 clip of David Malan sharing tips on keeping people engaged during long sessions, likely tied to his teaching work.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [
+      "link in bio"
+    ],
+    "topics": [
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000165": {
+    "reel_id": "reel_000165",
+    "summary": "Promotional announcement for CS50x Puzzle Day 2024, an online team puzzle-solving event with certificates.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "Win a certificate"
+    ],
+    "topics": [
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000166": {
+    "reel_id": "reel_000166",
+    "summary": "Hindi-language meme joking that everyone needs an RGB keyboard or else running GTA5 via an HTML file won't work.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000167": {
+    "reel_id": "reel_000167",
+    "summary": "Promotional announcement for CS50x Puzzle Day, describing it as a collaborative online puzzle event for teams.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000168": {
+    "reel_id": "reel_000168",
+    "summary": "Short advertisement for GitKraken's AI-assisted Git workflow features, framed as an end-of-year deal.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [
+      "Link in bio",
+      "deal disappears tonight",
+      "upgrade your workflow"
+    ],
+    "topics": [
+      "git"
+    ],
+    "prerequisites": [
+      "git"
+    ]
+  },
+  "reel_000169": {
+    "reel_id": "reel_000169",
+    "summary": "Holiday greeting from the CS50 team with a teaser for the CS50x 2026 course release on January 1.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000170": {
+    "reel_id": "reel_000170",
+    "summary": "Promotional announcement encouraging registration for CS50x Puzzle Day 2026.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000171": {
+    "reel_id": "reel_000171",
+    "summary": "A short freeCodeCamp explainer in which Gavin introduces the concept of recursion in programming.",
+    "outcome": "Identify what recursion is and roughly how a recursive call reaches a base case.",
+    "difficulty": "Beginner",
+    "substance": 0.4,
+    "hype_markers": [],
+    "topics": [
+      "dsa"
+    ],
+    "prerequisites": []
+  },
+  "reel_000172": {
+    "reel_id": "reel_000172",
+    "summary": "A short freeCodeCamp clip in which Ania Kubow explains how an API works.",
+    "outcome": "Describe at a high level how a client calls an API and receives a response.",
+    "difficulty": "Beginner",
+    "substance": 0.4,
+    "hype_markers": [],
+    "topics": [
+      "api-design"
+    ],
+    "prerequisites": []
+  },
+  "reel_000173": {
+    "reel_id": "reel_000173",
+    "summary": "A promotional clip from GeeksforGeeks advertising a discount and a free AI toolkit.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "Get amazing 30% Off + AI toolkit worth ₹6000 for free!",
+      "Link in bio"
+    ],
+    "topics": [
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000174": {
+    "reel_id": "reel_000174",
+    "summary": "A promotional quiz clip from GeeksforGeeks pitching a free AI toolkit as part of a Summer SkillUp campaign.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "the ones getting ahead in 2026",
+      "FREE AI Toolkit"
+    ],
+    "topics": [
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000175": {
+    "reel_id": "reel_000175",
+    "summary": "A podcast clip from freeCodeCamp in which Carl discusses the importance of debugging and dealing with broken code.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "debugging"
+    ],
+    "prerequisites": []
+  },
+  "reel_000176": {
+    "reel_id": "reel_000176",
+    "summary": "A promotional teaser for GeeksforGeeks' Summer SkillUp program inviting pre-registration via a link in bio.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "your career truly takes off",
+      "link in bio"
+    ],
+    "topics": [
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000177": {
+    "reel_id": "reel_000177",
+    "summary": "A podcast clip in which Justin discusses building a real project as a way to stand out when job hunting.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "career",
+      "portfolio"
+    ],
+    "prerequisites": []
+  },
+  "reel_000178": {
+    "reel_id": "reel_000178",
+    "summary": "A promotional quiz clip from GeeksforGeeks pitching a free AI toolkit as part of a Summer SkillUp campaign.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "the ones getting ahead in 2026",
+      "FREE AI Toolkit"
+    ],
+    "topics": [
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000179": {
+    "reel_id": "reel_000179",
+    "summary": "A freeCodeCamp podcast clip suggesting a critical-thinking exercise: ask ChatGPT to argue, from a senior engineer's perspective, why its own answer is wrong.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000180": {
+    "reel_id": "reel_000180",
+    "summary": "A Fireship short-form tech news item with the title 'Google won at Monopoly…', playing on the board game to comment on a Google-related ruling or outcome.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000181": {
+    "reel_id": "reel_000181",
+    "summary": "A short comedy meme contrasting expectations of machine learning with reality.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour",
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000182": {
+    "reel_id": "reel_000182",
+    "summary": "A very short reel listing ten common backend concepts such as REST, HTTP methods, JWT, and rate limiting.",
+    "outcome": "Recognize and briefly define the listed backend concepts at a surface level.",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "Follow & Comment “backend” to get entire details in Dm"
+    ],
+    "topics": [
+      "api-design",
+      "auth",
+      "web-security"
+    ],
+    "prerequisites": []
+  },
+  "reel_000183": {
+    "reel_id": "reel_000183",
+    "summary": "A fireship-style short on Microsoft rewriting TypeScript's language service, likely covering the Go port and performance implications.",
+    "outcome": "Summarize that TypeScript was ported to Go and that it significantly speeds up compilation.",
+    "difficulty": "Intermediate",
+    "substance": 0.5,
+    "hype_markers": [],
+    "topics": [
+      "performance",
+      "tech-news"
+    ],
+    "prerequisites": [
+      "basic TypeScript usage"
+    ]
+  },
+  "reel_000184": {
+    "reel_id": "reel_000184",
+    "summary": "A fireship-style short claiming the TypeScript codebase got 10x faster, presumably covering the Go port announcement.",
+    "outcome": "Explain that the TypeScript compiler was rewritten in Go for major speed gains.",
+    "difficulty": "Intermediate",
+    "substance": 0.45,
+    "hype_markers": [
+      "10x faster"
+    ],
+    "topics": [
+      "performance",
+      "tech-news"
+    ],
+    "prerequisites": [
+      "basic TypeScript usage"
+    ]
+  },
+  "reel_000185": {
+    "reel_id": "reel_000185",
+    "summary": "A meme or joke reel prompting viewers to tag friends.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000186": {
+    "reel_id": "reel_000186",
+    "summary": "A fireship-style short noting that React Native doesn't always feel truly native.",
+    "outcome": "Describe why React Native can feel non-native compared to fully native UI.",
+    "difficulty": "Intermediate",
+    "substance": 0.4,
+    "hype_markers": [],
+    "topics": [
+      "performance",
+      "tech-news"
+    ],
+    "prerequisites": [
+      "basic React Native familiarity"
+    ]
+  },
+  "reel_000187": {
+    "reel_id": "reel_000187",
+    "summary": "A fireship-style short about a new Microsoft chip that looks futuristic.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.25,
+    "hype_markers": [
+      "looks like science fiction"
+    ],
+    "topics": [
+      "hardware",
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000188": {
+    "reel_id": "reel_000188",
+    "summary": "A condensed introduction to Docker and containerization in roughly two minutes.",
+    "outcome": "Explain what containers and Docker images are and run a basic container command.",
+    "difficulty": "Beginner",
+    "substance": 0.7,
+    "hype_markers": [],
+    "topics": [
+      "containers",
+      "cloud"
+    ],
+    "prerequisites": [
+      "basic command line familiarity"
+    ]
+  },
+  "reel_000189": {
+    "reel_id": "reel_000189",
+    "summary": "A condensed introduction to Docker and containerization, framed as a 100-second quick guide.",
+    "outcome": "Explain what containers and Docker images are and run a basic container command.",
+    "difficulty": "Beginner",
+    "substance": 0.7,
+    "hype_markers": [],
+    "topics": [
+      "containers",
+      "cloud"
+    ],
+    "prerequisites": [
+      "basic command line familiarity"
+    ]
+  },
+  "reel_000190": {
+    "reel_id": "reel_000190",
+    "summary": "A short piece on open source software, likely covering what it is and how it works.",
+    "outcome": "Define open source software and list common licensing models.",
+    "difficulty": "Beginner",
+    "substance": 0.45,
+    "hype_markers": [],
+    "topics": [
+      "engineering-culture",
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000191": {
+    "reel_id": "reel_000191",
+    "summary": "A 100-second overview of Nvidia CUDA and its role in GPU computing.",
+    "outcome": "Explain what CUDA is and why it is used for general-purpose GPU programming.",
+    "difficulty": "Beginner",
+    "substance": 0.5,
+    "hype_markers": [],
+    "topics": [
+      "gpu",
+      "cpu-architecture"
+    ],
+    "prerequisites": [
+      "basic understanding of CPUs and parallel processing"
+    ]
+  },
+  "reel_000192": {
+    "reel_id": "reel_000192",
+    "summary": "A short animated explanation of the main stages of CPU instruction execution.",
+    "outcome": "Describe at a high level how a CPU fetches, decodes, and executes instructions.",
+    "difficulty": "Beginner",
+    "substance": 0.5,
+    "hype_markers": [],
+    "topics": [
+      "cpu-architecture",
+      "hardware"
+    ],
+    "prerequisites": []
+  },
+  "reel_000193": {
+    "reel_id": "reel_000193",
+    "summary": "A short primer defining what a CPU is and what it does.",
+    "outcome": "Define what a CPU is and its basic role in a computer.",
+    "difficulty": "Beginner",
+    "substance": 0.35,
+    "hype_markers": [],
+    "topics": [
+      "cpu-architecture",
+      "hardware"
+    ],
+    "prerequisites": []
+  },
+  "reel_000194": {
+    "reel_id": "reel_000194",
+    "summary": "A 100-second intro to the Flutter framework for cross-platform apps.",
+    "outcome": "Identify what Flutter is and the kind of apps it targets.",
+    "difficulty": "Beginner",
+    "substance": 0.35,
+    "hype_markers": [],
+    "topics": [],
+    "prerequisites": []
+  },
+  "reel_000195": {
+    "reel_id": "reel_000195",
+    "summary": "A 100-second intro to Flutter framed as mastering cross-platform development.",
+    "outcome": "Identify what Flutter is and the kind of apps it targets.",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "Master Cross-Platform App Development"
+    ],
+    "topics": [],
+    "prerequisites": []
+  },
+  "reel_000196": {
+    "reel_id": "reel_000196",
+    "summary": "A 100-second overview of TypeScript.",
+    "outcome": "Explain at a high level what TypeScript adds on top of JavaScript.",
+    "difficulty": "Beginner",
+    "substance": 0.35,
+    "hype_markers": [],
+    "topics": [],
+    "prerequisites": [
+      "basic JavaScript"
+    ]
+  },
+  "reel_000197": {
+    "reel_id": "reel_000197",
+    "summary": "A 90-second overview of TypeScript.",
+    "outcome": "Explain at a high level what TypeScript adds on top of JavaScript.",
+    "difficulty": "Beginner",
+    "substance": 0.35,
+    "hype_markers": [],
+    "topics": [],
+    "prerequisites": [
+      "basic JavaScript"
+    ]
+  },
+  "reel_000207": {
+    "reel_id": "reel_000207",
+    "summary": "A short reel listing basic web security practices for ASP.NET Core: HTTPS, authentication, input validation, and secure secrets management.",
+    "outcome": "Identify four common security areas an ASP.NET Core developer should review.",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "Comment “SECURE” if you take coding security seriously"
+    ],
+    "topics": [
+      "security",
+      "web-security"
+    ],
+    "prerequisites": [
+      "basic ASP.NET Core"
+    ]
+  },
+  "reel_000208": {
+    "reel_id": "reel_000208",
+    "summary": "A reel appears to be missing from the input set; no title provided."
+  },
+  "reel_000209": {
+    "reel_id": "reel_000209",
+    "summary": "A reel listing .NET performance topics including AOT compilation, diagnostics tools, Hot Reload, memory optimization, and async programming.",
+    "outcome": "",
+    "difficulty": "Intermediate",
+    "substance": 0.25,
+    "hype_markers": [
+      "Performance is not luck — it’s smart engineering",
+      "Comment “FAST” if you care about performance"
+    ],
+    "topics": [
+      "performance"
+    ],
+    "prerequisites": [
+      "basic .NET / C#"
+    ]
+  },
+  "reel_000210": {
+    "reel_id": "reel_000210",
+    "summary": "A teaser from JetBrains claiming that modern Java offers improved interop and performance compared to older opinions about the language.",
+    "outcome": "",
+    "difficulty": "Intermediate",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "java"
+    ],
+    "prerequisites": [
+      "basic Java"
+    ]
+  },
+  "reel_000211": {
+    "reel_id": "reel_000211",
+    "summary": "A JetBrains clip explaining that Java's upfront memory pool allocation is a deliberate tradeoff for predictable runtime behavior rather than waste.",
+    "outcome": "Explain why the JVM reserves memory upfront and how this affects runtime predictability.",
+    "difficulty": "Intermediate",
+    "substance": 0.55,
+    "hype_markers": [],
+    "topics": [
+      "jvm-internals",
+      "memory-model"
+    ],
+    "prerequisites": [
+      "basic Java"
+    ]
+  },
+  "reel_000212": {
+    "reel_id": "reel_000212",
+    "summary": "A prompt reel asking viewers to choose between DevOps and SRE, framing them as opposing roles around speed vs stability.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [
+      "DEVOPS or SRE"
+    ],
+    "topics": [
+      "career",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000222": {
+    "reel_id": "reel_000222",
+    "summary": "Short clip showing or announcing agentic Gemini integration on Android.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.2,
+    "hype_markers": [],
+    "topics": [
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000223": {
+    "reel_id": "reel_000223",
+    "summary": "Explainer defining end-to-end encryption for messages in plain language.",
+    "outcome": "Explain what end-to-end encryption means in chat.",
+    "difficulty": "Beginner",
+    "substance": 0.4,
+    "hype_markers": [],
+    "topics": [
+      "cryptography",
+      "security"
+    ],
+    "prerequisites": []
+  },
+  "reel_000224": {
+    "reel_id": "reel_000224",
+    "summary": "Promotional montage recapping KotlinConf highlights including Kotlin 2.4, Google's Kotlin adoption, and Spring AI.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.15,
+    "hype_markers": [],
+    "topics": [
+      "tech-news",
+      "spring-boot",
+      "ai"
+    ],
+    "prerequisites": []
+  },
+  "reel_000225": {
+    "reel_id": "reel_000225",
+    "summary": "Overview of how Web3 tokens can be designed to incentivize learning, contribution, staking, and fee discounts.",
+    "outcome": "Describe how tokens can shape user behavior in a Web3 ecosystem.",
+    "difficulty": "Beginner",
+    "substance": 0.35,
+    "hype_markers": [],
+    "topics": [
+      "tech-news",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000226": {
+    "reel_id": "reel_000226",
+    "summary": "Introductory pitch about bug bounty programs as a way to find security bugs and earn money legally.",
+    "outcome": "Explain what a bug bounty program is at a high level.",
+    "difficulty": "Beginner",
+    "substance": 0.3,
+    "hype_markers": [
+      "Get paid — legally",
+      "Every cybersecurity beginner must know this roadmap",
+      "comment HACK if you want a beginner tool list"
+    ],
+    "topics": [
+      "security",
+      "web-security"
+    ],
+    "prerequisites": []
+  },
+  "reel_000227": {
+    "reel_id": "reel_000227",
+    "summary": "Promotional reel framing Sharp Token's reward economy around learning, contributing, and building skills rather than speculation.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [
+      "Not speculation.",
+      "Participation."
+    ],
+    "topics": [
+      "tech-news",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000228": {
+    "reel_id": "reel_000228",
+    "summary": "Short explainer positioning passkeys and Touch ID as the passwordless future.",
+    "outcome": "State that passkeys replace passwords and remove password-hacking risk.",
+    "difficulty": "Beginner",
+    "substance": 0.35,
+    "hype_markers": [
+      "Touch ID is the future."
+    ],
+    "topics": [
+      "auth",
+      "security"
+    ],
+    "prerequisites": []
+  },
+  "reel_000229": {
+    "reel_id": "reel_000229",
+    "summary": "Cryptic one-liner referencing JetBrains' hardware product marketing.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [],
+    "topics": [
+      "dev-humour"
+    ],
+    "prerequisites": []
+  },
+  "reel_000230": {
+    "reel_id": "reel_000230",
+    "summary": "Promotional reel for CSharpCorner's Sharp Token reward system, asking viewers to comment SHARP.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [
+      "Just knowledge = income.",
+      "Comment SHARP to learn how to start"
+    ],
+    "topics": [
+      "tech-news",
+      "engineering-culture"
+    ],
+    "prerequisites": []
+  },
+  "reel_000217": {
+    "reel_id": "reel_000217",
+    "summary": "A short poll-style reel contrasting DevOps and SRE roles and asking viewers to comment their preference.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [
+      "which role is your future?",
+      "Comment your choice",
+      "Follow for daily cloud & career tech reels"
+    ],
+    "topics": [
+      "engineering-culture",
+      "career"
+    ],
+    "prerequisites": []
+  },
+  "reel_000218": {
+    "reel_id": "reel_000218",
+    "summary": "Promotional reel advertising an AI Agents Conference 2026 with speakers from Meta, Google, NVIDIA, and OpenAI.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.05,
+    "hype_markers": [
+      "Seats are limited. Register now",
+      "world's leading AI companies"
+    ],
+    "topics": [
+      "ai",
+      "tech-news"
+    ],
+    "prerequisites": []
+  },
+  "reel_000219": {
+    "reel_id": "reel_000219",
+    "summary": "Explainer reel on how Docker works under the hood, covering Linux namespaces, chroot, and cgroups.",
+    "outcome": "Describe how namespaces provide process isolation, chroot provides filesystem isolation, and cgroups limit resource usage in containers.",
+    "difficulty": "Intermediate",
+    "substance": 0.6,
+    "hype_markers": [
+      "Save this for your next system design interview."
+    ],
+    "topics": [
+      "containers",
+      "system-design"
+    ],
+    "prerequisites": [
+      "basic Linux concepts"
+    ]
+  },
+  "reel_000220": {
+    "reel_id": "reel_000220",
+    "summary": "Reel highlighting three OWASP Top 10 risks: broken access control, cryptographic failures, and injection attacks.",
+    "outcome": "Recognize and briefly describe the top three OWASP security risks: broken access control, cryptographic failures, and injection attacks.",
+    "difficulty": "Beginner",
+    "substance": 0.45,
+    "hype_markers": [
+      "Comment SECURITY if you want the full OWASP Top 10 series",
+      "Follow for dev + security reels"
+    ],
+    "topics": [
+      "security",
+      "web-security"
+    ],
+    "prerequisites": []
+  },
+  "reel_000221": {
+    "reel_id": "reel_000221",
+    "summary": "Short clip of a brief question asked to a Microsoft executive about open source at a GitHub event in India.",
+    "outcome": "",
+    "difficulty": "Beginner",
+    "substance": 0.1,
+    "hype_markers": [],
+    "topics": [
+      "engineering-culture",
+      "tech-news"
+    ],
+    "prerequisites": []
+  }
+}

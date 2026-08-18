@@ -1,0 +1,384 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Upstream design tokens.
+
+   Two worlds share one system:
+   • PAPER — the warm editorial canvas the product reasons on (landing, agent
+     console, library, profile). Playfair + Inter, hairlines, orange accent.
+   • INK — the cinematic surface the reels play on (feed, player). Same accent,
+     inverted ground, applied by adding `.theme-ink` to any subtree.
+
+   Semantic tokens (bg / surface / fg / line) are what components consume, so a
+   single class swaps a whole subtree between worlds. Raw scales stay available
+   for the few places that need a specific step.
+--------------------------------------------------------------------------- */
+
+@theme {
+  /* Primary — the accent both worlds share */
+  --color-primary-700: #c2410c;
+  --color-primary-600: #ea5a0b;
+  --color-primary-500: #f97316;
+  --color-primary-400: #fb923c;
+  --color-primary-300: #fdba74;
+  --color-primary-200: #fed7aa;
+  --color-primary-100: #ffeee5;
+
+  /* Signal — the agent's own colour: reasoning, inference, vector work */
+  --color-signal-700: #3730a3;
+  --color-signal-600: #4338ca;
+  --color-signal-500: #4f46e5;
+  --color-signal-400: #818cf8;
+  --color-signal-300: #a5b4fc;
+  --color-signal-100: #eef0fe;
+
+  /* Neutral */
+  --color-neutral-900: #0f172a;
+  --color-neutral-800: #1e293b;
+  --color-neutral-700: #334155;
+  --color-neutral-500: #64748b;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-300: #cbd5e1;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-50: #fafafc;
+
+  /* Ink — warm blacks, so the dark world sits under the same light as the paper */
+  --color-ink-950: #0a0908;
+  --color-ink-900: #12100e;
+  --color-ink-800: #1c1917;
+  --color-ink-700: #292524;
+  --color-ink-600: #44403c;
+
+  /* Status */
+  --color-success: #16a34a;
+  --color-success-soft: #e8f7ee;
+  --color-warn: #d97706;
+  --color-warn-soft: #fdf3e3;
+  --color-danger: #dc2626;
+  --color-danger-soft: #fdecec;
+
+  /* Semantic surface set — PAPER is the default binding */
+  --color-bg: #fbf8f5;
+  --color-surface: #ffffff;
+  --color-surface-2: #f7f2ed;
+  --color-fg: #0f172a;
+  --color-fg-muted: #64748b;
+  --color-fg-subtle: #94a3b8;
+  --color-line: #f0e7e0;
+  --color-line-strong: #e2e8f0;
+
+  /* Legacy aliases kept so the design-system sheet can name them directly */
+  --color-canvas: #fbf8f5;
+  --color-canvas-line: #f0e7e0;
+
+  /* Typography */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-playfair), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-script: var(--font-grand-hotel), "Grand Hotel", cursive;
+
+  /* Instagram-language accents used by the signed-in app */
+  --color-ig-blue: #0095f6;
+  --color-ig-blue-hover: #1877f2;
+  --color-ig-like: #ff3040;
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 24px -4px rgba(15, 23, 42, 0.1);
+  --shadow-xl: 0 20px 40px -8px rgba(15, 23, 42, 0.12);
+  --shadow-glow: 0 0 0 1px rgba(249, 115, 22, 0.16), 0 18px 40px -18px rgba(249, 115, 22, 0.55);
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Instagram app chrome — black ground, hairline separators, blue CTAs. */
+.theme-ig {
+  --color-bg: #000000;
+  --color-surface: #000000;
+  --color-surface-2: #121212;
+  --color-fg: #f5f5f5;
+  --color-fg-muted: #a8a8a8;
+  --color-fg-subtle: #737373;
+  --color-line: #262626;
+  --color-line-strong: #363636;
+  color: var(--color-fg);
+}
+
+.ig-story-ring {
+  background: linear-gradient(225deg, #f9ce34 0%, #ee2a7b 45%, #6228d7 100%);
+}
+
+.ig-story-ring-seen {
+  background: #262626;
+}
+
+/* INK world — rebind the semantic set for any subtree that plays video. */
+.theme-ink {
+  --color-bg: #0a0908;
+  --color-surface: #12100e;
+  --color-surface-2: #1c1917;
+  --color-fg: #faf7f4;
+  --color-fg-muted: #a8a29e;
+  --color-fg-subtle: #78716c;
+  --color-line: #292524;
+  --color-line-strong: #44403c;
+  color: var(--color-fg);
+}
+
+/* --- Type scale ---------------------------------------------------------- */
+
+@utility text-display-1 {
+  font-family: var(--font-display);
+  font-size: 48px;
+  line-height: 56px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+@utility text-display-2 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+@utility text-heading-1 {
+  font-family: var(--font-sans);
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+@utility text-heading-2 {
+  font-family: var(--font-sans);
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+@utility text-heading-3 {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 500;
+}
+@utility text-body-lg {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+@utility text-body {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+@utility text-small {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
+}
+@utility text-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+@utility text-mono-xs {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.02em;
+}
+@utility text-mono-sm {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 20px;
+}
+
+/* --- Surface treatments -------------------------------------------------- */
+
+/** Faint diagonal hatch that fills the gutters beside the framed column. */
+@utility hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-line) 0 1px,
+    transparent 1px 14px
+  );
+}
+
+/** Frosted panel used over video in the ink world. */
+@utility glass {
+  background-color: color-mix(in oklab, var(--color-ink-900) 62%, transparent);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid color-mix(in oklab, white 10%, transparent);
+}
+
+/** Very fine film grain — keeps large flat areas from banding. */
+@utility grain {
+  position: relative;
+}
+@utility grain-layer {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+@utility focus-ring {
+  outline: none;
+  &:focus-visible {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+}
+
+/* --- Base ---------------------------------------------------------------- */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-primary-200);
+    color: var(--color-neutral-900);
+  }
+
+  .theme-ink ::selection {
+    background: color-mix(in oklab, var(--color-primary-500) 45%, transparent);
+    color: white;
+  }
+
+  /* The vertical feed owns its own scroll container; hide its bar without
+     losing keyboard scrolling. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes upstream-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes upstream-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+@keyframes upstream-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ig-heart-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  15% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  30% {
+    transform: scale(0.95);
+  }
+  45% {
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes ig-like-pop {
+  0% {
+    transform: scale(1);
+  }
+  35% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes ig-story-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@utility animate-rise {
+  animation: upstream-rise 0.6s var(--ease-out-expo) both;
+}
+@utility animate-sweep {
+  animation: upstream-sweep 1.6s var(--ease-out-expo) infinite;
+}
+@utility animate-pulse-dot {
+  animation: upstream-pulse 1.4s ease-in-out infinite;
+}
+@utility animate-ig-heart {
+  animation: ig-heart-burst 0.85s var(--ease-out-expo) both;
+}
+@utility animate-ig-like {
+  animation: ig-like-pop 0.35s var(--ease-spring) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
