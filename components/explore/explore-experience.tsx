@@ -31,10 +31,8 @@ function ReelGrid({ reels }: { reels: Reel[] }) {
 
 export function ExploreExperience({
   initialReels,
-  feedSource,
 }: {
   initialReels: Reel[];
-  feedSource?: string;
 }) {
   const playable = initialReels.filter((r) => reelThumbnailSrc(r));
   const [query, setQuery] = useState("");
@@ -98,14 +96,9 @@ export function ExploreExperience({
             </button>
           )}
         </form>
-        {mode === "browse" && feedSource && (
-          <p className="mx-auto mt-2 max-w-[935px] text-[12px] text-fg-subtle">
-            Picked for you · {feedSource}
-          </p>
-        )}
         {mode === "search" && (
           <p className="mx-auto mt-2 max-w-[935px] text-[12px] text-fg-subtle">
-            {display.length} results · vector semantic search
+            {display.length} results
           </p>
         )}
       </div>

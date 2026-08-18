@@ -22,7 +22,7 @@ export default async function ExplorePage() {
 
   return (
     <AppShell>
-      <ExploreExperience initialReels={initial.reels} feedSource={initial.source} />
+      <ExploreExperience initialReels={initial.reels} />
     </AppShell>
   );
 }

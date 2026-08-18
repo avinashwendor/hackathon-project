@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Camera, Compass, Heart, Loader2, Play, Sparkles, Volume2, VolumeX } from "lucide-react";
+import { Camera, Compass, Heart, Loader2, Play, Volume2, VolumeX } from "lucide-react";
 import type {
   AgentResult,
   EventType,
@@ -123,7 +123,7 @@ export function FeedExperience({
   const eventsRef = useRef<InteractionEvent[]>([]);
   const watchRef = useRef<{ reelId: string; start: number; accumulated: number } | null>(null);
 
-  const { status, result, run, reset } = useAgentRun();
+  const { result, run, reset } = useAgentRun();
   const activeReel = reels[activeIndex];
 
   useEffect(() => {
@@ -629,25 +629,10 @@ export function FeedExperience({
         </div>
       )}
 
-      {!showCard && (
-        <button
-          type="button"
-          onClick={askAgent}
-          className="focus-ring fixed top-4 right-4 z-30 hidden items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-[13px] font-medium text-white backdrop-blur-md lg:flex"
-        >
-          {status === "running" ? (
-            <Loader2 className="size-4 animate-spin" />
-          ) : (
-            <Sparkles className="size-4" />
-          )}
-          For you
-        </button>
-      )}
-
       <button
         type="button"
         onClick={() => setMuted((m) => !m)}
-        className="focus-ring absolute top-4 right-4 z-30 rounded-full bg-black/40 p-2 text-white lg:right-20"
+        className="focus-ring absolute top-4 right-4 z-30 rounded-full bg-black/40 p-2 text-white"
         aria-label={muted ? "Unmute" : "Mute"}
       >
         {muted ? <VolumeX className="size-5" /> : <Volume2 className="size-5" />}

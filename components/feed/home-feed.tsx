@@ -48,19 +48,16 @@ async function fetchFeedPage(excludeIds: string[], limit = PAGE_SIZE, refresh = 
 
 interface HomeFeedProps {
   initialReels?: Reel[];
-  initialSource?: string;
   initialHasMore?: boolean;
 }
 
 export function HomeFeed({
   initialReels,
-  initialSource = "",
   initialHasMore = true,
 }: HomeFeedProps) {
   const { viewer } = useViewer();
   const { signOut, signingOut } = useSignOut();
   const [posts, setPosts] = useState<Reel[]>(initialReels ?? []);
-  const [feedSource, setFeedSource] = useState(initialSource);
   const [loading, setLoading] = useState(!initialReels?.length);
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMore, setHasMore] = useState(initialHasMore);
@@ -93,7 +90,6 @@ export function HomeFeed({
       if (!json) return;
       if (replace) setPosts(json.reels);
       else appendUnique(json.reels);
-      setFeedSource(json.source ?? "");
       setHasMore(json.hasMore);
     },
     [appendUnique],
@@ -191,7 +187,6 @@ export function HomeFeed({
     const json = await fetchFeedPage(postsRef.current.map((p) => p.id), 3, true);
     if (!json?.reels.length) return;
     appendUnique(json.reels);
-    setFeedSource(json.source ?? "taste");
     setHasMore(json.hasMore);
   }, [appendUnique]);
 
@@ -302,12 +297,6 @@ export function HomeFeed({
     <>
       <div className="mx-auto flex max-w-[935px] justify-center gap-16 px-0 pt-4 lg:pt-8">
         <div className="w-full max-w-[470px]">
-          {feedSource && (
-            <p className="mb-3 px-3 text-[12px] text-fg-subtle sm:px-0">
-              For you · {feedSource} · {playablePosts.length} new
-            </p>
-          )}
-
           {playablePosts.length > 0 && (
             <StoriesRail
               reels={playablePosts}

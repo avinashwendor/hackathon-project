@@ -24,7 +24,6 @@ export default async function FeedPage() {
     <AppShell>
       <HomeFeed
         initialReels={initial.reels}
-        initialSource={initial.source}
         initialHasMore={initial.hasMore}
       />
     </AppShell>
