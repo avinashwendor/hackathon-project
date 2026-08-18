@@ -24,7 +24,8 @@ describe("feed rank cache", () => {
   });
 
   it("is fresh within TTL when likes have not moved enough", () => {
-    assert.equal(feedRankStale(fresh, 1, false), false);
+    assert.equal(feedRankStale(fresh, 0, false), false);
+    assert.equal(feedRankStale(fresh, 1, false), true);
     assert.ok(FEED_RANK_TTL_MS > 60_000);
   });
 

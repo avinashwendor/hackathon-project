@@ -15,7 +15,7 @@ import {
   dislikeFeedbackMessage,
   likeFeedbackMessage,
 } from "@/lib/social/feedback-messages";
-import { LIKES_BEFORE_TASTE_REFRESH } from "@/lib/feed/feed-cache";
+import { LIKES_BEFORE_CLIENT_REFRESH } from "@/lib/feed/feed-cache";
 import { fetchFeedClient } from "@/lib/feed/client-fetch";
 import { Badge } from "@/components/ui/primitives";
 import { Button } from "@/components/ui/button";
@@ -164,7 +164,7 @@ export function FeedExperience({
 
   const onTasteSignal = useCallback(() => {
     likesSinceRefresh.current += 1;
-    if (likesSinceRefresh.current >= LIKES_BEFORE_TASTE_REFRESH) {
+    if (likesSinceRefresh.current >= LIKES_BEFORE_CLIENT_REFRESH) {
       likesSinceRefresh.current = 0;
       void refreshTasteReels();
     }

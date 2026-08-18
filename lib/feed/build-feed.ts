@@ -26,6 +26,52 @@ export interface FeedResult {
   source: "onboarding" | "taste" | "blended" | "fallback";
   queries: string[];
   hasMore: boolean;
+  /** Which tier is currently being served (profile → likes → more). */
+  phase?: "profile" | "likes" | "more";
+}
+
+const ONBOARDING_REJECTION_REASONS = new Set([
+  "not_relevant",
+  "wrong_topic",
+  "already_know",
+]);
+
+/** User rejected profile-based suggestions — advance to likes / generic tiers. */
+function onboardingRejected(social: SocialState): boolean {
+  const feedback = Object.values(social.dislikeFeedback ?? {});
+  const profileRejections = feedback.filter((fb) =>
+    ONBOARDING_REJECTION_REASONS.has(fb.reason),
+  );
+  return profileRejections.length >= 1 || social.dislikes.length >= 3;
+}
+
+type FeedTierKind = "profile" | "likes" | "more";
+
+interface LabeledTier {
+  kind: FeedTierKind;
+  ids: string[];
+}
+
+function mergeTiers(tiers: LabeledTier[]): {
+  ids: string[];
+  tierBounds: { onboarding: number; likes: number };
+} {
+  const seen = new Set<string>();
+  const ids: string[] = [];
+  let onboarding = 0;
+  let likes = 0;
+
+  for (const tier of tiers) {
+    for (const id of tier.ids) {
+      if (seen.has(id)) continue;
+      seen.add(id);
+      ids.push(id);
+      if (tier.kind === "profile") onboarding++;
+      else if (tier.kind === "likes") likes++;
+    }
+  }
+
+  return { ids, tierBounds: { onboarding, likes: onboarding + likes } };
 }
 
 const PAGE_DEFAULT = 5;
@@ -51,7 +97,7 @@ function onboardingQueries(prefs: OnboardingPreferences): string[] {
   ];
 }
 
-/** Queries from reels the user explicitly liked — kicks in after 2+ likes. */
+/** Queries from reels the user explicitly liked. */
 function likedReelQueries(social: SocialState): string[] {
   const queries: string[] = [];
   for (const reelId of social.likes.slice(-5)) {
@@ -150,6 +196,89 @@ async function fuseSearch(
   return scores;
 }
 
+async function searchToRankedIds(
+  queries: string[],
+  options: {
+    categories?: Category[];
+    hardExclude: Set<string>;
+    mutedTopics: Set<string>;
+    minSubstanceBoost?: number;
+  },
+): Promise<string[]> {
+  const scores = await fuseSearch(queries, FEED_RANK_MAX, options);
+  return [...scores.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .map(([id]) => id)
+    .filter((id) => getReel(id)?.media.storageKey);
+}
+
+async function tasteRankedIds(
+  sessionId: string,
+  events: InteractionEvent[],
+  social: SocialState,
+  hardExclude: Set<string>,
+  muted: Set<string>,
+): Promise<string[]> {
+  if (events.length < 2) return [];
+
+  const profile = await buildTasteProfile({ sessionId, events });
+  const ids: string[] = [];
+
+  for (const facet of profile.facets.slice(0, 3)) {
+    const node = TOPIC_BY_ID.get(facet.topic);
+    if (!node) continue;
+    const hits = await searchToRankedIds([`${node.label} — practical explainer`], {
+      hardExclude,
+      mutedTopics: muted,
+    });
+    ids.push(...hits);
+  }
+
+  if (profile.vector.length) {
+    const tasteHits = await searchVectors(profile.vector, FEED_RANK_MAX, {
+      lanes: ["catalog", "both"],
+      minSubstance: config.agent.substanceFloor * 0.85,
+      excludeHyped: true,
+    });
+    for (const hit of tasteHits) {
+      if (hardExclude.has(hit.id)) continue;
+      const reel = getReel(hit.id);
+      if (!reel?.media.storageKey || reel.topics.some((t) => muted.has(t))) continue;
+      if (social.likes.includes(hit.id)) continue;
+      ids.push(hit.id);
+    }
+  }
+
+  return ids;
+}
+
+function resolveActivePhase(
+  rankIds: string[],
+  tierBounds: { onboarding: number; likes: number } | undefined,
+  softExclude: Set<string>,
+): FeedResult["phase"] {
+  if (!tierBounds) return "more";
+
+  const firstUnseen = rankIds.find((id) => !softExclude.has(id));
+  if (!firstUnseen) return "more";
+
+  const idx = rankIds.indexOf(firstUnseen);
+  if (idx < tierBounds.onboarding) return "profile";
+  if (idx < tierBounds.likes) return "likes";
+  return "more";
+}
+
+function sourceForPhase(phase: FeedResult["phase"]): FeedResult["source"] {
+  switch (phase) {
+    case "profile":
+      return "onboarding";
+    case "likes":
+      return "taste";
+    default:
+      return "fallback";
+  }
+}
+
 function playableRankedIds(hardExclude: Set<string>): string[] {
   const ids: string[] = [];
   for (let i = 1; i <= 230 && ids.length < FEED_RANK_MAX; i++) {
@@ -164,83 +293,74 @@ async function buildRankedIds(
   social: SocialState,
   events: InteractionEvent[],
   hardExclude: Set<string>,
-): Promise<{ ids: string[]; source: FeedResult["source"]; queries: string[] }> {
+): Promise<{
+  ids: string[];
+  source: FeedResult["source"];
+  queries: string[];
+  tierBounds?: { onboarding: number; likes: number };
+}> {
   const onboarding = social.onboarding;
   const muted = new Set(social.mutedTopics);
-  const textQueries: string[] = [];
-  let source: FeedResult["source"] = "fallback";
-
-  if (onboarding?.completedAt) {
-    textQueries.push(...onboardingQueries(onboarding));
-    source = "onboarding";
-  }
-
-  if (social.likes.length >= 2) {
-    textQueries.push(...likedReelQueries(social));
-    source = onboarding ? "blended" : "taste";
-  }
-
-  if (events.length >= 2) {
-    const profile = await buildTasteProfile({ sessionId, events });
-    for (const facet of profile.facets.slice(0, 3)) {
-      const node = TOPIC_BY_ID.get(facet.topic);
-      if (node) textQueries.push(`${node.label} — practical explainer`);
-    }
-    source = onboarding || social.likes.length >= 2 ? "blended" : "taste";
-  }
-
   const prefs = feedPreferences(social, onboarding);
-  if (prefs.difficulty) {
-    textQueries.push(`Practical ${prefs.difficulty.toLowerCase()} level technical explainer`);
-  }
-  for (const avoid of prefs.avoidQueries.slice(0, 2)) {
-    textQueries.push(avoid);
-  }
-
-  if (!textQueries.length) {
-    return { ids: playableRankedIds(hardExclude), source: "fallback", queries: [] };
-  }
-
-  const categories = onboarding?.categories?.length
-    ? (onboarding.categories as Category[])
-    : undefined;
-
-  const scores = await fuseSearch(textQueries, FEED_RANK_MAX, {
-    categories: prefs.categories ?? categories,
+  const searchOptions = {
     hardExclude,
     mutedTopics: muted,
     minSubstanceBoost: prefs.minSubstanceBoost,
-  });
+  };
 
-  if (events.length >= 2) {
-    const profile = await buildTasteProfile({ sessionId, events });
-    if (profile.vector.length) {
-      const tasteHits = await searchVectors(profile.vector, FEED_RANK_MAX, {
-        lanes: ["catalog", "both"],
-        minSubstance: config.agent.substanceFloor * 0.85,
-        excludeHyped: true,
-      });
-      for (const hit of tasteHits) {
-        if (hardExclude.has(hit.id)) continue;
-        const reel = getReel(hit.id);
-        if (!reel?.media.storageKey || reel.topics.some((t) => muted.has(t))) continue;
-        const boost = social.likes.includes(hit.id) ? 0 : 1;
-        if (boost === 0) continue;
-        scores.set(hit.id, Math.max(scores.get(hit.id) ?? 0, hit.score * 0.95));
-      }
+  const allQueries: string[] = [];
+  const tierLists: LabeledTier[] = [];
+  const skipProfile = onboardingRejected(social);
+
+  // Tier 1 — profile / onboarding picks (shown first after signup).
+  if (onboarding?.completedAt && !skipProfile) {
+    const queries = onboardingQueries(onboarding);
+    if (prefs.difficulty) {
+      queries.push(`Practical ${prefs.difficulty.toLowerCase()} level technical explainer`);
     }
+    allQueries.push(...queries);
+
+    const profileIds = await searchToRankedIds(queries, {
+      ...searchOptions,
+      categories: prefs.categories ?? (onboarding.categories as Category[]),
+    });
+    tierLists.push({ kind: "profile", ids: profileIds });
   }
 
-  const ids = [...scores.entries()]
-    .sort((a, b) => b[1] - a[1])
-    .map(([id]) => id)
-    .filter((id) => getReel(id)?.media.storageKey);
-
-  if (!ids.length) {
-    return { ids: playableRankedIds(hardExclude), source: "fallback", queries: textQueries };
+  // Tier 2 — reels similar to what the user liked (after profile tier or if rejected).
+  const likeQueries = likedReelQueries(social);
+  if (likeQueries.length) {
+    allQueries.push(...likeQueries);
+    const likeIds = await searchToRankedIds(likeQueries, {
+      ...searchOptions,
+      categories: prefs.categories,
+    });
+    tierLists.push({ kind: "likes", ids: likeIds });
+  } else if (skipProfile && events.length >= 2) {
+    // No likes yet but profile was rejected — use implicit watch taste.
+    const tasteIds = await tasteRankedIds(sessionId, events, social, hardExclude, muted);
+    if (tasteIds.length) tierLists.push({ kind: "likes", ids: tasteIds });
   }
 
-  return { ids, source, queries: textQueries };
+  // Tier 3 — generic catalog (what you see when scrolling deep).
+  tierLists.push({ kind: "more", ids: playableRankedIds(hardExclude) });
+
+  const merged = mergeTiers(tierLists);
+  const ids = merged.ids.slice(0, FEED_RANK_MAX);
+  const tierBounds = merged.tierBounds;
+  const phase: FeedResult["phase"] =
+    tierBounds.onboarding > 0 && !skipProfile
+      ? "profile"
+      : likeQueries.length || tierLists.some((t) => t.kind === "likes" && t.ids.length)
+        ? "likes"
+        : "more";
+
+  return {
+    ids: ids.length ? ids : playableRankedIds(hardExclude),
+    source: sourceForPhase(phase),
+    queries: allQueries,
+    tierBounds,
+  };
 }
 
 function unseenPlayableIds(
@@ -282,12 +402,14 @@ export async function buildPersonalizedFeed(
 
   let rankIds = social.feedRank?.ids ?? [];
   let source = social.feedRank?.source ?? "fallback";
+  let tierBounds = social.feedRank?.tierBounds;
   let queries: string[] = [];
 
   if (needsRebuild) {
     const built = await buildRankedIds(sessionId, social, events, hardExclude);
     rankIds = built.ids;
     source = built.source;
+    tierBounds = built.tierBounds;
     queries = built.queries;
 
     const cache: FeedRankCache = {
@@ -295,6 +417,7 @@ export async function buildPersonalizedFeed(
       builtAt: new Date().toISOString(),
       source,
       likeCount,
+      tierBounds,
     };
     await updateSocial(sessionId, (current) => ({ ...current, feedRank: cache }));
   }
@@ -305,6 +428,7 @@ export async function buildPersonalizedFeed(
     const built = await buildRankedIds(sessionId, social, events, hardExclude);
     rankIds = built.ids;
     source = built.source;
+    tierBounds = built.tierBounds;
     queries = built.queries;
     await updateSocial(sessionId, (current) => ({
       ...current,
@@ -313,12 +437,16 @@ export async function buildPersonalizedFeed(
         builtAt: new Date().toISOString(),
         source,
         likeCount,
+        tierBounds,
       },
     }));
     ({ reels, hasMore } = sliceFromRank(rankIds, softExclude, hardExclude, limit));
   }
 
-  return { reels, source, queries, hasMore };
+  const phase = resolveActivePhase(rankIds, tierBounds, softExclude);
+  source = sourceForPhase(phase);
+
+  return { reels, source, queries, hasMore, phase };
 }
 
 /** Server pages + API: build feed and mark returned reels as seen. */
