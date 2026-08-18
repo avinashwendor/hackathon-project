@@ -5,6 +5,12 @@ buildCommand = "npm run build"
 [deploy]
 startCommand = "npm run start"
 healthcheckPath = "/api/health"
-healthcheckTimeout = 180
+healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
+
+# Link Postgres + Qdrant in the Railway dashboard, then set:
+#   DATABASE_URL  (reference from Postgres)
+#   QDRANT_URL    (from Qdrant template)
+#   AUTH_SECRET, NEXT_PUBLIC_APP_URL, GEMINI_API_KEY
+# See docs/RAILWAY.md

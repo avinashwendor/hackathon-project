@@ -80,6 +80,11 @@ export const config = {
     collection: str("QDRANT_COLLECTION", "upstream_reels"),
   },
 
+  database: {
+    /** Railway Postgres — accounts, events, social graph persist here. */
+    url: str("DATABASE_URL"),
+  },
+
   storage: {
     /** "s3" | "local" */
     driver: str("STORAGE_DRIVER", str("S3_BUCKET") ? "s3" : "local"),
@@ -129,6 +134,7 @@ export const capabilities = {
   omega: Boolean(config.llm.apiKey),
   googleEmbeddings: Boolean(config.google.apiKey),
   qdrant: Boolean(config.vector.qdrantUrl),
+  postgres: Boolean(config.database.url),
   s3: Boolean(config.storage.bucket && config.storage.accessKeyId),
 };
 

@@ -2,7 +2,7 @@
   "name": "upstream",
   "version": "1.0.0",
   "private": false,
-  "description": "Upstream \u2014 an AI recommendation agent that turns short-form scrolling into technical momentum.",
+  "description": "Upstream — an AI recommendation agent that turns short-form scrolling into technical momentum.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -22,9 +22,11 @@
     "@aws-sdk/s3-request-presigner": "^3.1112.0",
     "clsx": "^2.1.1",
     "hls.js": "^1.7.0",
+    "kysely": "^0.29.5",
     "lucide-react": "^1.31.0",
     "motion": "^13.1.0",
     "next": "16.3.1",
+    "pg": "^8.23.0",
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "tailwind-merge": "^3.6.0",
@@ -33,6 +35,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^24",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

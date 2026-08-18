@@ -14,7 +14,8 @@ Instagram-style signup → home feed → reels → profile. The agent infers int
 | **Deployed (Cloud Run)** | Deploy with [docs/DEPLOYMENT.md](./docs/DEPLOYMENT.md) |
 | **Description** | Instagram-style learning feed with AI that reads *why* you watched, not keywords. Sign up → scroll reels → get redirected to teachable technical content. Uses Google `text-embedding-004`, hype guardrails, and a full agent trace. |
 
-Full checklist, evaluation alignment, and platform copy: **[docs/SUBMISSION.md](./docs/SUBMISSION.md)**
+Full checklist: **[docs/SUBMISSION.md](./docs/SUBMISSION.md)**  
+Railway (Postgres + Qdrant): **[docs/RAILWAY.md](./docs/RAILWAY.md)**
 
 ```bash
 npm run verify          # typecheck + lint + tests + build
