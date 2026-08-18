@@ -49,20 +49,21 @@ export function FlightScroll({ frameBase }: { frameBase: string }) {
 
   useEffect(() => {
     let loadedCount = 0;
+    let successCount = 0;
     const images: HTMLImageElement[] = [];
+
+    const checkComplete = (ok: boolean) => {
+      loadedCount += 1;
+      if (ok) successCount += 1;
+      setLoadProgress((loadedCount / TOTAL_FRAMES) * 100);
+      if (loadedCount === TOTAL_FRAMES) setReady(successCount > 0);
+    };
 
     for (let i = 0; i < TOTAL_FRAMES; i++) {
       const img = new Image();
       img.src = landingScrollFrameUrl(frameBase, i);
-
-      const checkComplete = () => {
-        loadedCount += 1;
-        setLoadProgress((loadedCount / TOTAL_FRAMES) * 100);
-        if (loadedCount === TOTAL_FRAMES) setReady(true);
-      };
-
-      img.onload = checkComplete;
-      img.onerror = checkComplete;
+      img.onload = () => checkComplete(true);
+      img.onerror = () => checkComplete(false);
       images.push(img);
     }
 

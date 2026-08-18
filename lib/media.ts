@@ -1,4 +1,4 @@
-import { capabilities, config } from "@/lib/config";
+import { config } from "@/lib/config";
 import type { Reel } from "@/lib/types";
 
 /* ---------------------------------------------------------------------------
@@ -46,17 +46,11 @@ export function s3ProxyUrl(key: string): string {
 }
 
 /**
- * Auth preview video — served from S3 via the app proxy when configured,
- * otherwise from `public/auth/` for local dev.
+ * Auth preview video — always from `public/auth/` (shipped in the container).
+ * Reel MP4s use S3; these marketing assets stay on the app origin so login works
+ * without a separate sync step.
  */
 export function resolveAuthPreviewMedia(): AuthPreviewMedia {
-  if (capabilities.s3) {
-    return {
-      video: s3ProxyUrl(AUTH_PREVIEW_S3_KEYS.video),
-      poster: s3ProxyUrl(AUTH_PREVIEW_S3_KEYS.poster),
-      tier: "s3",
-    };
-  }
   return {
     video: "/auth/feed-preview.webm",
     poster: "/auth/feed-preview-poster.webp",
@@ -64,9 +58,8 @@ export function resolveAuthPreviewMedia(): AuthPreviewMedia {
   };
 }
 
-/** Base path for landing scroll-scrub frame sequence (no trailing slash). */
+/** Base path for landing scroll-scrub frames in `public/landing/scroll-sequence/`. */
 export function resolveLandingScrollFrameBase(): string {
-  if (capabilities.s3) return s3ProxyUrl(LANDING_SCROLL_S3_PREFIX);
   return "/landing/scroll-sequence";
 }
 
